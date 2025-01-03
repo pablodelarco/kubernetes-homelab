@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: home-assistant-configmap
+  namespace: home-assistant
+data:
+  configuration.yaml: |-
+    default_config:
+    frontend:
+      themes: !include_dir_merge_named themes
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 127.0.0.1       # Localhost
+        - 10.42.0.0/16    # K8s Pod Network
+        - 10.0.0.0/8
+        - 10.43.0.0/16    # K8s Services Network
+        - 100.64.0.0/10   # Tailscale IPv4 Range
+  automations.yaml: |-
+    # Add your automation content here
+  scripts.yaml: |-
+    # Add your script content here
+  scenes.yaml: |-
+    # Add your scenes content here
