@@ -6,12 +6,20 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://prometheus-community.github.io/helm-charts
-    chart: kube-prometheus-stack
-    targetRevision: "*"  # This ensures the latest version is used
+    repoURL: https://github.com/your-username/kubernetes-homelab
+    targetRevision: main
+    path: apps/prometheus/manifests
     helm:
-      valueFiles:
-        - apps/prometheus/manifests/helm-values.yaml
+      values: |-
+        prometheus:
+          prometheusSpec:
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 3Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -19,3 +27,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+

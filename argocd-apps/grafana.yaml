@@ -10,8 +10,13 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: "*"  # This ensures the latest version is used
     helm:
-      valueFiles:
-        - apps/grafana/manifests/helm-values.yaml
+      values: |-
+        grafana:
+          persistence:
+            enabled: true
+            storageClassName: "longhorn"
+            accessMode: ReadWriteOnce
+            size: 3Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
