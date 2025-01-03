@@ -15,6 +15,12 @@ data:
       use_x_forwarded_for: true
       trusted_proxies:
         - 127.0.0.1       # Localhost
-        - 10.42.0.0/24    # K8s Pod Network
+        - 10.42.0.0/16    # K8s Pod Network
         - 10.43.0.0/16    # K8s Services Network
         - 100.64.0.0/10   # Tailscale IPv4 Range
+  automations.yaml: |-
+    # Add your automation content here
+  scripts.yaml: |-
+    # Add your script content here
+  scenes.yaml: |-
+    # Add your scenes content here
