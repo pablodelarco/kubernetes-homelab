@@ -22,8 +22,8 @@ spec:
                       storage: 3Gi
         grafana:
           admin:
-            existingSecret: grafana-admin-password
-            existingSecretKey: admin-password
+            existingSecret: grafana-admin-credentials
+            existingSecretKey: admin-user
           persistence:
             enabled: true
             storageClassName: "longhorn"
