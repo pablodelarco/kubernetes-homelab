@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homarr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://oben01.github.io/charts/
+    targetRevision: 1.3.8
+    helm:
+      values: |-
+        ingress:
+          enabled: true
+          ingressClassName: "tailscale"
+          annotations:
+            tailscale.com/funnel: "true"
+          hosts:
+            - host: "homarr"
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - "homarr"
+
+        persistence:
+          - name: homarr-database
+            enabled: true
+            storageClassName: "longhorn"
+            accessMode: "ReadWriteOnce"
+            size: "1Gi"
+            mountPath: "/app/database"
+    chart: homarr
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: homarr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
