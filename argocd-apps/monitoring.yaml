@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus
+  name: monitoring-stack
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-username/kubernetes-homelab
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
     targetRevision: "*"
-    path: apps/prometheus/manifests
     helm:
       values: |-
         prometheus:
@@ -20,6 +20,15 @@ spec:
                   resources:
                     requests:
                       storage: 3Gi
+        grafana:
+          admin:
+            existingSecret: grafana-admin-password
+            existingSecretKey: admin-password
+          persistence:
+            enabled: true
+            storageClassName: "longhorn"
+            accessModes: ["ReadWriteOnce"]
+            size: 3Gi
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -27,4 +36,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
