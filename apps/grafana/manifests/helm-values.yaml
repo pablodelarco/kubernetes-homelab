@@ -1,0 +1,6 @@
+grafana:
+  persistence:
+    enabled: true
+    storageClassName: "longhorn"
+    accessMode: ReadWriteOnce
+    size: 3Gi
