@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uptime-kuma
+  namespace: uptime-kuma
+spec:
+  selector:
+    app: uptime-kuma  # Match the app label of your Uptime Kuma Deployment
+  ports:
+    - port: 80      # Port to expose
+      targetPort: 3001
+      protocol: TCP
+  type: ClusterIP

@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant
+  namespace: home-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - beelink
+      containers:
+        - name: home-assistant
+          image: ghcr.io/home-assistant/home-assistant:stable
+          env:
+            - name: TZ
+              value: Europe/Madrid
+
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: configmap-file
+              subPath: configuration.yaml
+              mountPath: /config/configuration.yaml # Inside of container
+            - name: configmap-file
+              subPath: automations.yaml
+              mountPath: /config/automations.yaml
+            - name: configmap-file
+              subPath: scripts.yaml
+              mountPath: /config/scripts.yaml
+            - name: configmap-file
+              subPath: scenes.yaml
+              mountPath: /config/scenes.yaml
+          securityContext:
+            privileged: true
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8123                     
+            initialDelaySeconds: 30          
+            periodSeconds: 10                
+          readinessProbe:                    
+            httpGet:
+              path: /
+              port: 8123                     
+            initialDelaySeconds: 10          
+            periodSeconds: 5                 
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: home-assistant-pvc
+        - name: configmap-file
+          configMap:
+            name: home-assistant-configmap
+
