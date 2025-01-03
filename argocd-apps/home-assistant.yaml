@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/pablodelarco/homelab-home-assistant'
-    targetRevision: HEAD
-    path: manifests
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/home-assistant/manifests
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: home-assistant
