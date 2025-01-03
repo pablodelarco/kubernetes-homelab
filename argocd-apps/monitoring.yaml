@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://prometheus-community.github.io/helm-charts
     chart: kube-prometheus-stack
-    targetRevision: "*"
+    targetRevision: "67.7.0"
     helm:
       values: |-
         prometheus:
@@ -36,3 +36,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
