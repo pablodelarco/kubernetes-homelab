@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/your-username/kubernetes-homelab
-    targetRevision: main
+    targetRevision: "*"
     path: apps/prometheus/manifests
     helm:
       values: |-
