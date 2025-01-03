@@ -16,17 +16,15 @@ spec:
             storageSpec:
               volumeClaimTemplate:
                 spec:
+                  storageClassName: longhorn
                   accessModes: ["ReadWriteOnce"]
                   resources:
                     requests:
                       storage: 3Gi
         grafana:
-          admin:
-            existingSecret: grafana-admin-credentials
-            existingSecretKey: admin-user
           persistence:
             enabled: true
-            storageClassName: "longhorn"
+            storageClassName: longhorn
             accessModes: ["ReadWriteOnce"]
             size: 3Gi
   destination:
@@ -36,4 +34,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
