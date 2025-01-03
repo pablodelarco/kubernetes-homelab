@@ -33,10 +33,11 @@ spec:
           env:
             - name: TZ
               value: Europe/Madrid
-
           volumeMounts:
-            - name: config
-              mountPath: /config
+          # PVC for dynamic runtime data
+            - name: data
+              mountPath: /data
+          # ConfigMap for static configuration
             - name: configmap-file
               subPath: configuration.yaml
               mountPath: /config/configuration.yaml # Inside of container
@@ -64,7 +65,7 @@ spec:
             initialDelaySeconds: 10          
             periodSeconds: 5                 
       volumes:
-        - name: config
+        - name: data
           persistentVolumeClaim:
             claimName: home-assistant-pvc
         - name: configmap-file
