@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/pablodelarco/homelab-uptime-kuma.git'
-    targetRevision: HEAD
-    path: manifests
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/uptime-kuma/manifests
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: uptime-kuma
