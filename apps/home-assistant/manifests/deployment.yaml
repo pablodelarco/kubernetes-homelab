@@ -36,20 +36,11 @@ spec:
           volumeMounts:
           # PVC for dynamic runtime data
             - name: data
-              mountPath: /data
+              mountPath: /config
           # ConfigMap for static configuration
             - name: configmap-file
               subPath: configuration.yaml
               mountPath: /config/configuration.yaml # Inside of container
-            - name: configmap-file
-              subPath: automations.yaml
-              mountPath: /config/automations.yaml
-            - name: configmap-file
-              subPath: scripts.yaml
-              mountPath: /config/scripts.yaml
-            - name: configmap-file
-              subPath: scenes.yaml
-              mountPath: /config/scenes.yaml
           securityContext:
             privileged: true
           livenessProbe:
