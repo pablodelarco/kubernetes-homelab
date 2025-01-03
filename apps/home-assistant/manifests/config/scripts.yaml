@@ -1,7 +1,0 @@
-# Example script
-example_script:
-  alias: Example Script
-  sequence:
-    - service: light.turn_on
-      data:
-        entity_id: light.example_light

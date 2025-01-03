@@ -1,9 +1,0 @@
-# Example scene
-- id: example_scene
-  name: Example Scene
-  entities:
-    light.example_light:
-      state: "on"
-      brightness: 200
-    switch.example_switch:
-      state: "off"
