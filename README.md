@@ -1,4 +1,4 @@
-# 🏠 Kubernetes Homelab
+# 🏠 <img src="https://github.com/user-attachments/assets/30540933-e9fa-49e3-b819-7ba64f104878" width="31" height="31"> Kubernetes Homelab
 
 Welcome to my Kubernetes Homelab repository! This is where I document my journey into cloud-native technologies and self-hosting applications. My homelab is more than just a learning tool—it's a space where I experiment with new ideas, automate processes, and have fun solving challenges.
 
