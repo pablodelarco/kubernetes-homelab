@@ -4,6 +4,7 @@ metadata:
   name: app-of-apps
   namespace: argocd
 spec:
+  project: default
   source:
     repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
     targetRevision: HEAD
@@ -15,3 +16,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
