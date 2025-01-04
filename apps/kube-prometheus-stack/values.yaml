@@ -1188,9 +1188,8 @@ grafana:
   ## Passed to grafana subchart and used by servicemonitor below
   ##
   service:
-    portName: http-web
-    ipFamilies: []
-    ipFamilyPolicy: ""
+    type: LoadBalancer
+    port: 80
 
   serviceMonitor:
     # If true, a ServiceMonitor CRD is created for a prometheus operator
