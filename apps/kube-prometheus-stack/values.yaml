@@ -1,0 +1,50 @@
+alertmanager:
+  enabled: true
+  persistentVolume:
+    enabled: true
+    storageClass: longhorn
+    size: 5Gi
+  service:
+    type: LoadBalancer
+
+grafana:
+  enabled: true
+  persistence:
+    enabled: true
+    storageClassName: longhorn
+    size: 5Gi
+  service:
+    type: LoadBalancer
+
+prometheusOperator:
+  enabled: true
+  service:
+    type: ClusterIP
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 5Gi
+  service:
+    type: LoadBalancer
+
+thanosRuler:
+  enabled: true
+  storageSpec:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: longhorn
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+  service:
+    type: ClusterIP
