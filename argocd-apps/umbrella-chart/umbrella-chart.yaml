@@ -4,6 +4,7 @@ metadata:
   name: umbrella-chart
   namespace: argocd
 spec:
+  project: default
   source:
     repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
     targetRevision: HEAD
