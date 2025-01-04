@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: HEAD
+    path: apps/umbrella-chart
+    helm:
+      valuesFiles:
+        - vault-values.yaml
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
