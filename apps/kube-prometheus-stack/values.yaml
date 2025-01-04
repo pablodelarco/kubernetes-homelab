@@ -17,9 +17,9 @@ grafana:
     type: LoadBalancer
 
 prometheusOperator:
+  admissionWebhooks:
+    enabled: true
   enabled: true
-  service:
-    type: ClusterIP
 
 prometheus:
   prometheusSpec:
