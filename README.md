@@ -1,6 +1,6 @@
 # 🏠 <img src="https://github.com/user-attachments/assets/30540933-e9fa-49e3-b819-7ba64f104878" width="31" height="31"> Kubernetes Homelab
 
-Welcome to my Kubernetes Homelab repository! This is where I document my journey into cloud-native technologies and self-hosting applications. My homelab is more than just a learning tool—it's a space where I experiment with new ideas, automate processes, and have fun solving challenges.
+Welcome to my Kubernetes Homelab repository! This is where I document my journey about cloud-native technologies and self-hosting applications. My homelab is more than just a learning tool—it's a space where I experiment with new ideas, automate processes, and have fun solving challenges.
 
 As a Cloud Solutions Architect, I work with Kubernetes daily, and this homelab is an extension of my passion for technology. Here, I aim to deploy and manage applications while focusing on scalability, backup strategies, and operational simplicity.
 
