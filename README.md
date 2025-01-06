@@ -10,7 +10,7 @@ As a **Cloud Solutions Architect**, Kubernetes is part of my daily toolkit. This
 
 The purpose of this homelab is:
 1. **Learning by Doing**: By self-hosting, I tackle the complexities of deploying and managing real-world applications.
-2. **All-in-One Environment**: This homelab serves as a single, integrated environment for testing, developing, and automating cloud-native workflows.
+2. **All-in-One Environment**: This Kubernetes cluster manages all the applications of my home setup, serving as a single, integrated environment for testing, developing, and automating cloud-native workflows.
 
 ---
 
