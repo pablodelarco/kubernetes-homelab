@@ -1,0 +1,19 @@
+grafana:
+  service:
+    type: LoadBalancer
+    port: 80
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+
+prometheus:
+  storageSpec:
+    volumeClaimTemplate:
+      spec:
+        accessModes: 
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
