@@ -9,12 +9,10 @@ grafana:
     size: 8Gi
 
 prometheus:
-  storageSpec:
-    enabled: true
-    volumeClaimTemplate:
-      spec:
-        accessModes:
-          - ReadWriteOnce
+  volumeClaimTemplate:
+    spec:
+      storageClassName: gluster
+      accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 16Gi
