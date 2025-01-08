@@ -11,7 +11,6 @@ grafana:
 prometheus:
   volumeClaimTemplate:
     spec:
-      storageClassName: gluster
       accessModes: ["ReadWriteOnce"]
         resources:
           requests:
