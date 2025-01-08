@@ -9,9 +9,11 @@ grafana:
     size: 8Gi
 
 prometheus:
-  volumeClaimTemplate:
-    spec:
-      accessModes: ["ReadWriteOnce"]
+  storageSpec:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: 16Gi
