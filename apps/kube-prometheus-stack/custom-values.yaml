@@ -12,8 +12,8 @@ prometheus:
   storageSpec:
     volumeClaimTemplate:
       spec:
-        accessModes: 
+        accessModes:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 15Gi
+            storage: 16Gi
