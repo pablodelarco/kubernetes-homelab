@@ -9,12 +9,14 @@ grafana:
     size: 8Gi
 
 prometheus:
-  storageSpec:
-    volumeClaimTemplate:
-      spec:
-        storageClassName: longhorn
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 16Gi
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 16Gi
+
