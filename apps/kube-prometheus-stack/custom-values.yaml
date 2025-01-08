@@ -12,6 +12,7 @@ prometheus:
   storageSpec:
     volumeClaimTemplate:
       spec:
+        storageClassName: longhorn
         accessModes:
           - ReadWriteOnce
         resources:
