@@ -1,7 +1,7 @@
 persistence:
   defaultClass: true
 defaultSettings:
-  backupTarget: "s3://longhorn-backups"
+  backupTarget: "s3://longhorn-backups/"
   backupTargetCredentialSecret: "minio-credentials"
 service:
   ui:
