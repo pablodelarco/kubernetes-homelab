@@ -19,4 +19,3 @@ prometheus:
           resources:
             requests:
               storage: 16Gi
-
