@@ -6,16 +6,17 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://charts.longhorn.io/
+    - repoURL: 'https://charts.longhorn.io/'
       chart: longhorn
-      targetRevision: v1.7.2
+      targetRevision: 1.7.2
       helm:
-        valuesFiles:
+        valueFiles:
           - $values/apps/longhorn/custom-values.yaml
-    - repoURL: https://github.com/pablodelarco/kubernetes-homelab
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
       targetRevision: main
+      ref: values
   destination:
-    server: https://kubernetes.default.svc
+    server: 'https://kubernetes.default.svc'
     namespace: longhorn-system
   syncPolicy:
     automated:
@@ -23,4 +24,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
