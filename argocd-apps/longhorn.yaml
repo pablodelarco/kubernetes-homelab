@@ -12,9 +12,8 @@ spec:
       helm:
         valuesFiles:
           - $values/apps/longhorn/custom-values.yaml
-    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
-     targetRevision: main
-      ref: values
+    - repoURL: https://github.com/pablodelarco/kubernetes-homelab
+      targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
@@ -24,3 +23,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
