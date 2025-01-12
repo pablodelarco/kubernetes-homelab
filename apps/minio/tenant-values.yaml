@@ -1,24 +1,23 @@
 tenant:
+  name: myminio
   pools:
     - name: pool-1
-      servers: 1                     
-      volumesPerServer: 1            
+      servers: 1                      # Single server for simplicity
+      volumesPerServer: 1             # One volume per server
       volumeClaimTemplates:
         - metadata:
-            name: minio-pvc           # Use your existing PVC name
+            name: minio-pvc           # Name of the PersistentVolumeClaim
           spec:
             accessModes:
-              - ReadWriteMany        
+              - ReadWriteMany         # Allows multiple pods to access the volume
             resources:
               requests:
-                storage: 100Gi    
+                storage: 100Gi        # Requested storage size
             selector:
-              matchLabels:            # Bind explicitly to your existing PV
+              matchLabels:            # Bind explicitly to an existing PersistentVolume
                 app: minio
-  certificate:
-    requestAutoCert: true             
-service:
-  type: LoadBalancer                  # Expose MinIO endpoints for external access
-  ports:
-    console: 9443                     # Port for MinIO Console
-    s3: 9000                          # Port for S3-compatible storage
+
+  # Expose services for external access
+  exposeServices:
+    minio: true                         # Expose S3 API as a LoadBalancer service
+    console: true                       # Expose Console as a LoadBalancer service
