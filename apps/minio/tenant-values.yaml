@@ -17,7 +17,7 @@ tenant:
               matchLabels:
                 app: minio            # Ensures it binds to your specific PV
   exposeServices:
-    minio: true                       # Expose S3 API via LoadBalancer
+    minio: false                       # Expose S3 API via LoadBalancer
     console: true                     # Expose Console via LoadBalancer
   requestAutoCert: false              # Disable auto-cert generation
   certificate:                        # Keep services without TLS
