@@ -1,0 +1,23 @@
+tenant:
+  pools:
+    - servers: 1                     
+      volumesPerServer: 1            
+      volumeClaimTemplates:
+        - metadata:
+            name: minio-pvc           # Use your existing PVC name
+          spec:
+            accessModes:
+              - ReadWriteMany        
+            resources:
+              requests:
+                storage: 100Gi    
+            selector:
+              matchLabels:            # Bind explicitly to your existing PV
+                app: minio
+  certificate:
+    requestAutoCert: true             
+service:
+  type: LoadBalancer                  # Expose MinIO endpoints for external access
+  ports:
+    console: 9443                     # Port for MinIO Console
+    s3: 9000                          # Port for S3-compatible storage

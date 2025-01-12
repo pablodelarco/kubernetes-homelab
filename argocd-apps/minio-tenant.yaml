@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio-tenant
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://operator.min.io'
+      chart: tenant
+      targetRevision: 6.0.1
+      helm:
+        valueFiles:
+          - $values/apps/minio/tenant-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: minio-tenant
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
