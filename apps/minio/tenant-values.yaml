@@ -1,6 +1,7 @@
 tenant:
   pools:
-    - servers: 1                     
+    - name: pool-1
+      servers: 1                     
       volumesPerServer: 1            
       volumeClaimTemplates:
         - metadata:
