@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: minio-pv
   labels:
-    app: minio  # This label ensures the Helm chart can bind the PV
+    app: minio
 spec:
   capacity:
     storage: 100Gi
@@ -12,4 +12,5 @@ spec:
   nfs:
     path: /volume1/minio-backup
     server: 192.168.1.42
+
 
