@@ -19,5 +19,8 @@ tenant:
 
   # Expose services for external access
   exposeServices:
-    minio: true                         # Expose S3 API as a LoadBalancer service
-    console: true                       # Expose Console as a LoadBalancer service
+    minio: true                         # Ensures the S3 API is exposed
+    console: true                       # Ensures the Console is exposed
+    minioServiceType: LoadBalancer      # Forces the S3 API to use LoadBalancer
+    consoleServiceType: LoadBalancer    # Forces the Console to use LoadBalancer
+
