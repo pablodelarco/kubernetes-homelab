@@ -2,23 +2,21 @@ tenant:
   name: myminio
   pools:
     - name: pool-1
-      servers: 1                      # Single server for simplicity
-      volumesPerServer: 1             # One volume per server
+      servers: 1
+      volumesPerServer: 1
       volumeClaimTemplates:
         - metadata:
-            name: minio-pvc           # Name of the PersistentVolumeClaim
+            name: minio-pvc
           spec:
             accessModes:
-              - ReadWriteMany         # Allows multiple pods to access the volume
+              - ReadWriteMany
             resources:
               requests:
-                storage: 100Gi        # Requested storage size
+                storage: 100Gi
             selector:
-              matchLabels:            # Bind explicitly to an existing PersistentVolume
+              matchLabels:
                 app: minio
 
-  # Expose services for external access
   exposeServices:
-    minio: true                         # Ensures the S3 API is exposed
-    console: true                       # Ensures the Console is exposed
-
+    minio: true      # Exposes the S3 API (already mapped to 192.168.1.236)
+    console: true    # Exposes the Console (already mapped to 192.168.1.237)
