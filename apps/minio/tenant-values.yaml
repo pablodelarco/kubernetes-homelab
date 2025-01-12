@@ -6,17 +6,20 @@ tenant:
       volumesPerServer: 1
       volumeClaimTemplates:
         - metadata:
-            name: minio-pvc
+            name: minio-pvc           # Matches your PVC
           spec:
             accessModes:
-              - ReadWriteMany
+              - ReadWriteMany         # Required for NFS-backed PVs
             resources:
               requests:
-                storage: 100Gi
+                storage: 100Gi        # Matches your PV size
             selector:
               matchLabels:
-                app: minio
-
+                app: minio            # Ensures it binds to your specific PV
   exposeServices:
-    minio: true      # Exposes the S3 API (already mapped to 192.168.1.236)
-    console: true    # Exposes the Console (already mapped to 192.168.1.237)
+    minio: true                       # Expose S3 API via LoadBalancer
+    console: true                     # Expose Console via LoadBalancer
+  requestAutoCert: false              # Disable auto-cert generation
+  certificate:                        # Keep services without TLS
+    externalCertSecret: []            # No external certs provided
+
