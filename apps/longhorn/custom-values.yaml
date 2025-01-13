@@ -7,3 +7,4 @@ service:
   ui:
     type: LoadBalancer
     port: 80
+
