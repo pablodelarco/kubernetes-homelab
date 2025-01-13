@@ -10,16 +10,16 @@ grafana:
 
 prometheus:
   prometheusSpec:
-  affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - beelink
-
+    remoteWriteDashboards: false   # Add this line to prevent the nil pointer error
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - beelink
     serverSideApply: true
     retention: 1d
     storageSpec:
