@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minio-pvc
-  namespace: minio-tenant
+  name: minio-nfs-pvc
+  namespace: minio
 spec:
+  storageClassName: nfs
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi
-  selector:
-    matchLabels:
-      app: minio
+      storage: 150Gi
+  
+
