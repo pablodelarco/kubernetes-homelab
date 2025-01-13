@@ -60,6 +60,14 @@ metrics:
   serviceMonitor:
     enabled: false
 
+resources:
+  requests:
+    memory: 2Gi
+    cpu: 500m
+  limits:
+    memory: 4Gi
+    cpu: 1
+
 ## Additional custom commands
 customCommands: []
 
