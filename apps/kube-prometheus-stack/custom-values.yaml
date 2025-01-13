@@ -10,6 +10,7 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    serverSideApply: true
     retention: 1d
     storageSpec:
       volumeClaimTemplate:
