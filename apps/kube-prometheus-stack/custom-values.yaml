@@ -1,0 +1,43 @@
+crds:
+  create: false
+
+grafana:
+  service:
+    type: LoadBalancer
+    port: 80
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+
+prometheus:
+  prometheusSpec:
+    remoteWriteDashboards: false   # Add this line to prevent the nil pointer error
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - beelink
+    serverSideApply: true
+    retention: 12h
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 25Gi
+    resources:
+      requests:
+        memory: 3Gi
+        cpu: 500m
+      limits:
+        memory: 6Gi
+        cpu: 2
