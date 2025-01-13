@@ -10,6 +10,7 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    retention: 72h
     storageSpec:
       volumeClaimTemplate:
         spec:
