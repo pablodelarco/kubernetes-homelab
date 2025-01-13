@@ -1,3 +1,6 @@
+crds:
+  create: false
+
 grafana:
   service:
     type: LoadBalancer
