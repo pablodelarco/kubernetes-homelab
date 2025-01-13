@@ -26,5 +26,5 @@ prometheus:
         memory: 2GBi
         cpu: 500m
       limits:
-        memory: 4Gi
+        memory: 4GBi
         cpu: 1
