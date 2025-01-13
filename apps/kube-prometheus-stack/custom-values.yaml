@@ -30,7 +30,7 @@ prometheus:
             - ReadWriteOnce
           resources:
             requests:
-              storage: 16Gi
+              storage: 25Gi
     resources:
       requests:
         memory: 3GBi
