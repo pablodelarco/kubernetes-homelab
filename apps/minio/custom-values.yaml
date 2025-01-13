@@ -26,7 +26,8 @@ rootPassword: "minio123"
 ## Persistence configuration
 persistence:
   enabled: true
-  storageClass: "nfs"                  # Use default storage class if empty
+  storageClass: nfs                 # Use default storage class if empty
+  existingClaim: minio
   accessMode: ReadWriteMany         # Necessary for NFS
   size: 150Gi                       # Requested storage size
   annotations: {}                   # Optional annotations
