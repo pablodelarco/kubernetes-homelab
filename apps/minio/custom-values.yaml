@@ -20,9 +20,9 @@ mcImage:
 mode: standalone
 
 ## MinIO access credentials
-rootUser: "minio"
-rootPassword: "minio123"
-#existingSecret: minio-login
+rootUser: ""
+rootPassword: ""
+existingSecret: minio-login
 
 ## Persistence configuration
 persistence:
