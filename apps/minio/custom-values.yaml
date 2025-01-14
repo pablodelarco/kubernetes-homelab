@@ -28,9 +28,9 @@ existingSecret: minio-login
 persistence:
   enabled: true
   storageClass: nfs                 # Use default storage class if empty
-  # existingClaim: minio
   accessMode: ReadWriteMany         # Necessary for NFS
   size: 150Gi                       # Requested storage size
+  subPath: "k8s-backups"
   annotations: {}                   # Optional annotations
 
 ## MinIO service configuration
