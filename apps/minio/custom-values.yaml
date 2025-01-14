@@ -20,7 +20,7 @@ mcImage:
 mode: standalone
 
 ## MinIO access credentials
-rootUser: "pablo"
+rootUser: "minio"
 rootPassword: "Mncdminioemd3!"
 #existingSecret: minio-login
 
