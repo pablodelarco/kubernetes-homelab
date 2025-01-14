@@ -30,6 +30,7 @@ persistence:
   storageClass: nfs                 # Use default storage class if empty
   accessMode: ReadWriteMany         # Necessary for NFS
   size: 150Gi                       # Requested storage size
+  subPath: "backups"
   annotations: {}                   # Optional annotations
 
 ## MinIO service configuration
