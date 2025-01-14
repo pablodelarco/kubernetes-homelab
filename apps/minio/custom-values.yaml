@@ -50,6 +50,7 @@ consoleService:
 
 ## Security context
 securityContext:
+  enabled: true
   runAsUser: 65534
   runAsGroup: 100
   fsGroup: 100
