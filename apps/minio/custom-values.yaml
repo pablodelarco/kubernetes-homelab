@@ -58,7 +58,7 @@ securityContext:
 ## Metrics and monitoring
 metrics:
   serviceMonitor:
-    enabled: false
+    enabled: true
 
 resources:
   requests:
