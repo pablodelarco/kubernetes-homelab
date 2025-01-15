@@ -59,6 +59,21 @@ securityContext:
 metrics:
   serviceMonitor:
     enabled: true
+    includeNode: true
+    public: true
+    # for node metrics
+    relabelConfigs: {}
+    # for cluster metrics
+    relabelConfigsCluster: {}
+      # metricRelabelings:
+      #   - regex: (server|pod)
+      #     action: labeldrop
+    namespace: minio
+    # Scrape interval, for example `interval: 30s`
+    interval: 60s
+    # Scrape timeout, for example `scrapeTimeout: 10s`
+    scrapeTimeout: 30s
+  
 
 customCommands:
   command: "MINIO_PROMETHEUS_AUTH_TYPE=public"
