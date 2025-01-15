@@ -60,6 +60,9 @@ metrics:
   serviceMonitor:
     enabled: true
 
+customCommands:
+  command: "MINIO_PROMETHEUS_AUTH_TYPE=public"
+
 resources:
   requests:
     memory: 2Gi
