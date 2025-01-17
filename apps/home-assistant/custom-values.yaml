@@ -92,18 +92,16 @@ configuration:
     - 100.64.0.0/10   # Tailscale IPv4 Range
     - 192.168.0.0/16
   templateConfig: |-
-    # Loads default set of integrations. Do not remove.
-    default_config:
-
-    {{- if .Values.ingress.enabled }}
     http:
       use_x_forwarded_for: true
       trusted_proxies:
-        {{- range .Values.configuration.trusted_proxies }}
-        - {{ . }}
-        {{- end }}
-    {{- end}}
-    # Load frontend themes from the themes folder
+        - 127.0.0.0/8
+        - 10.42.0.0/16
+        - 10.43.0.0/16
+        - 100.64.0.0/10
+        - 192.168.0.0/16
+    default_config:
+
     frontend:
       themes: !include_dir_merge_named themes
 
