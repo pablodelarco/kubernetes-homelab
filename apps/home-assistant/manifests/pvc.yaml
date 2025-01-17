@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant-pvc-backup
+  name: home-assistant-pvc
   namespace: home-assistant
 spec:
   accessModes:
