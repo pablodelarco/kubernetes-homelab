@@ -1,5 +1,5 @@
 # Number of replicas for the deployment
-replicaCount: 1
+replicaCount: 0
 
 # Image settings
 image:
