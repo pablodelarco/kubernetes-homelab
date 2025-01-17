@@ -4,8 +4,6 @@ service:
   ports:
     - port: 80
       targetPort: 8123
-  selector:
-    app: home-assistant
 
 
 # Persistence configuration
