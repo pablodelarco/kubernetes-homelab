@@ -82,11 +82,11 @@ readinessProbe:
 configuration:
   enabled: true
   trusted_proxies:
-  #   - 127.0.0.0/8       # Localhost
-  #  - 10.42.0.0/16    # K8s Pod Network
-  #  - 10.43.0.0/16    # K8s Services Network
-  #  - 100.64.0.0/10   # Tailscale IPv4 Range
-  #  - 192.168.0.0/16
+    - 127.0.0.0/8       # Localhost
+    - 10.42.0.0/16    # K8s Pod Network
+    - 10.43.0.0/16    # K8s Services Network
+    - 100.64.0.0/10   # Tailscale IPv4 Range
+    - 192.168.0.0/16
   templateConfig: |-
     http:
       use_x_forwarded_for: true
