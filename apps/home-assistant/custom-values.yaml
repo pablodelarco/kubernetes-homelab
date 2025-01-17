@@ -79,16 +79,22 @@ readinessProbe:
   periodSeconds: 5
 
 initContainers:
-  - name: setup-config
-    image: mikefarah/yq:4
-    command: ["/bin/sh", "-c"]
-    args:
-      - cp /config-templates/configuration.yaml /config/configuration.yaml;
-    volumeMounts:
-      - name: config-volume
-        mountPath: /config-templates
-      - name: home-assistant
-        mountPath: /config
+- name: setup-config
+  image: mikefarah/yq:4
+  command: ["/bin/sh", "-c"]
+  args:
+    - |
+      cp /config-templates/configuration.yaml /config/configuration.yaml &&
+      /bin/sh /mnt/init/init.sh;
+  volumeMounts:
+    - mountPath: /mnt/init/init.sh
+      name: init-volume
+      subPath: init.sh
+    - mountPath: /config-templates
+      name: config-volume
+    - mountPath: /config
+      name: home-assistant
+
 
 
 # Configuration for Home Assistant
