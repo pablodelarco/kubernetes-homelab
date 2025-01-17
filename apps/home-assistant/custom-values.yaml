@@ -78,6 +78,19 @@ readinessProbe:
   initialDelaySeconds: 10
   periodSeconds: 5
 
+# InitContainers configuration
+initContainers:
+  - name: setup-config
+    image: mikefarah/yq:4
+    command: ["/bin/sh", "-c"]
+    args:
+      - cp /config-templates/configuration.yaml /config/configuration.yaml;
+    volumeMounts:
+      - name: config-volume
+        mountPath: /config-templates
+      - name: home-assistant
+        mountPath: /config
+
 # Configuration for Home Assistant
 configuration:
   enabled: true
@@ -87,9 +100,6 @@ configuration:
     - 10.43.0.0/16    # K8s Services Network
     - 100.64.0.0/10   # Tailscale IPv4 Range
     - 192.168.0.0/16
-  initScript: |-
-    #!/bin/sh
-    cp /config-templates/configuration.yaml /config/configuration.yaml
   templateConfig: |-
     http:
       use_x_forwarded_for: true
