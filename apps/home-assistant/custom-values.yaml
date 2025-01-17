@@ -1,9 +1,9 @@
 # Service configuration
 service:
   type: LoadBalancer
-  #ports:
-  port: 80
-  #targetPort: 8123
+  ports:
+    - port: 80
+      targetPort: 8123
 
 
 # Persistence configuration
