@@ -21,13 +21,21 @@ ingress:
   className: tailscale
   annotations:
     tailscale.com/funnel: "true"
-  defaultBackend:
-    service:
-      name: home-assistant
-      port: 80
+  rules:
+    - host: home-assistant
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: home-assistant
+                port:
+                  number: 80
   tls:
     - hosts:
         - home-assistant
+
 
 
 
