@@ -88,14 +88,14 @@ configuration:
     - 100.64.0.0/10   # Tailscale IPv4 Range
     - 192.168.0.0/16
   templateConfig: |-
-    http:
-      use_x_forwarded_for: true
-      trusted_proxies:
-        - 127.0.0.0/8
-        - 10.42.0.0/16
-        - 10.43.0.0/16
-        - 100.64.0.0/10
-        - 192.168.0.0/16
+    #http:
+    #  use_x_forwarded_for: true
+    #  trusted_proxies:
+    #    - 127.0.0.0/8
+    #    - 10.42.0.0/16
+    #    - 10.43.0.0/16
+    #    - 100.64.0.0/10
+    #    - 192.168.0.0/16
 
     default_config:
 
