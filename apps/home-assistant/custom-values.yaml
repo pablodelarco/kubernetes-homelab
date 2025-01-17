@@ -15,19 +15,21 @@ service:
     tailscale.com/funnel: "true"
 
 # Ingress configuration
+# Ingress configuration
 ingress:
   enabled: true
   className: tailscale
   annotations:
     tailscale.com/funnel: "true"
-  hosts:
-    - host: home-assistant
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+  defaultBackend:
+    service:
+      name: home-assistant
+      port: 80
   tls:
     - hosts:
         - home-assistant
+
+
 
 # Node affinity
 affinity:
