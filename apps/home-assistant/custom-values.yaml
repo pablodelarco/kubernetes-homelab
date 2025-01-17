@@ -104,7 +104,7 @@ configuration:
 
     automation: !include automations.yaml
     script: !include scripts.yaml
-    scene: !include scenes.yaml
+    scene: !include scenes.yaml 
 
 # Security context for the container
 securityContext:
