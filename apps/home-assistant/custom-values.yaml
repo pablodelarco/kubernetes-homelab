@@ -99,9 +99,7 @@ configuration:
         - 10.43.0.0/16
         - 100.64.0.0/10
         - 192.168.0.0/16
-
     default_config:
-
     frontend:
       themes: !include_dir_merge_named themes
 
