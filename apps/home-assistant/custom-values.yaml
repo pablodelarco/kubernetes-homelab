@@ -78,35 +78,15 @@ readinessProbe:
   initialDelaySeconds: 10
   periodSeconds: 5
 
-initContainers:
-  - name: setup-config
-    image: mikefarah/yq:4
-    command:
-      - /bin/sh
-      - -c
-    args:
-      - |
-        if [ ! -f /config/configuration.yaml ]; then
-          cp /config-templates/configuration.yaml /config/configuration.yaml;
-        fi
-        yq -i '.http.use_x_forwarded_for = true' /config/configuration.yaml
-        yq -i '.http.trusted_proxies = ["127.0.0.0/8", "10.42.0.0/16", "10.43.0.0/16", "100.64.0.0/10", "192.168.0.0/16"]' /config/configuration.yaml
-    volumeMounts:
-      - name: config-volume
-        mountPath: /config-templates
-      - name: home-assistant
-        mountPath: /config
-
-
 # Configuration for Home Assistant
 configuration:
   enabled: true
-  trusted_proxies:
-    - 127.0.0.0/8     # Localhost
-    - 10.42.0.0/16    # K8s Pod Network
-    - 10.43.0.0/16    # K8s Services Network
-    - 100.64.0.0/10   # Tailscale IPv4 Range
-    - 192.168.0.0/16
+  #trusted_proxies:
+  #  - 127.0.0.0/8     # Localhost
+  #  - 10.42.0.0/16    # K8s Pod Network
+  #  - 10.43.0.0/16    # K8s Services Network
+  #  - 100.64.0.0/10   # Tailscale IPv4 Range
+  #  - 192.168.0.0/16
   templateConfig: |-
     http:
       use_x_forwarded_for: true
@@ -127,6 +107,10 @@ configuration:
 # Security context for the container
 securityContext:
   privileged: true
+
+podSecurityContext:
+  runAsUser: 0
+  runAsGroup: 0
 
 # Addons configuration
 addons:
