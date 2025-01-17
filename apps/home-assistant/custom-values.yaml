@@ -1,11 +1,16 @@
 # Service configuration
-service:
-  type: LoadBalancer
-  ports:
-    - name: http
-      port: 80          # LoadBalancer listens on port 80
-      targetPort: 8123  # Forwarded to port 8123 on the pod
+#service:
+#  type: LoadBalancer
+#  ports:
+#    - name: http
+#      port: 80          # LoadBalancer listens on port 80
+#      targetPort: 8123  # Forwarded to port 8123 on the pod
 
+service:
+  # Service type (ClusterIP, NodePort, LoadBalancer, or ExternalName)
+  type: LoadBalancer
+  # Service port
+  port: 80
 
 # Persistence configuration
 persistence:
