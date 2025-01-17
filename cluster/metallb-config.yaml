@@ -1,0 +1,19 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: homelab-ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+#    - 100.90.0.1-100.90.0.50
+   - 192.168.1.230-192.168.1.250
+
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: homelab-l2-advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - homelab-ip-pool
