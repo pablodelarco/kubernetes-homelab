@@ -2,8 +2,9 @@
 service:
   type: LoadBalancer
   ports:
-    - port: 80
-      targetPort: 8123
+    - name: http
+      port: 80          # LoadBalancer listens on port 80
+      targetPort: 8123  # Forwarded to port 8123 on the pod
 
 
 # Persistence configuration
