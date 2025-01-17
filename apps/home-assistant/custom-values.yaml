@@ -1,39 +1,45 @@
-# Number of replicas for the deployment
-replicaCount: 1
-
-# Image settings
-image:
-  repository: ghcr.io/home-assistant/home-assistant
-  pullPolicy: IfNotPresent
-  tag: stable
-
 # Service configuration
 service:
   type: LoadBalancer
-  port: 80
-  annotations:
-    tailscale.com/funnel: "true"
+  ports:
+    - port: 80
+      targetPort: 8123
+  selector:
+    app: home-assistant
 
-# Ingress configuration
-ingress:
+
+# Persistence configuration
+persistence:
   enabled: true
-  className: tailscale
+  accessMode: ReadWriteOnce
+  size: 5Gi
+  storageClass: ""
+
+
+ingress:
+  # Enable ingress for home assistant
+  enabled: true
+  className: "tailscale"
   annotations:
     tailscale.com/funnel: "true"
-  rules:
+  hosts:
     - host: home-assistant
-      http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: home-assistant
-                port:
-                  number: 80
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
   tls:
     - hosts:
-        - home-assistant
+      - home-assistant
+
+
+# Addons configuration
+addons:
+  codeserver:
+    enabled: true
+    service:
+      type: NodePort
+      port: 30030
+
 
 # Node affinity
 affinity:
@@ -46,20 +52,12 @@ affinity:
               values:
                 - beelink
 
+
 # Environment variables
 env:
   - name: TZ
     value: Europe/Madrid
 
-# Persistence configuration
-persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 5Gi
-  storageClass: longhorn
-  existingVolume: ""
-  matchLabels: {}
-  matchExpressions: {}
 
 # Liveness and readiness probes
 livenessProbe:
@@ -87,42 +85,27 @@ configuration:
     - 10.42.0.0/16    # K8s Pod Network
     - 10.43.0.0/16    # K8s Services Network
     - 100.64.0.0/10   # Tailscale IPv4 Range
-    - 192.168.0.0/16
   templateConfig: |-
+    default_config:
+
+    {{- if .Values.ingress.enabled }}
     http:
       use_x_forwarded_for: true
       trusted_proxies:
-        - 127.0.0.0/8
-        - 10.42.0.0/16
-        - 10.43.0.0/16
-        - 100.64.0.0/10
-        - 192.168.0.0/16
-    default_config:
+        {{- range .Values.configuration.trusted_proxies }}
+        - {{ . }}
+        {{- end }}
+    {{- end}}
+    # Load frontend themes from the themes folder
     frontend:
       themes: !include_dir_merge_named themes
 
     automation: !include automations.yaml
     script: !include scripts.yaml
-    scene: !include scenes.yaml 
+    scene: !include scenes.yaml
 
-# Security context for the container
-securityContext:
-  privileged: true
 
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
 
-# Addons configuration
-addons:
-  codeserver:
-    enabled: true
-    service:
-      type: NodePort
-      port: 30030
-
-# Volumes configuration
-volumes:
-  - name: config-volume
-    configMap:
-      name: hass-configuration
