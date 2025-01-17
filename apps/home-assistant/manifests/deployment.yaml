@@ -58,7 +58,7 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: home-assistant-pvc-backup
+            claimName: home-assistant-pvc
         - name: configmap-file
           configMap:
             name: home-assistant-configmap
