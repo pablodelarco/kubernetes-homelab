@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: radarr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/media-server/radarr
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
