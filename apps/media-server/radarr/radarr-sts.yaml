@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  serviceName: radarr
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: linuxserver/radarr
+          env:
+            - name: PUID
+              value: "65534"  
+            - name: PGID
+              value: "65534"  
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: videos
+              mountPath: /movies
+            - name: downloads
+              mountPath: /downloads
+          ports:
+            - containerPort: 7878
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: radarr
+        - name: videos
+          persistentVolumeClaim:
+            claimName: jellyfin-videos
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: qbitt-download

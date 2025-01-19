@@ -4,9 +4,9 @@ metadata:
   name: radarr
   namespace: media
 spec:
-  storageClassName: "longhorn"
   accessModes:
     - ReadWriteOnce
+  storageClassName: longhorn
   resources:
     requests:
       storage: 5Gi
