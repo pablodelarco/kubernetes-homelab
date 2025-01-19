@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: qbittorrent
+  name: qbitt
   namespace: media
 spec:
-  serviceName: qbittorrent
+  serviceName: qbitt
   replicas: 1
   selector:
     matchLabels:
-      app: qbittorrent
+      app: qbitt
   template:
     metadata:
       labels:
-        app: qbittorrent
+        app: qbitt
     spec:
       containers:
-        - name: qbittorrent
+        - name: qbitt
           image: linuxserver/qbittorrent
           resources:
             limits:
