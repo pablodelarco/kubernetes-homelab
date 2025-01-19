@@ -7,11 +7,17 @@ metadata:
     tailscale.com/funnel: "true"
 spec:
   ingressClassName: tailscale
-  defaultBackend:
-    service:
-      name: jellyfin
-      port:
-        number: 80
+  rules:
+    - host: jellyfin
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin
+                port:
+                  number: 80
   tls:
     - hosts:
         - jellyfin
