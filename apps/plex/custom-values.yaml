@@ -17,8 +17,6 @@ ingress:
 
 
 
-  
-
 pms:
   # -- The storage class to use when provisioning the pms config volume
   # this needs to be created manually, null will use the default
