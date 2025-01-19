@@ -1,21 +1,27 @@
 ingress:
+  # Enable the ingress resource for Plex Media Server
   enabled: true
+
+  # Specify the Tailscale ingress class
   ingressClassName: "tailscale"
+
+  # URL for the ingress (not used in Tailscale Funnel; leave empty)
+  url: ""
+
+  # Optional secret for HTTPS (not needed for Tailscale Funnel; leave empty)
+  certificateSecret: ""
+
+  # Custom annotations for the ingress resource
   annotations:
     tailscale.com/funnel: "true"
+
+  # Define hosts (required even if Tailscale Funnel doesn't use them traditionally)
   hosts:
-    - host: plex  # Tailscale Funnel uses this as a placeholder
+    - host: plex  # Placeholder host, necessary for the Helm chart
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - plex
-  defaultBackend:
-    service:
-      name: plex  # Replace with your Plex service name
-      port:
-        number: 32400
+
 
   
 
