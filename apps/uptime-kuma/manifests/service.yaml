@@ -10,4 +10,4 @@ spec:
     - port: 80      # Port to expose
       targetPort: 3001
       protocol: TCP
-  type: ClusterIP
+  type: LoadBalancer
