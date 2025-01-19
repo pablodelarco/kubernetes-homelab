@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: qbittorrent
+  namespace: media
+spec:
+  serviceName: qbittorrent
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      containers:
+        - name: qbittorrent
+          image: linuxserver/qbittorrent
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "512Mi"
+          env:
+            - name: PUID
+              value: "1057"
+            - name: PGID
+              value: "1056"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+          ports:
+            - containerPort: 8080
+
+        - name: gluetun
+          image: qmcgaw/gluetun
+          env:
+            - name: VPNSP
+              value: "nordvpn"
+            - name: OPENVPN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nordvpn-secrets
+                  key: NORDVPN_USER
+            - name: OPENVPN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nordvpn-secrets
+                  key: NORDVPN_PASSWORD
+            - name: COUNTRY
+              value: "Switzerland" 
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - name: config
+              mountPath: /gluetun
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbitt
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: qbitt-download
+
