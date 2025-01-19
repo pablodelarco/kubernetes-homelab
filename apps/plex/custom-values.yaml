@@ -176,7 +176,7 @@ statefulSet:
   podAnnotations: {}
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 32400
 
   # Port to use when type of service is "NodePort" (32400 by default)
