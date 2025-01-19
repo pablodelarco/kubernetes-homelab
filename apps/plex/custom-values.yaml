@@ -1,18 +1,20 @@
 ingress:
+  # Enable the ingress resource for the PMS server
   enabled: true
+
+  # Specify the ingress class (Tailscale in this case)
   ingressClassName: "tailscale"
-  url: ""  # Not used for Tailscale Funnel
-  certificateSecret: ""  # Optional for HTTPS, not required for Tailscale
+
+  # Set the URL for the ingress. This will be used as the hostname in the template.
+  url: "plex"  # Replace with a valid domain or subdomain
+
+  # Specify the certificate secret for HTTPS, or leave it blank for the default
+  certificateSecret: ""  # Replace with your certificate secret name, or leave empty
+
+  # Add annotations for the ingress
   annotations:
     tailscale.com/funnel: "true"
-  hosts:
-    - host: plex.local  # Replace with a valid domain or subdomain
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - plex.local  # Must match the hostname in `hosts`
+
 
 
   
