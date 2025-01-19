@@ -8,5 +8,5 @@ spec:
   selector:
     app: qbitt
   ports:
-    - port: 8080          # Port on the Service
+    - port: 80          # Port on the Service
       targetPort: 8080    # Port on the qBittorrent container
