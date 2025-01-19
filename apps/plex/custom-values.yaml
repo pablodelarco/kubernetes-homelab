@@ -1,18 +1,22 @@
 ingress:
   enabled: true
   ingressClassName: "tailscale"
-  url: ""
-  certificateSecret: ""
   annotations:
     tailscale.com/funnel: "true"
   hosts:
-    - host: plex  # Replace with your desired domain or subdomain
+    - host: plex  # Tailscale Funnel uses this as a placeholder
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - hosts:
-      - home-assistant
+        - plex
+  defaultBackend:
+    service:
+      name: plex-media-server  # Replace with your Plex service name
+      port:
+        number: 32400
+
   
 
 pms:
