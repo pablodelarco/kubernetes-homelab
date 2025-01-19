@@ -4,9 +4,9 @@ metadata:
   name: qbitt
   namespace: media
 spec:
-  type: ClusterIP # Change to NodePort or LoadBalancer if external access is needed
+  type: LoadBalancer
   selector:
     app: qbitt
   ports:
-    - port: 80          # Port on the Service
+    - port: 8080          # Port on the Service
       targetPort: 8080    # Port on the qBittorrent container
