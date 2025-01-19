@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbitt
+  namespace: media
+spec:
+  type: ClusterIP # Change to NodePort or LoadBalancer if external access is needed
+  selector:
+    app: qbitt
+  ports:
+    - port: 8080          # Port on the Service
+      targetPort: 8080    # Port on the qBittorrent container
