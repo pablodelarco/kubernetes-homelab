@@ -13,7 +13,7 @@ ingress:
         - plex
   defaultBackend:
     service:
-      name: plex-media-server  # Replace with your Plex service name
+      name: plex  # Replace with your Plex service name
       port:
         number: 32400
 
