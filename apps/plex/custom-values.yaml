@@ -1,0 +1,246 @@
+ingress:
+  enabled: true
+  ingressClassName: "tailscale"
+  url: ""
+  certificateSecret: ""
+  annotations:
+    tailscale.com/funnel: "true"
+  hosts:
+    - host: plex  # Replace with your desired domain or subdomain
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - home-assistant
+  
+
+pms:
+  # -- The storage class to use when provisioning the pms config volume
+  # this needs to be created manually, null will use the default
+  storageClassName: null
+
+  # -- The volume size to provision for the PMS database
+  configStorage: 2Gi
+
+  # -- Name of an existing `PersistentVolumeClaim` for the PMS database
+  # NOTE: When set, 'configStorage' and 'storageClassName' are ignored.
+  configExistingClaim: ""
+
+  # Enabling this will add nvidia.com/gpu: 1 to limits, and will set
+  # environment for the nvidia operator
+  gpu:
+    nvidia:
+      enabled: false
+
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  # -- Add kubernetes liveness probe to pms container.
+  livenessProbe: {}
+    # httpGet:
+    #   path: /identity
+    #   port: 32400
+    # initialDelaySeconds: 60
+    # periodSeconds: 60
+    # timeoutSeconds: 1
+    # failureThreshold: 3
+
+  # -- Add kubernetes readiness probe to pms container.
+  readinessProbe: {}
+    # httpGet:
+    #   path: /identity
+    #   port: 32400
+    # initialDelaySeconds: 60
+    # periodSeconds: 60
+    # timeoutSeconds: 1
+    # failureThreshold: 3
+
+# -- A basic image that will convert the configmap to a file in the rclone config volume
+# this is ignored if rclone is not enabled
+initContainer:
+  image:
+    # -- The public dockerhub registry
+    registry: index.docker.io
+    repository: alpine
+    # -- If unset use latest
+    tag: 3.18.0
+    sha: ""
+    pullPolicy: IfNotPresent
+
+  # -- A custom script that will be run in an init container to do any setup before the PMS service starts up
+  # This will be run every time the pod starts, make sure that some mechanism is included to prevent
+  # this from running more than once if it should only be run on the first startup.
+  script: ""
+  ###
+  ### Example init script that will import a pre-existing pms database if one has not already been setup
+  ### This pms database must be available through a URL (or some other mechanism to be pulled into the container)
+  # script: |-
+  #   #!/bin/sh
+  #   echo "fetching pre-existing pms database to import..."
+  #
+  #   if [ -d "/config/Library" ]; then
+  #     echo "PMS library already exists, exiting."
+  #     exit 0
+  #   fi
+  #
+  #   apk --update add curl
+  #   curl http://example.com/pms.tgz -o pms.tgz
+  #   tar -xvzf pms.tgz -C /config
+  #   cp -r /config/data/Library /config/Library
+  #   rm -rf /config/data pms.tgz
+  #
+  #   echo "Done."
+
+# -- Specify your own runtime class name eg use gpu
+runtimeClassName: ""
+
+# -- The settings specific to rclone
+rclone:
+  # -- If the rclone sidecar should be created
+  enabled: false
+
+  # -- The rclone image that should be used
+  image:
+    # -- The public dockerhub registry
+    registry: index.docker.io
+    repository: rclone/rclone
+    # -- If unset use latest
+    tag: 1.62.2
+    sha: ""
+    pullPolicy: IfNotPresent
+
+  # -- The name of the secret that contains the rclone configuration file.
+  # The rclone config key must be called `rclone.conf` in the secret
+  #
+  # All keys in configSecret will be available in /etc/rclone/. This might
+  # be useful if other files are needed, such as a private key for sftp mode.
+  configSecret: ""
+
+
+  # -- The remote drive that should be mounted using rclone
+  # this must be in the form of `name:[/optional/path]`
+  # this remote will be mounted at `/data/name` in the PMS container
+  remotes: []
+
+  # -- If the remote volumes should be mounted as read only
+  readOnly: true
+
+  # -- Additional arguments to give to rclone when mounting the volume
+  additionalArgs: []
+
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- If the service account token should be auto mounted
+  automountServiceAccountToken: false
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+statefulSet:
+  # -- Optional extra annotations to add to the service resource
+  annotations: {}
+  # -- Optional extra annotations to add to the pods in the statefulset
+  podAnnotations: {}
+
+service:
+  type: ClusterIP
+  port: 32400
+
+  # Port to use when type of service is "NodePort" (32400 by default)
+  # nodePort: 32400
+
+  # when NodePort is used, plex is unable to determine user IP
+  # all traffic seems to come from within the cluster
+  # setting this to 'Local' will allow Plex to determine the actual IP of user.
+  # used to determine bitrate for remote transcoding
+  # but the pods can only be accessed by the Node IP where the pod is running
+  # Read more here: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  # https://access.redhat.com/solutions/7028639
+  # externalTrafficPolicy: Local
+
+  # -- Optional extra annotations to add to the service resource
+  annotations: {}
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+priorityClassName: ""
+
+# -- Common Labels for all resources created by this chart.
+commonLabels: {}
+
+extraEnv: {}
+extraEnv:
+# This claim is optional, and is only used for the first startup of PMS
+# The claim is obtained from https://www.plex.tv/claim/ is is only valid for a few minutes
+  PLEX_CLAIM: "claim-DHdybW5YxaYAApdKCXka"
+  HOSTNAME: "PlexServer"
+  TZ: "Europe/Madrid"
+#   PLEX_UPDATE_CHANNEL: "5"
+  PLEX_UID: "1000"
+  PLEX_GID: "1000"
+# a list of CIDRs that can use the server without authentication
+  # this is only used for the first startup of PMS
+  ALLOWED_NETWORKS: "0.0.0.0/0"
+
+
+# -- Optionally specify additional volume mounts for the PMS and init containers.
+extraVolumeMounts:
+  - name: media
+    mountPath: /data/media_player
+
+# -- Optionally specify additional volumes for the pod.
+extraVolumes:
+  - name: media
+    nfs:
+      server: 192.168.1.42
+      path: /volume1/media_player 
+
+extraContainers: []
+# extraContainers:
+#  - name: <container name>
+#    args:
+#      - ...
+#    image: <docker images>
+#    imagePullPolicy: IfNotPresent
+#    resources:
+#      limits:
+#        memory: 128Mi
+#      requests:
+#        cpu: 100m
+#        memory: 128Mi
+#    volumeMounts:
+#      - ...
