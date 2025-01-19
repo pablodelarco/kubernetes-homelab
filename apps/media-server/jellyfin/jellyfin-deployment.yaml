@@ -13,6 +13,15 @@ spec:
       labels:
         app: jellyfin
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - beelink
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:latest
