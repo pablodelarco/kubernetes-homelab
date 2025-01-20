@@ -34,6 +34,9 @@ spec:
               mountPath: /downloads
           ports:
             - containerPort: 8080
+            - containerPort: 6881 # Add this port for torrent traffic
+            - containerPort: 6881 # UDP for tracker communication
+              protocol: UDP
 
         - name: gluetun
           image: qmcgaw/gluetun
@@ -51,7 +54,11 @@ spec:
                   name: nordvpn-secrets
                   key: NORDVPN_PASSWORD
             - name: SERVER_COUNTRIES
-              value: "Switzerland" 
+              value: "Switzerland"
+            - name: FIREWALL_VPN_INPUT_PORTS
+              value: "6881,6969,1337" # Allow input traffic for common BitTorrent ports
+            - name: FIREWALL_VPN_OUTPUT_PORTS
+              value: "6881,6969,1337" # Allow output traffic for common BitTorrent ports
           securityContext:
             capabilities:
               add:
@@ -69,4 +76,3 @@ spec:
         - name: downloads
           persistentVolumeClaim:
             claimName: qbitt-download
-
