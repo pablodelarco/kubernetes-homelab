@@ -38,7 +38,7 @@ spec:
         - name: gluetun
           image: qmcgaw/gluetun
           env:
-            - name: VPNSP
+            - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"
             - name: OPENVPN_USER
               valueFrom:
@@ -50,7 +50,7 @@ spec:
                 secretKeyRef:
                   name: nordvpn-secrets
                   key: NORDVPN_PASSWORD
-            - name: COUNTRY
+            - name: SERVER_COUNTRIES
               value: "Switzerland" 
           securityContext:
             capabilities:
