@@ -12,7 +12,7 @@ spec:
       http:
         paths:
           - path: /
-            pathType: Prefix
+            pathTy  pe: Prefix
             backend:
               service:
                 name: qbitt

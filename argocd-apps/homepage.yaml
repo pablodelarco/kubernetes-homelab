@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'http://jameswynn.github.io/helm-charts'
+      chart: homepage
+      targetRevision: 2.0.1
+      helm:
+        valueFiles:
+          - $values/apps/homepage/custom-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: homepage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions: 
+      - CreateNamespace=true
