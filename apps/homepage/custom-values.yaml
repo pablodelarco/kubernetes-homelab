@@ -34,7 +34,7 @@ config:
           memory: true
           showLabel: true
     - search:
-        provider: duckduckgo
+        provider: google
         target: _blank
   kubernetes:
     mode: cluster
@@ -68,3 +68,13 @@ ingress:
     tls:
       - hosts:
           - homepage
+
+
+persistence:
+  logs:
+    enabled: true
+    type: pvc
+    mountPath: /app/config/logs
+    accessMode: ReadWriteOnce # Specify the required access mode
+    storageClass: "longhorn" # Specify your storage class
+    size: 5Gi
