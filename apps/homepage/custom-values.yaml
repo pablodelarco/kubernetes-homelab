@@ -48,15 +48,6 @@ serviceAccount:
 # This enables the service account to access the necessary resources
 enableRbac: true
 
-# Persistence configuration
-persistence:
-  logs:
-    enabled: true
-    type: pvc
-    mountPath: /app/config/logs
-    storageClass: "longhorn" # Specify your storage class
-    size: 5Gi
-
 
 ingress:
   main:
