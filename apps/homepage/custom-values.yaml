@@ -67,10 +67,12 @@ ingress:
 
 # Persistence configuration
 persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 5Gi
-  storageClass: ""
+  logs:
+    enabled: true
+    type: pvc
+    mountPath: /app/config/logs
+    storageClass: "longhorn" # Specify your storage class
+    size: 5Gi
 
 
 ingress:
