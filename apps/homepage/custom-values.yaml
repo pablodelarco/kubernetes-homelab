@@ -48,23 +48,6 @@ serviceAccount:
 # This enables the service account to access the necessary resources
 enableRbac: true
 
-ingress:
-  main:
-    enabled: true
-    annotations:
-      # Example annotations to add Homepage to your Homepage!
-      gethomepage.dev/enabled: "true"
-      gethomepage.dev/name: "Homepage"
-      gethomepage.dev/description: "Dynamically Detected Homepage"
-      gethomepage.dev/group: "Dynamic"
-      gethomepage.dev/icon: "homepage.png"
-    hosts:
-      - host: homepage.example.com
-        paths:
-          - path: /
-            pathType: Prefix
-
-
 # Persistence configuration
 persistence:
   logs:
@@ -76,21 +59,21 @@ persistence:
 
 
 ingress:
-  # Enable ingress for home assistant
-  enabled: true
-  className: "tailscale"
-  annotations:
-    tailscale.com/funnel: "true"
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/name: "Homepage"
-    gethomepage.dev/description: "Dynamically Detected Homepage"
-    gethomepage.dev/group: "Dynamic"
-    gethomepage.dev/icon: "homepage.png"
-  hosts:
-    - host: homepage
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - hosts:
-      - homepage
+  main:
+    enabled: true
+    annotations:
+      tailscale.com/funnel: "true"
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: "Homepage"
+      gethomepage.dev/description: "A modern, secure, highly customizable application dashboard."
+      gethomepage.dev/group: "Dynamic Group"
+      gethomepage.dev/icon: "homepage.png"
+    ingressClassName: tailscale
+    hosts:
+      - host: homepage
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - homepage
