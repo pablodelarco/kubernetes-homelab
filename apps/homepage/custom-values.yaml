@@ -1,0 +1,94 @@
+config:
+  bookmarks:
+    - Developer:
+        - Github:
+            - abbr: GH
+              href: https://github.com/
+  services:
+    - My First Group:
+        - My First Service:
+            href: http://localhost/
+            description: Homepage is awesome
+
+    - My Second Group:
+        - My Second Service:
+            href: http://localhost/
+            description: Homepage is the best
+
+    - My Third Group:
+        - My Third Service:
+            href: http://localhost/
+            description: Homepage is 😎
+  widgets:
+    # show the kubernetes widget, with the cluster summary and individual nodes
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - search:
+        provider: duckduckgo
+        target: _blank
+  kubernetes:
+    mode: cluster
+  settings:
+
+# The service account is necessary to allow discovery of other services
+serviceAccount:
+  create: true
+  name: homepage
+
+# This enables the service account to access the necessary resources
+enableRbac: true
+
+ingress:
+  main:
+    enabled: true
+    annotations:
+      # Example annotations to add Homepage to your Homepage!
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: "Homepage"
+      gethomepage.dev/description: "Dynamically Detected Homepage"
+      gethomepage.dev/group: "Dynamic"
+      gethomepage.dev/icon: "homepage.png"
+    hosts:
+      - host: homepage.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+
+
+# Persistence configuration
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 5Gi
+  storageClass: ""
+
+
+ingress:
+  # Enable ingress for home assistant
+  enabled: true
+  className: "tailscale"
+  annotations:
+    tailscale.com/funnel: "true"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Homepage"
+    gethomepage.dev/description: "Dynamically Detected Homepage"
+    gethomepage.dev/group: "Dynamic"
+    gethomepage.dev/icon: "homepage.png"
+  hosts:
+    - host: homepage
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - homepage
