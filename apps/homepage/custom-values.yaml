@@ -4,7 +4,7 @@ config:
     - Infra:
         - Home Assistant:
             href: https://home-assistant.tabby-carp.ts.net
-            siteMonitor: https://home-assistant.tabby-carp.ts.net
+            ping: https://home-assistant.tabby-carp.ts.net
             
   widgets:
     - kubernetes:
@@ -21,6 +21,7 @@ config:
           showLabel: true
   kubernetes:
     mode: cluster
+  settings:
 
 # The service account is necessary to allow discovery of other services
 serviceAccount:
