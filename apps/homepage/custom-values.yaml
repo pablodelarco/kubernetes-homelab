@@ -1,10 +1,11 @@
 config:
+  bookmarks: []
   services:
     - Infra:
         - Home Assistant:
             href: https://home-assistant.tabby-carp.ts.net
             siteMonitor: https://home-assistant.tabby-carp.ts.net
-  bookmarks: []          
+            
   widgets:
     - kubernetes:
         cluster:
