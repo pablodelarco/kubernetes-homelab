@@ -19,9 +19,9 @@ config:
           cpu: true
           memory: true
           showLabel: true
-  #kubernetes:
-  #  mode: cluster
-  settings:
+  kubernetes:
+    mode: cluster
+  settings: []
 
 # The service account is necessary to allow discovery of other services
 serviceAccount:
