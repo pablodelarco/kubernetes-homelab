@@ -1,9 +1,4 @@
 config:
-  bookmarks:
-    - Developer:
-        - Github:
-            - abbr: GH
-              href: https://github.com/
   services:
     - My First Group:
         - My First Service:
@@ -35,7 +30,7 @@ config:
           showLabel: true
   kubernetes:
     mode: cluster
-  settings:
+  sngs:
 
 # The service account is necessary to allow discovery of other services
 serviceAccount:
