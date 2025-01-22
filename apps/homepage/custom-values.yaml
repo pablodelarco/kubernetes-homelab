@@ -38,14 +38,16 @@ serviceAccount:
   name: homepage
 
 # This enables the service account to access the necessary resources
-enableRbac: trueservice:
+enableRbac: true
+
+
+service:
   main:
     type: LoadBalancer # Expose the service as a LoadBalancer
     ports:
       http:
-        port: 80     # Port used by the application
+        port: 3000     # Port used by the application
         targetPort: 3000 # Target port inside the pod
-
 
 
 ingress:
