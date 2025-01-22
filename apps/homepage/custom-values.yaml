@@ -1,9 +1,10 @@
 config:
   services:
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
+    - Infra:
+        - Home Assistant:
+            href: https://home-assistant.tabby-carp.ts.net
+            siteMonitor: https://home-assistant.tabby-carp.ts.net
+            
 
     - My Second Group:
         - My Second Service:
@@ -15,7 +16,6 @@ config:
             href: http://localhost/
             description: Homepage is 😎
   widgets:
-    # show the kubernetes widget, with the cluster summary and individual nodes
     - kubernetes:
         cluster:
           show: true
