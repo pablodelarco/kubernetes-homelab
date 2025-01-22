@@ -9,13 +9,13 @@ config:
   widgets:
     - kubernetes:
         cluster:
-          show: true
+          show: false
           cpu: true
           memory: true
           showLabel: true
           label: "cluster"
         nodes:
-          show: true
+          show: false
           cpu: true
           memory: true
           showLabel: true
