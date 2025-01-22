@@ -26,6 +26,15 @@ serviceAccount:
   create: true
   name: homepage
 
+
+service:
+  main:
+    type: LoadBalancer # Expose the service as a LoadBalancer
+    ports:
+      http:
+        port: 3000     # Port used by the application
+        targetPort: 3000 # Target port inside the pod
+
 # This enables the service account to access the necessary resources
 enableRbac: true
 
