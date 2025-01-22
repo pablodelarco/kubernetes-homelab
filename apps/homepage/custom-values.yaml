@@ -5,16 +5,6 @@ config:
             href: https://home-assistant.tabby-carp.ts.net
             siteMonitor: https://home-assistant.tabby-carp.ts.net
             
-
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
-
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
   widgets:
     - kubernetes:
         cluster:
