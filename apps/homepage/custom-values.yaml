@@ -46,10 +46,6 @@ ingress:
     annotations:
       tailscale.com/funnel: "true"
       gethomepage.dev/enabled: "true"
-      gethomepage.dev/name: "Homepage"
-      gethomepage.dev/description: "A modern, secure, highly customizable application dashboard."
-      gethomepage.dev/group: "Dynamic Group"
-      gethomepage.dev/icon: "homepage.png"
     ingressClassName: tailscale
     hosts:
       - host: homepage
