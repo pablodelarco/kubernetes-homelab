@@ -82,3 +82,8 @@ persistence:
     accessMode: ReadWriteOnce # Specify the required access mode
     storageClass: "longhorn" # Specify your storage class
     size: 5Gi
+
+
+controller:
+  annotations:
+    configmap-checksum: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
