@@ -3,17 +3,20 @@ config:
   services:
     - Infra:
         - Home Assistant:
+            icon: homeassistant.png
             href: https://home-assistant.tabby-carp.ts.net
             ping: https://home-assistant.tabby-carp.ts.net
         - Jellyfin: # Add Jellyfin service
             icon: jellyfin.png
-            href: https://jellyfin.example.com
-            container: jellyfin
-            description: Multimedia streaming library
+            href: https://jellyfin.tabby-carp.ts.net/
             widget: # Define Jellyfin widget settings
               type: jellyfin
-              url: https://jellyfin.example.com
-              key: [REDACTED-KEY] # Replace with your actual API key
+              url: https://jellyfin.tabby-carp.ts.net/
+              key:
+                valueFrom:
+                  secretKeyRef:
+                    name: jellyfin-secret
+                    key: JELLYFIN_API_KEY
               enableBlocks: true
               enableNowPlaying: false
               enableUser: false
@@ -87,3 +90,8 @@ persistence:
 controller:
   annotations:
     configmap-checksum: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+
+
+
+
+
