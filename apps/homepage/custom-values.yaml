@@ -5,6 +5,21 @@ config:
         - Home Assistant:
             href: https://home-assistant.tabby-carp.ts.net
             ping: https://home-assistant.tabby-carp.ts.net
+        - Jellyfin: # Add Jellyfin service
+            icon: jellyfin.png
+            href: https://jellyfin.example.com
+            container: jellyfin
+            description: Multimedia streaming library
+            widget: # Define Jellyfin widget settings
+              type: jellyfin
+              url: https://jellyfin.example.com
+              key: [REDACTED-KEY] # Replace with your actual API key
+              enableBlocks: true
+              enableNowPlaying: false
+              enableUser: false
+              showEpisodeNumber: true
+              expandOneStreamToTwoRows: false
+              fields: ["movies", "series", "songs"]
             
   widgets:
     - kubernetes:
@@ -19,6 +34,17 @@ config:
           cpu: true
           memory: true
           showLabel: true
+    - jellyfin: # Add Jellyfin widget to the widgets section
+        type: jellyfin
+        url: https://jellyfin.example.com
+        key: [REDACTED-KEY] # Replace with your actual API key
+        enableBlocks: true
+        enableNowPlaying: false
+        enableUser: false
+        showEpisodeNumber: true
+        expandOneStreamToTwoRows: false
+        fields: ["movies", "series", "songs"]
+
   kubernetes:
     mode: cluster
   settings: []
