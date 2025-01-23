@@ -37,16 +37,6 @@ config:
           cpu: true
           memory: true
           showLabel: true
-    - jellyfin: # Add Jellyfin widget to the widgets section
-        type: jellyfin
-        url: https://jellyfin.example.com
-        key: [REDACTED-KEY] # Replace with your actual API key
-        enableBlocks: true
-        enableNowPlaying: false
-        enableUser: false
-        showEpisodeNumber: true
-        expandOneStreamToTwoRows: false
-        fields: ["movies", "series", "songs"]
 
   kubernetes:
     mode: cluster
