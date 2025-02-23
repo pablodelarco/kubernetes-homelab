@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: test-alert
+  namespace: monitoring
+spec:
+  groups:
+    - name: test-alerts
+      rules:
+        - alert: TestAlert
+          expr: vector(1) # Always triggers
+          for: 10s
+          labels:
+            severity: critical
+          annotations:
+            summary: "Test Alert"
+            description: "This is a test alert to verify Telegram notifications."
