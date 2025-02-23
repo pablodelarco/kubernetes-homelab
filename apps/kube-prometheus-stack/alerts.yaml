@@ -1,0 +1,44 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cluster-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: cluster-rules
+      rules:
+        - alert: HighCPUUsage
+          expr: (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)) > 0.8
+          for: 5m  # Increase duration to avoid transient spikes
+          labels:
+            severity: critical
+          annotations:
+            summary: "High CPU usage on {{ $labels.instance }}"
+            description: "CPU usage is {{ humanize $value }}% for 5 minutes."
+
+        - alert: HighMemoryUsage
+          expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.8
+          for: 5m
+          labels:
+            severity: critical  # Upgrade severity to critical
+          annotations:
+            summary: "High memory usage on {{ $labels.instance }}"
+            description: "Memory usage is {{ humanize $value }}% for 5 minutes."
+
+        - alert: NodeDown
+          expr: up{job="node-exporter"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.instance }} is down"
+            description: "Node has been unreachable for 5 minutes."
+
+        - alert: CrashLoopBackOff
+          expr: kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Pod {{ $labels.pod }} is crashing"
+            description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} is in CrashLoopBackOff."
