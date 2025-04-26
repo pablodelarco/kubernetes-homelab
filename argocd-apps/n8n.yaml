@@ -18,7 +18,7 @@ spec:
           - values.yaml
     - repoURL: https://github.com/pablodelarco/kubernetes-homelab
       targetRevision: main
-      ref: values
+      path: argocd-apps/n8n
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
