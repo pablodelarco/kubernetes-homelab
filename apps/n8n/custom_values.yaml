@@ -1,0 +1,51 @@
+## Service configuration
+service:
+  type: LoadBalancer          # Expose via a cloud LB / MetalLB / etc.
+  port: 80                    # LB → ClusterIP port
+  targetPort: 5678            # ClusterIP → n8n’s port
+
+## Persistence configuration
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 5Gi
+  storageClass: ""            # e.g. `standard` or leave blank for your default
+
+## Ingress configuration
+ingress:
+  enabled: true
+  className: "tailscale"
+  annotations:
+    tailscale.com/funnel: "true"
+  hosts:
+    - host: n8n               # point this at your DNS / mDNS name
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - n8n
+      # secretName: n8n-tls   # set if you’ve created a TLS Secret
+
+## n8n application config & secrets
+main:
+  config:
+    # (uncomment & fill in for production)
+    # n8n:
+    #   host: "n8n.example.com"
+    #   protocol: https
+    #   webhookUrl: "https://n8n.example.com/"
+    # db:
+    #   type: postgresdb
+    #   postgresdb:
+    #     host: postgres.internal
+    #     port: 5432
+    #     database: n8n
+    #     user: n8n
+  secret:
+    # (uncomment & fill in for production)
+    # n8n:
+    #   encryption_key: "<YOUR_ENCRYPTION_KEY>"
+    # db:
+    #   postgresdb:
+    #     password: "<YOUR_DB_PASSWORD>"
