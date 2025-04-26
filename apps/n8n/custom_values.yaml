@@ -1,8 +1,11 @@
 ## Service configuration
 service:
-  type: LoadBalancer          # Expose via a cloud LB / MetalLB / etc.
-  port: 80                    # LB → ClusterIP port
- 
+  type: LoadBalancer
+  port: 80
+  targetPort: 5678
+
+  
+   
 ## Persistence configuration
 persistence:
   enabled: true
