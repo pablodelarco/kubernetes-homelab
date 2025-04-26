@@ -10,8 +10,8 @@ spec:
       prune: true
       selfHeal: true
   sources:
-    - repoURL: oci://8gears.container-registry.com/library/n8n
-      chart: n8n
+    - repoURL: oci://8gears.container-registry.com
+      chart: library/n8n
       targetRevision: "1.0.6"
       helm:
         valueFiles:
