@@ -19,7 +19,7 @@ ingress:
   hosts:
     - host: n8n               # point this at your DNS / mDNS name
       paths:
-        - path: /
+        - /
   tls:
     - hosts:
         - n8n
