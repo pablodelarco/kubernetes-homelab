@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n
+  namespace: argocd
+spec:
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  sources:
+    - repoURL: oci://8gears.container-registry.com/library/n8n
+      chart: n8n
+      targetRevision: "1.0.6"
+      helm:
+        valueFiles:
+          - values.yaml
+    - repoURL: https://github.com/pablodelarco/kubernetes-homelab
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: n8n
