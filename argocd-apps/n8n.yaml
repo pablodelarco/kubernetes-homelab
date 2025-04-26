@@ -10,15 +10,15 @@ spec:
       prune: true
       selfHeal: true
   sources:
-    - repoURL: oci://8gears.container-registry.com
+    - repoURL: 8gears.container-registry.com
       chart: library/n8n
       targetRevision: "1.0.6"
       helm:
         valueFiles:
-          - values.yaml
+          - $values/apps/n8n/custom_values.yaml
     - repoURL: https://github.com/pablodelarco/kubernetes-homelab
       targetRevision: main
-      path: argocd-apps/n8n
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
