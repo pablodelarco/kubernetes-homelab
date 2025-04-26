@@ -11,20 +11,7 @@ persistence:
   storageClass: ""            # e.g. `standard` or leave blank for your default
 
 ## Ingress configuration
-ingress:
-  enabled: true
-  className: "tailscale"
-  annotations:
-    tailscale.com/funnel: "true"
-  hosts:
-    - host: n8n               # point this at your DNS / mDNS name
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - n8n
-      # secretName: n8n-tls   # set if you’ve created a TLS Secret
+
 
 ## n8n application config & secrets
 main:
