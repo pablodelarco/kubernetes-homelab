@@ -2,8 +2,7 @@
 service:
   type: LoadBalancer          # Expose via a cloud LB / MetalLB / etc.
   port: 80                    # LB → ClusterIP port
-  targetPort: 5678            # ClusterIP → n8n’s port
-
+ 
 ## Persistence configuration
 persistence:
   enabled: true
