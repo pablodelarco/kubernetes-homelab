@@ -23,3 +23,6 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: n8n
+
+
+    
