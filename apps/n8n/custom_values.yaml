@@ -20,7 +20,7 @@ ingress:
   annotations:
     tailscale.com/funnel: "true"
   hosts:
-    - host: n8n.tabby-carp.ts.net               
+    - host: n8n           
       paths:
         - /
 
