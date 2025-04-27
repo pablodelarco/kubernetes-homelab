@@ -1,12 +1,3 @@
-## Service configuration
-service:
-  type: LoadBalancer
-  port: 80
-  targetPort: 5678
-
-  
-   
-## Persistence configuration
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
@@ -46,3 +37,8 @@ main:
     # db:
     #   postgresdb:
     #     password: "<YOUR_DB_PASSWORD>"
+  ## Service configuration
+  service:
+    type: LoadBalancer
+    port: 80
+    targetPort: 5678
