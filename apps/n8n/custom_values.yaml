@@ -23,7 +23,6 @@ ingress:
     - host: n8n               
       paths:
         - /
-      # secretName: n8n-tls   # set if you’ve created a TLS Secret
 
 ## n8n application config & secrets
 main:
