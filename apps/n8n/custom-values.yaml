@@ -6,14 +6,19 @@ persistence:
 
 ## Ingress configuration
 ingress:
+  # Enable ingress for home assistant
   enabled: true
   className: "tailscale"
   annotations:
     tailscale.com/funnel: "true"
   hosts:
-    - host: n8n           
+    - host: n8n
       paths:
-        - /
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - n8n
 
 ## n8n application config & secrets
 main:
