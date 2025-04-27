@@ -2,12 +2,10 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 5Gi
-  storageClass: ""            # e.g. `standard` or leave blank for your default
+  storageClass: ""
   mountPath: /home/node/.n8n
 
-## Ingress configuration
 ingress:
-  # Enable ingress for home assistant
   enabled: true
   className: "tailscale"
   annotations:
@@ -20,37 +18,21 @@ ingress:
     - hosts:
       - n8n
 
-## n8n application config & secrets
-
 main:
   config:
     n8n:
       webhookUrl: "https://javelin-moved-slightly.ngrok-free.app/"
       host: "javelin-moved-slightly.ngrok-free.app"
       protocol: "https"
-    extraEnv:
-      - name: N8N_PORT
-        value: "80"
-    # (uncomment & fill in for production)
-    # n8n:
-    #   host: "n8n.example.com"
-    #   protocol: https
-    #   webhookUrl: "https://n8n.example.com/"
-    # db:
-    #   type: postgresdb
-    #   postgresdb:
-    #     host: postgres.internal
-    #     port: 5432
-    #     database: n8n
-    #     user: n8n
+  extraEnv:
+    - name: N8N_PORT
+      value: "80"
   secret:
-    # (uncomment & fill in for production)
-    # n8n:
-    #   encryption_key: "<YOUR_ENCRYPTION_KEY>"
-    # db:
-    #   postgresdb:
-    #     password: "<YOUR_DB_PASSWORD>"
-  ## Service configuration
-  service:
-    type: LoadBalancer
-    port: 80
+    # you can add your n8n encryption key here later
+
+service:
+  type: LoadBalancer
+  port: 80
+
+containerPorts:
+  http: 80
