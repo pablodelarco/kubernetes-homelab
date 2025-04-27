@@ -2,33 +2,32 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 5Gi
-  storageClass: ""
+  storageClass: null
   mountPath: /home/node/.n8n
 
 ingress:
   enabled: true
-  className: "tailscale"
+  className: tailscale
   annotations:
     tailscale.com/funnel: "true"
   hosts:
     - host: n8n
       paths:
-        - /
+        - path: /
   tls:
     - hosts:
-      - n8n
+        - n8n
 
 main:
   config:
     n8n:
-      webhookUrl: "https://javelin-moved-slightly.ngrok-free.app/"
-      host: "javelin-moved-slightly.ngrok-free.app"
-      protocol: "https"
+      webhookUrl: https://javelin-moved-slightly.ngrok-free.app/
+      host: javelin-moved-slightly.ngrok-free.app
+      protocol: https
   extraEnv:
     - name: N8N_PORT
       value: "80"
-  secret:
-    # you can add your n8n encryption key here later
+  secret: {}
 
 service:
   type: LoadBalancer
