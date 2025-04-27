@@ -2,7 +2,7 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 5Gi
-  storageClass: null
+  storageClass: ""
   mountPath: /home/node/.n8n
 
 ingress:
@@ -26,6 +26,6 @@ main:
       protocol: https
   secret: {}
 
-  service:   
+  service:
     type: LoadBalancer
     port: 80
