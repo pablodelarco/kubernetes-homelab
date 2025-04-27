@@ -34,5 +34,23 @@ service:
   type: LoadBalancer
   port: 80
 
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 80
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: 80
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
 containerPorts:
   http: 80
