@@ -24,6 +24,8 @@ main:
       webhookUrl: https://cub-wise-remotely.ngrok-free.app
       host: cub-wise-remotely.ngrok-free.app
       protocol: https
+      port: 80
+      publicApiBaseUrl: "https://cub-wise-remotely.ngrok-free.app"
   secret: {}
 
   service:
