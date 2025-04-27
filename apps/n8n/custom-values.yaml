@@ -21,13 +21,11 @@ ingress:
 main:
   config:
     n8n:
-      webhookUrl: "https://abnormally-obliging-grouse.ngrok-free.app"
-      host: "abnormally-obliging-grouse.ngrok-free.app"
-      protocol: "https"
-      port: 80  # Tell n8n internally you want it to think it runs at 80
-      publicApiBaseUrl: "https://abnormally-obliging-grouse.ngrok-free.app" # Recommended too for API endpoints (optional, but clean)
+      webhookUrl: https://cub-wise-remotely.ngrok-free.app
+      host: cub-wise-remotely.ngrok-free.app
+      protocol: https
   secret: {}
 
-  service:
+  service:   
     type: LoadBalancer
     port: 80
