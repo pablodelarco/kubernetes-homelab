@@ -50,4 +50,3 @@ main:
   service:
     type: LoadBalancer
     port: 80
-    targetPort: 5678
