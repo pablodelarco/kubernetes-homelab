@@ -13,7 +13,7 @@ ingress:
   hosts:
     - host: n8n
       paths:
-        - /
+        - path: /
   tls:
     - hosts:
         - n8n
@@ -24,28 +24,3 @@ main:
       webhookUrl: https://javelin-moved-slightly.ngrok-free.app/
       host: javelin-moved-slightly.ngrok-free.app
       protocol: https
-
-service:
-  type: LoadBalancer
-  port: 80
-
-livenessProbe:
-  httpGet:
-    path: /healthz
-    port: 80
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-
-readinessProbe:
-  httpGet:
-    path: /healthz
-    port: 80
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-
-containerPorts:
-  http: 80
