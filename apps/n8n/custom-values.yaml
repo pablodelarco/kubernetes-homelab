@@ -27,6 +27,9 @@ main:
       webhookUrl: "https://javelin-moved-slightly.ngrok-free.app/"
       host: "javelin-moved-slightly.ngrok-free.app"
       protocol: "https"
+    env:
+      - name: N8N_PORT
+        value: "80"
     # (uncomment & fill in for production)
     # n8n:
     #   host: "n8n.example.com"
