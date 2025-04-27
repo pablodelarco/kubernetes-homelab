@@ -13,8 +13,7 @@ ingress:
   hosts:
     - host: n8n
       paths:
-        - path: /
-          pathType: ImplementationSpecific
+        - /
   tls:
     - hosts:
         - n8n
