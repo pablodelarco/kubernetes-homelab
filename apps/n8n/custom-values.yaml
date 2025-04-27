@@ -22,6 +22,8 @@ ingress:
 ## n8n application config & secrets
 main:
   config:
+    n8n:
+      webhookUrl: "https://javelin-moved-slightly.ngrok-free.app/"
     # (uncomment & fill in for production)
     # n8n:
     #   host: "n8n.example.com"
