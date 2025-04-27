@@ -3,6 +3,7 @@ persistence:
   accessMode: ReadWriteOnce
   size: 5Gi
   storageClass: ""            # e.g. `standard` or leave blank for your default
+  mountPath: /home/node/.n8n
 
 ## Ingress configuration
 ingress:
