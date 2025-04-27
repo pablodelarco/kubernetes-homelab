@@ -21,8 +21,8 @@ ingress:
 main:
   config:
     n8n:
-      webhookUrl: https://javelin-moved-slightly.ngrok-free.app/
-      host: javelin-moved-slightly.ngrok-free.app
+      webhookUrl: https://abnormally-obliging-grouse.ngrok-free.app
+      host: abnormally-obliging-grouse.ngrok-free.app
       protocol: https
   secret: {}
 
