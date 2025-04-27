@@ -24,3 +24,8 @@ main:
       webhookUrl: https://javelin-moved-slightly.ngrok-free.app/
       host: javelin-moved-slightly.ngrok-free.app
       protocol: https
+  secret: {}
+
+service:
+  type: LoadBalancer
+  port: 80
