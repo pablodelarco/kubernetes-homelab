@@ -27,6 +27,22 @@ main:
   extraEnv:
     - name: N8N_PORT
       value: "80"
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 80
+    initialDelaySeconds: 10
+    timeoutSeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: 80
+    initialDelaySeconds: 10
+    timeoutSeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
   secret: {}
 
 service:
