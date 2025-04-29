@@ -1,3 +1,4 @@
+# ── 1. Persistent data (unchanged) ────────────────────────────────────────────
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
@@ -5,27 +6,43 @@ persistence:
   storageClass: ""
   mountPath: /home/node/.n8n
 
+# ── 2. n8n container & app-level config ──────────────────────────────────────
+main:
+  # 2-a) Port the container will LISTEN on
+  config:
+    port: 443                       # ← becomes containerPort
+    n8n:
+      # Public URLs n8n advertises internally
+      webhookUrl:       "https://n8n.tabby-carp.ts.net"
+      host:             "n8n.tabby-carp.ts.net"
+      protocol:         "https"
+      publicApiBaseUrl: "https://n8n.tabby-carp.ts.net"
+
+  # 2-b) Extra env so n8n process actually binds 443 & HTTPS
+  extraEnv:
+    N8N_PORT: "5678"
+    N8N_PROTOCOL: "https"
+
+  # 2-c) Security context ⇒ allow binding port <1024
+  securityContext:
+    enabled: true
+    capabilities:
+      add: ["NET_BIND_SERVICE"]
+
+  # 2-d) Kubernetes Service settings
+  service:
+    type: ClusterIP
+
+# ── 3. Ingress via Tailscale Funnel ──────────────────────────────────────────
 ingress:
   enabled: true
   className: tailscale
   annotations:
     tailscale.com/funnel: "true"
   hosts:
-    - host: n8n
+    - host: n8n   # public domain
       paths:
         - /
   tls:
     - hosts:
-        - n8n
-
-main:
-  config:
-    n8n:
-      webhookUrl: https://cub-wise-remotely.ngrok-free.app
-      host: cub-wise-remotely.ngrok-free.app
-      protocol: https
-  secret: {}
-
-  service:
-    type: LoadBalancer
-    port: 80
+        - n8n     # TLS terminates at Funnel/Ingress
