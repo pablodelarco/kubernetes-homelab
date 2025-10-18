@@ -1,0 +1,84 @@
+# Cilium Helm Values for Distributed Cluster with VXLAN
+# This configuration enables VXLAN overlay networking for nodes on different networks (Tailscale)
+
+# Cluster configuration
+cluster:
+  name: default
+
+# CNI configuration
+cni:
+  binPath: /opt/cni/bin
+
+# IPAM configuration
+ipam:
+  mode: kubernetes
+
+# IPv4 native routing CIDR (pod network)
+ipv4NativeRoutingCIDR: 10.42.0.0/16
+
+# Kubernetes API server (via Tailscale)
+k8sServiceHost: 100.113.23.108
+k8sServicePort: 6443
+
+# Kube-proxy replacement
+kubeProxyReplacement: true
+
+# Node port configuration
+nodePort:
+  enabled: true
+
+# External IPs
+externalIPs:
+  enabled: true
+
+# Host services
+hostServices:
+  enabled: true
+
+# Operator configuration
+operator:
+  replicas: 1
+
+# Hubble (observability)
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+
+# IP masquerading
+ipMasqAgent:
+  enabled: false
+
+bpf:
+  masquerade: true
+
+# ============================================
+# VXLAN OVERLAY CONFIGURATION (CRITICAL!)
+# ============================================
+
+# Routing mode: tunnel (VXLAN overlay)
+# This allows nodes on different networks to communicate
+routingMode: tunnel
+
+# Tunnel protocol: VXLAN
+# Encapsulates pod traffic in VXLAN tunnels between nodes
+tunnelProtocol: vxlan
+
+# Auto-direct node routes: DISABLED
+# We don't assume nodes are on the same L2 network
+autoDirectNodeRoutes: false
+
+# Enable IPv4 masquerade for cross-node traffic
+# This ensures proper NAT for pod traffic going through VXLAN
+enableIPv4Masquerade: true
+
+# ============================================
+# NOTES:
+# ============================================
+# - This configuration enables distributed Kubernetes across Tailscale
+# - Nodes can be on different networks (different cities, cloud providers, etc.)
+# - Pod traffic is encapsulated in VXLAN tunnels (UDP port 8472)
+# - All traffic goes through Tailscale's encrypted mesh network
+# - To apply: helm upgrade cilium cilium/cilium -n kube-system -f cilium-values-vxlan.yaml
+
