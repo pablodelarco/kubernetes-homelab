@@ -1,0 +1,61 @@
+# Headlamp Helm Chart Custom Values
+# Managed by ArgoCD - GitOps
+
+replicaCount: 1
+
+image:
+  registry: ghcr.io
+  repository: headlamp-k8s/headlamp
+  pullPolicy: IfNotPresent
+  tag: ""  # Uses chart appVersion by default
+
+config:
+  # Run in-cluster mode
+  baseURL: ""
+  
+  # Disable OIDC - use token-based authentication
+  oidc:
+    enabled: false
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+
+# Ingress disabled - using Tailscale ingress separately
+ingress:
+  enabled: false
+
+# Resources
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Service Account
+serviceAccount:
+  create: true
+  name: headlamp
+
+# RBAC - in-cluster mode needs cluster-admin for full functionality
+rbac:
+  create: true
+  clusterAdminAccess: true
+
+# Persistence disabled (stateless)
+persistentVolumeClaim:
+  enabled: false
+
+# Environment variables
+env:
+  - name: HEADLAMP_DISABLE_OIDC
+    value: "true"
+
+# Command line arguments
+args:
+  - "-in-cluster"
+  - "-plugins-dir=/headlamp/plugins"
+
