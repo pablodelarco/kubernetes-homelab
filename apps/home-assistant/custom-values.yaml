@@ -93,6 +93,13 @@ configuration:
         - {{ . }}
         {{- end }}
     {{- end}}
+
+    # Disable login attempt notifications
+    logger:
+      default: info
+      logs:
+        homeassistant.components.http.ban: critical
+
     # Load frontend themes from the themes folder
     frontend:
       themes: !include_dir_merge_named themes
