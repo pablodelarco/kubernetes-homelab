@@ -5,6 +5,14 @@ defaultSettings:
   backupTargetCredentialSecret: "minio-credentials"
 service:
   ui:
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
+ingress:
+  enabled: true
+  ingressClassName: tailscale
+  annotations:
+    tailscale.com/funnel: "true"
+  host: longhorn
+  tls: true
+  tlsSecret: ""
 

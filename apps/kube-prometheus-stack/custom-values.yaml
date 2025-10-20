@@ -3,9 +3,18 @@ crds:
 
 grafana:
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
-    loadBalancerIP: 192.168.1.241
+  ingress:
+    enabled: true
+    ingressClassName: tailscale
+    annotations:
+      tailscale.com/funnel: "true"
+    hosts:
+      - grafana
+    tls:
+      - hosts:
+          - grafana
   persistence:
     enabled: true
     accessModes:
