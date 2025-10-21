@@ -72,6 +72,15 @@ alertmanager:
                   operator: In
                   values:
                     - beelink
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 5Gi
 
 kubeStateMetrics:
   affinity:
