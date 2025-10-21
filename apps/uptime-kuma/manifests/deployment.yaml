@@ -24,6 +24,9 @@ spec:
           image: louislam/uptime-kuma:latest
           ports:
             - containerPort: 3001
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
           livenessProbe:
             httpGet:
               path: /
