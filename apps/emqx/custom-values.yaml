@@ -48,10 +48,9 @@ emqxConfig:
   # Disable SSL/TLS listeners for now
   EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
   EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"
-  # Dashboard credentials come from envFromSecret (below), not from ConfigMap
-  # Setting them to empty here ensures they're only in the Secret
-  EMQX_DASHBOARD__DEFAULT_USERNAME: ""
-  EMQX_DASHBOARD__DEFAULT_PASSWORD: ""
+  # NOTE: Dashboard credentials are NOT set here
+  # They come from envFromSecret (below) which loads them from the SealedSecret
+  # This prevents the Helm chart from using its default password "public"
 
 # Pull environment variables from the emqx-credentials Secret (created by SealedSecret)
 # This secret contains: EMQX_DASHBOARD__DEFAULT_USERNAME, EMQX_DASHBOARD__DEFAULT_PASSWORD
