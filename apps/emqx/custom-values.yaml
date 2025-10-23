@@ -48,10 +48,15 @@ emqxConfig:
   # Disable SSL/TLS listeners for now
   EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
   EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"
+  # Dashboard credentials come from envFromSecret (below), not from ConfigMap
+  # Setting them to empty here ensures they're only in the Secret
+  EMQX_DASHBOARD__DEFAULT_USERNAME: ""
+  EMQX_DASHBOARD__DEFAULT_PASSWORD: ""
 
 # Pull environment variables from the emqx-credentials Secret (created by SealedSecret)
-# This secret contains: dashboard_username, dashboard_password, mqtt_username, mqtt_password
+# This secret contains: EMQX_DASHBOARD__DEFAULT_USERNAME, EMQX_DASHBOARD__DEFAULT_PASSWORD
 # The secret is encrypted in Git using Sealed Secrets - NO PLAINTEXT PASSWORDS IN GIT!
+# These environment variables will override the ConfigMap values
 envFromSecret: "emqx-credentials"
 
 # Security Context
