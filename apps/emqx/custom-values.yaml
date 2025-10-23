@@ -40,14 +40,13 @@ resources:
     memory: 1Gi
 
 # EMQX Configuration (using HOCON format for EMQX 5.x)
+# NOTE: Dashboard credentials are set via a separate ConfigMap created from the SealedSecret
+# See apps/emqx/emqx-config-from-secret.yaml
 emqxConfig:
   EMQX_NAME: emqx
   EMQX_CLUSTER__DISCOVERY_STRATEGY: dns
   EMQX_CLUSTER__DNS__NAME: "emqx-headless.emqx.svc.cluster.local"
   EMQX_CLUSTER__DNS__RECORD_TYPE: srv
-  # Dashboard credentials (safe to put here since this file is in Git and password is in SealedSecret)
-  EMQX_DASHBOARD__DEFAULT_USERNAME: "admin"
-  EMQX_DASHBOARD__DEFAULT_PASSWORD: "***REMOVED***"
   # Disable SSL/TLS listeners for now
   EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
   EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"

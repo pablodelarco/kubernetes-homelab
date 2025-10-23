@@ -6,12 +6,14 @@ metadata:
 spec:
   project: default
   sources:
+    # EMQX Helm chart
     - repoURL: 'https://repos.emqx.io/charts'
       chart: emqx
       targetRevision: 5.5.0
       helm:
         valueFiles:
           - $values/apps/emqx/custom-values.yaml
+    # Git repo reference for Helm values
     - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
       targetRevision: main
       ref: values
