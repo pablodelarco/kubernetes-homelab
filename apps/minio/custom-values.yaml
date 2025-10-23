@@ -34,18 +34,40 @@ persistence:
 
 ## MinIO service configuration
 service:
-  type: LoadBalancer                # Expose MinIO API as a LoadBalancer
+  type: ClusterIP                   # Use ClusterIP with Tailscale Funnel
   port: "9000"                      # MinIO API port
-  nodePort: 32000                   # Optional NodePort setting
   annotations: {}                   # Optional annotations
-  loadBalancerSourceRanges: {}      # Restrict access (if needed)
 
 consoleService:
-  type: LoadBalancer                # Expose MinIO Console as a LoadBalancer
+  type: ClusterIP                   # Use ClusterIP with Tailscale Funnel
   port: "9001"                      # Console port
-  nodePort: 32001                   # Optional NodePort setting
   annotations: {}                   # Optional annotations
-  loadBalancerSourceRanges: {}      # Restrict access (if needed)
+
+## Ingress configuration for MinIO API via Tailscale Funnel
+ingress:
+  enabled: true
+  ingressClassName: tailscale
+  annotations:
+    tailscale.com/funnel: "true"
+  path: /
+  hosts:
+    - minio
+  tls:
+    - hosts:
+        - minio
+
+## Ingress configuration for MinIO Console via Tailscale Funnel
+consoleIngress:
+  enabled: true
+  ingressClassName: tailscale
+  annotations:
+    tailscale.com/funnel: "true"
+  path: /
+  hosts:
+    - minio-console
+  tls:
+    - hosts:
+        - minio-console
 
 ## Security context
 securityContext:
