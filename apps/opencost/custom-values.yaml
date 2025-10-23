@@ -43,16 +43,18 @@ opencost:
   
   ui:
     enabled: true
+    service:
+      type: LoadBalancer
     ingress:
-      enabled: true
-      ingressClassName: tailscale
-      annotations:
-        tailscale.com/funnel: "true"
-      hosts:
-        - host: opencost
-          paths:
-            - /
-      tls:
-        - hosts:
-            - opencost
+      enabled: false
+      # ingressClassName: tailscale
+      # annotations:
+      #   tailscale.com/funnel: "true"
+      # hosts:
+      #   - host: opencost
+      #     paths:
+      #       - /
+      # tls:
+      #   - hosts:
+      #       - opencost
 
