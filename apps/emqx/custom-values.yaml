@@ -1,0 +1,133 @@
+# EMQX Configuration for Kubernetes Homelab
+# EMQX is a scalable MQTT broker with a built-in dashboard
+
+# Replica configuration
+replicaCount: 1
+
+# Image configuration
+image:
+  repository: emqx/emqx
+  tag: "5.5.0"
+  pullPolicy: IfNotPresent
+
+# Service configuration
+service:
+  type: LoadBalancer  # Uses MetalLB to get a dedicated IP
+  annotations:
+    metallb.universe.tf/allow-shared-ip: emqx  # Share IP across services if needed
+  # MQTT ports (plain - for internal use only)
+  mqtt:
+    enabled: true
+    port: 1883
+  # MQTT over WebSocket
+  ws:
+    enabled: true
+    port: 8083
+  # MQTT over SSL/TLS (SECURE - use this for external connections)
+  mqtts:
+    enabled: true
+    port: 8883
+  # WebSocket over SSL/TLS
+  wss:
+    enabled: true
+    port: 8084
+  # Dashboard port
+  dashboard:
+    enabled: true
+    port: 18083
+
+# Persistence for EMQX data
+persistence:
+  enabled: true
+  storageClass: "longhorn"
+  accessMode: ReadWriteOnce
+  size: 5Gi
+
+# Resource limits
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+# EMQX Configuration
+emqxConfig:
+  EMQX_NAME: emqx
+  EMQX_CLUSTER__DISCOVERY_STRATEGY: static
+  EMQX_CLUSTER__STATIC__SEEDS: "emqx-0.emqx-headless.emqx.svc.cluster.local"
+
+  # Logging
+  EMQX_LOG__CONSOLE__LEVEL: info
+
+  # SSL/TLS Configuration for MQTTS
+  EMQX_LISTENERS__SSL__DEFAULT__BIND: "0.0.0.0:8883"
+  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__CACERTFILE: "/opt/emqx/etc/certs/ca.crt"
+  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__CERTFILE: "/opt/emqx/etc/certs/tls.crt"
+  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__KEYFILE: "/opt/emqx/etc/certs/tls.key"
+  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__VERIFY: "verify_none"
+
+  # WebSocket SSL Configuration
+  EMQX_LISTENERS__WSS__DEFAULT__BIND: "0.0.0.0:8084"
+  EMQX_LISTENERS__WSS__DEFAULT__SSL_OPTIONS__CACERTFILE: "/opt/emqx/etc/certs/ca.crt"
+  EMQX_LISTENERS__WSS__DEFAULT__SSL_OPTIONS__CERTFILE: "/opt/emqx/etc/certs/tls.crt"
+  EMQX_LISTENERS__WSS__DEFAULT__SSL_OPTIONS__KEYFILE: "/opt/emqx/etc/certs/tls.key"
+
+# Environment variables from secrets
+envFrom:
+  - secretRef:
+      name: emqx-credentials
+
+# Additional environment variables for dashboard auth
+env:
+  - name: EMQX_DASHBOARD__DEFAULT_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: emqx-credentials
+        key: dashboard_username
+  - name: EMQX_DASHBOARD__DEFAULT_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: emqx-credentials
+        key: dashboard_password
+
+# Security Context
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+# Pod Security Context
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+# Affinity - optional, uncomment to pin to specific node like your other apps
+# affinity:
+#   nodeAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       nodeSelectorTerms:
+#         - matchExpressions:
+#             - key: kubernetes.io/hostname
+#               operator: In
+#               values:
+#                 - beelink
+
+# Metrics for Prometheus (optional - you have kube-prometheus-stack)
+metrics:
+  enabled: true
+  type: prometheus
+
+# Volume mounts for TLS certificates
+extraVolumes:
+  - name: emqx-tls
+    secret:
+      secretName: emqx-tls-secret
+
+extraVolumeMounts:
+  - name: emqx-tls
+    mountPath: /opt/emqx/etc/certs
+    readOnly: true
+

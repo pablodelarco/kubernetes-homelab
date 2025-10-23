@@ -1,0 +1,33 @@
+# Kubernetes secrets (plaintext)
+*-secret-temp.yaml
+*-temp.yaml
+secret-temp.yaml
+
+# Sealed Secrets backup keys (NEVER commit these!)
+sealed-secrets-key-backup.yaml
+*-key-backup.yaml
+
+# Kubeconfig files with credentials
+*.kubeconfig
+kubeconfig
+
+# Helm values with secrets (but not sealed-secrets app)
+*-secrets.yaml
+!argocd-apps/sealed-secrets.yaml
+
+# Local development
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+nohup.out
+
