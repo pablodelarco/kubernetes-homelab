@@ -6,15 +6,15 @@ grafana:
     type: ClusterIP
     port: 80
   ingress:
-    enabled: true
-    ingressClassName: tailscale
-    annotations:
-      tailscale.com/funnel: "true"
-    hosts:
-      - grafana
-    tls:
-      - hosts:
-          - grafana
+    enabled: false  # Disabled - using separate grafana-ingress.yaml instead
+    # ingressClassName: tailscale
+    # annotations:
+    #   tailscale.com/funnel: "true"
+    # hosts:
+    #   - grafana
+    # tls:
+    #   - hosts:
+    #       - grafana
   persistence:
     enabled: true
     accessModes:
