@@ -27,8 +27,8 @@ existingSecret: minio-login
 ## Persistence configuration
 persistence:
   enabled: true
-  storageClass: longhorn            # Use Longhorn for better performance
-  accessMode: ReadWriteOnce         # Sufficient for standalone mode
+  storageClass: nfs                 # Use NFS to store data on NAS
+  accessMode: ReadWriteMany         # NFS supports RWX
   size: 150Gi                       # Requested storage size
   annotations: {}                   # Optional annotations
 
@@ -85,6 +85,15 @@ resources:
 
 ## Additional custom commands
 customCommands: []
+
+## Environment variables for NFS optimization
+environment:
+  ## Increase drive health check tolerance for NFS latency
+  MINIO_DRIVE_HEALTH_CHECK_INTERVAL: "60s"
+  ## Increase timeout for drive operations
+  MINIO_DRIVE_HEALTH_CHECK_TIMEOUT: "120s"
+  ## Disable O_DIRECT for better NFS compatibility
+  MINIO_CI_CD: "on"
 
 
 
