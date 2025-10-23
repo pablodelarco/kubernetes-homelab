@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: emqx
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://repos.emqx.io/charts'
+      chart: emqx
+      targetRevision: 5.5.0
+      helm:
+        valueFiles:
+          - $values/apps/emqx/custom-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: emqx
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
