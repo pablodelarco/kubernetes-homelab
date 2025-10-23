@@ -45,27 +45,12 @@ emqxConfig:
   EMQX_CLUSTER__DISCOVERY_STRATEGY: dns
   EMQX_CLUSTER__DNS__NAME: "emqx-headless.emqx.svc.cluster.local"
   EMQX_CLUSTER__DNS__RECORD_TYPE: srv
+  # Dashboard credentials (safe to put here since this file is in Git and password is in SealedSecret)
+  EMQX_DASHBOARD__DEFAULT_USERNAME: "admin"
+  EMQX_DASHBOARD__DEFAULT_PASSWORD: "***REMOVED***"
   # Disable SSL/TLS listeners for now
   EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
   EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"
-
-# Environment variables from secrets
-envFrom:
-  - secretRef:
-      name: emqx-credentials
-
-# Additional environment variables for dashboard auth
-env:
-  - name: EMQX_DASHBOARD__DEFAULT_USERNAME
-    valueFrom:
-      secretKeyRef:
-        name: emqx-credentials
-        key: dashboard_username
-  - name: EMQX_DASHBOARD__DEFAULT_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: emqx-credentials
-        key: dashboard_password
 
 # Security Context
 securityContext:
