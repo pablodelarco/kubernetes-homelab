@@ -17,12 +17,6 @@ spec:
     - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
       targetRevision: main
       ref: values
-    # Additional manifests (SealedSecret and certificates)
-    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
-      targetRevision: main
-      path: apps/emqx
-      directory:
-        include: '{sealed-secret.yaml,certificate.yaml}'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: emqx
