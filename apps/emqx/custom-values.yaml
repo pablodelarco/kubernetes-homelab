@@ -16,11 +16,12 @@ service:
   annotations:
     metallb.universe.tf/allow-shared-ip: emqx  # Share IP across services if needed
   # Port configuration (integers, not objects)
-  mqtt: 1883          # MQTT port (plain - for internal use)
-  mqttssl: 8883       # MQTT over SSL/TLS (SECURE - use this for external)
+  mqtt: 1883          # MQTT port
   ws: 8083            # WebSocket port
-  wss: 8084           # WebSocket over SSL/TLS
   dashboard: 18083    # Dashboard port
+  # SSL/TLS ports disabled for now - will configure later
+  # mqttssl: 8883       # MQTT over SSL/TLS (SECURE - use this for external)
+  # wss: 8084           # WebSocket over SSL/TLS
 
 # Persistence for EMQX data
 persistence:
@@ -96,38 +97,9 @@ extraVolumes:
   - name: emqx-tls
     secret:
       secretName: emqx-tls-secret
-  - name: emqx-loaded-modules
-    emptyDir: {}
 
 extraVolumeMounts:
   - name: emqx-tls
     mountPath: /opt/emqx/etc/certs
     readOnly: true
-
-# EMQX 5.x SSL/TLS configuration via mounted config
-# This will be added to the EMQX configuration
-emqxAclConfig: ""
-emqxLoadedModules: |
-  {
-    listeners.ssl.default {
-      bind = "0.0.0.0:8883"
-      max_connections = 512000
-      ssl_options {
-        cacertfile = "/opt/emqx/etc/certs/ca.crt"
-        certfile = "/opt/emqx/etc/certs/tls.crt"
-        keyfile = "/opt/emqx/etc/certs/tls.key"
-        verify = verify_none
-      }
-    }
-    listeners.wss.default {
-      bind = "0.0.0.0:8084"
-      max_connections = 512000
-      ssl_options {
-        cacertfile = "/opt/emqx/etc/certs/ca.crt"
-        certfile = "/opt/emqx/etc/certs/tls.crt"
-        keyfile = "/opt/emqx/etc/certs/tls.key"
-        verify = verify_none
-      }
-    }
-  }
 
