@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opencost
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://opencost.github.io/opencost-helm-chart'
+      chart: opencost
+      targetRevision: 2.3.2
+      helm:
+        valueFiles:
+          - $values/apps/opencost/custom-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: opencost
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
