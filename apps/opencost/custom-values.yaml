@@ -50,25 +50,16 @@ opencost:
 
   ui:
     enabled: true
-
-# Ingress for Tailscale Funnel (external access)
-ingress:
-  enabled: true
-  ingressClassName: tailscale
-  annotations:
-    tailscale.com/funnel: "true"
-  rules:
-    - host: opencost
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: opencost
-                port:
-                  number: 9090
-  tls:
-    - hosts:
-        - opencost
+    ingress:
+      enabled: true
+      ingressClassName: tailscale
+      annotations:
+        tailscale.com/funnel: "true"
+      hosts:
+        - host: opencost
+          paths:
+            - /
+      tls:
+        - hosts:
+            - opencost
 
