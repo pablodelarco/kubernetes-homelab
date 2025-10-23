@@ -45,6 +45,9 @@ emqxConfig:
   EMQX_CLUSTER__DISCOVERY_STRATEGY: dns
   EMQX_CLUSTER__DNS__NAME: "emqx-headless.emqx.svc.cluster.local"
   EMQX_CLUSTER__DNS__RECORD_TYPE: srv
+  # Disable SSL/TLS listeners for now
+  EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
+  EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"
 
 # Environment variables from secrets
 envFrom:
