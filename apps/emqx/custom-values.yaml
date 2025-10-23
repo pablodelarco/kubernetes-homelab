@@ -16,11 +16,11 @@ service:
   annotations:
     metallb.universe.tf/allow-shared-ip: emqx  # Share IP across services if needed
   # Port configuration (integers, not objects)
-  mqtt: 1883          # MQTT port
-  ws: 8083            # WebSocket port
+  mqtt: 1883          # MQTT port (for Home Assistant and local devices)
+  ws: 8083            # WebSocket port (for web-based MQTT clients)
   dashboard: 18083    # Dashboard port
-  # SSL/TLS ports disabled for now - will configure later
-  # mqttssl: 8883       # MQTT over SSL/TLS (SECURE - use this for external)
+  # SSL/TLS ports not needed for local network use
+  # mqttssl: 8883       # MQTT over SSL/TLS
   # wss: 8084           # WebSocket over SSL/TLS
 
 # Persistence for EMQX data
@@ -45,7 +45,7 @@ emqxConfig:
   EMQX_CLUSTER__DISCOVERY_STRATEGY: dns
   EMQX_CLUSTER__DNS__NAME: "emqx-headless.emqx.svc.cluster.local"
   EMQX_CLUSTER__DNS__RECORD_TYPE: srv
-  # Disable SSL/TLS listeners for now
+  # Disable SSL/TLS listeners - not needed for local network (Home Assistant)
   EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
   EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"
   # NOTE: Dashboard credentials are NOT set here
@@ -86,7 +86,7 @@ metrics:
   enabled: true
   type: prometheus
 
-# Ingress configuration for Tailscale Funnel
+# Ingress configuration for Tailscale Funnel (Dashboard only)
 ingress:
   dashboard:
     enabled: true
