@@ -1,0 +1,58 @@
+opencost:
+  prometheus:
+    internal:
+      namespaceName: monitoring
+      serviceName: monitoring-kube-prometheus-prometheus
+      port: 9090
+  
+  dataRetention:
+    dailyResolutionDays: 30
+  
+  exporter:
+    defaultClusterId: homelab-cluster
+    replicas: 1
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "55Mi"
+      limits:
+        memory: "1Gi"
+    persistence:
+      enabled: true
+      storageClass: "longhorn"
+      accessMode: ReadWriteOnce
+      size: 5Gi
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - beelink
+  
+  metrics:
+    kubeStateMetrics:
+      emitKsmV1Metrics: false
+      emitKsmV1MetricsOnly: false
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: monitoring
+  
+  ui:
+    enabled: true
+    ingress:
+      enabled: true
+      ingressClassName: tailscale
+      annotations:
+        tailscale.com/funnel: "true"
+      hosts:
+        - host: opencost
+          paths:
+            - /
+      tls:
+        - hosts:
+            - opencost
+
