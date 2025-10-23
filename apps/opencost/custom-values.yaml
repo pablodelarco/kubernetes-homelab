@@ -4,6 +4,11 @@ service:
   type: LoadBalancer
   annotations: {}
   labels: {}
+  ports:
+    - name: http
+      port: 80
+      targetPort: 9090
+      protocol: TCP
 
 opencost:
   prometheus:
