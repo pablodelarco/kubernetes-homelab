@@ -9,7 +9,7 @@ persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 5Gi
-  storageClass: ""
+  storageClass: "longhorn"  # Use Longhorn for persistent storage
 
 
 ingress:
