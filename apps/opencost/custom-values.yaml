@@ -1,13 +1,20 @@
+# Service configuration - LoadBalancer for MetalLB
+service:
+  enabled: true
+  type: LoadBalancer
+  annotations: {}
+  labels: {}
+
 opencost:
   prometheus:
     internal:
       namespaceName: monitoring
       serviceName: monitoring-kube-prometheus-prometheus
       port: 9090
-  
+
   dataRetention:
     dailyResolutionDays: 30
-  
+
   exporter:
     defaultClusterId: homelab-cluster
     replicas: 1
@@ -31,7 +38,7 @@ opencost:
                   operator: In
                   values:
                     - beelink
-  
+
   metrics:
     kubeStateMetrics:
       emitKsmV1Metrics: false
@@ -40,21 +47,21 @@ opencost:
       enabled: true
       additionalLabels:
         release: monitoring
-  
+
   ui:
     enabled: true
-    service:
-      type: LoadBalancer
-    ingress:
-      enabled: false
-      # ingressClassName: tailscale
-      # annotations:
-      #   tailscale.com/funnel: "true"
-      # hosts:
-      #   - host: opencost
-      #     paths:
-      #       - /
-      # tls:
-      #   - hosts:
-      #       - opencost
+
+# Ingress disabled - using LoadBalancer instead
+ingress:
+  enabled: false
+  # ingressClassName: tailscale
+  # annotations:
+  #   tailscale.com/funnel: "true"
+  # hosts:
+  #   - host: opencost
+  #     paths:
+  #       - /
+  # tls:
+  #   - hosts:
+  #       - opencost
 
