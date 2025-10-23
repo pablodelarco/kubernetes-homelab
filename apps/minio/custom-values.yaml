@@ -27,8 +27,8 @@ existingSecret: minio-login
 ## Persistence configuration
 persistence:
   enabled: true
-  storageClass: nfs                 # Use default storage class if empty
-  accessMode: ReadWriteMany         # Necessary for NFS
+  storageClass: longhorn            # Use Longhorn for better performance
+  accessMode: ReadWriteOnce         # Sufficient for standalone mode
   size: 150Gi                       # Requested storage size
   annotations: {}                   # Optional annotations
 
@@ -74,9 +74,6 @@ metrics:
     # Scrape timeout, for example `scrapeTimeout: 10s`
     scrapeTimeout: 30s
   
-
-customCommands:
-  command: "MINIO_PROMETHEUS_AUTH_TYPE=public"
 
 resources:
   requests:
