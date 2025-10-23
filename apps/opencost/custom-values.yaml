@@ -1,14 +1,9 @@
-# Service configuration - LoadBalancer for MetalLB
+# Service configuration - ClusterIP (access via Tailscale Funnel)
 service:
   enabled: true
-  type: LoadBalancer
+  type: ClusterIP
   annotations: {}
   labels: {}
-  ports:
-    - name: http
-      port: 80
-      targetPort: 9090
-      protocol: TCP
 
 opencost:
   prometheus:
