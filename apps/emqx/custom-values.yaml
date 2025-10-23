@@ -15,26 +15,12 @@ service:
   type: LoadBalancer  # Uses MetalLB to get a dedicated IP
   annotations:
     metallb.universe.tf/allow-shared-ip: emqx  # Share IP across services if needed
-  # MQTT ports (plain - for internal use only)
-  mqtt:
-    enabled: true
-    port: 1883
-  # MQTT over WebSocket
-  ws:
-    enabled: true
-    port: 8083
-  # MQTT over SSL/TLS (SECURE - use this for external connections)
-  mqtts:
-    enabled: true
-    port: 8883
-  # WebSocket over SSL/TLS
-  wss:
-    enabled: true
-    port: 8084
-  # Dashboard port
-  dashboard:
-    enabled: true
-    port: 18083
+  # Port configuration (integers, not objects)
+  mqtt: 1883          # MQTT port (plain - for internal use)
+  mqttssl: 8883       # MQTT over SSL/TLS (SECURE - use this for external)
+  ws: 8083            # WebSocket port
+  wss: 8084           # WebSocket over SSL/TLS
+  dashboard: 18083    # Dashboard port
 
 # Persistence for EMQX data
 persistence:
@@ -52,27 +38,12 @@ resources:
     cpu: 1000m
     memory: 1Gi
 
-# EMQX Configuration
+# EMQX Configuration (using HOCON format for EMQX 5.x)
 emqxConfig:
   EMQX_NAME: emqx
-  EMQX_CLUSTER__DISCOVERY_STRATEGY: static
-  EMQX_CLUSTER__STATIC__SEEDS: "emqx-0.emqx-headless.emqx.svc.cluster.local"
-
-  # Logging
-  EMQX_LOG__CONSOLE__LEVEL: info
-
-  # SSL/TLS Configuration for MQTTS
-  EMQX_LISTENERS__SSL__DEFAULT__BIND: "0.0.0.0:8883"
-  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__CACERTFILE: "/opt/emqx/etc/certs/ca.crt"
-  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__CERTFILE: "/opt/emqx/etc/certs/tls.crt"
-  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__KEYFILE: "/opt/emqx/etc/certs/tls.key"
-  EMQX_LISTENERS__SSL__DEFAULT__SSL_OPTIONS__VERIFY: "verify_none"
-
-  # WebSocket SSL Configuration
-  EMQX_LISTENERS__WSS__DEFAULT__BIND: "0.0.0.0:8084"
-  EMQX_LISTENERS__WSS__DEFAULT__SSL_OPTIONS__CACERTFILE: "/opt/emqx/etc/certs/ca.crt"
-  EMQX_LISTENERS__WSS__DEFAULT__SSL_OPTIONS__CERTFILE: "/opt/emqx/etc/certs/tls.crt"
-  EMQX_LISTENERS__WSS__DEFAULT__SSL_OPTIONS__KEYFILE: "/opt/emqx/etc/certs/tls.key"
+  EMQX_CLUSTER__DISCOVERY_STRATEGY: dns
+  EMQX_CLUSTER__DNS__NAME: "emqx-headless.emqx.svc.cluster.local"
+  EMQX_CLUSTER__DNS__RECORD_TYPE: srv
 
 # Environment variables from secrets
 envFrom:
@@ -125,9 +96,38 @@ extraVolumes:
   - name: emqx-tls
     secret:
       secretName: emqx-tls-secret
+  - name: emqx-loaded-modules
+    emptyDir: {}
 
 extraVolumeMounts:
   - name: emqx-tls
     mountPath: /opt/emqx/etc/certs
     readOnly: true
+
+# EMQX 5.x SSL/TLS configuration via mounted config
+# This will be added to the EMQX configuration
+emqxAclConfig: ""
+emqxLoadedModules: |
+  {
+    listeners.ssl.default {
+      bind = "0.0.0.0:8883"
+      max_connections = 512000
+      ssl_options {
+        cacertfile = "/opt/emqx/etc/certs/ca.crt"
+        certfile = "/opt/emqx/etc/certs/tls.crt"
+        keyfile = "/opt/emqx/etc/certs/tls.key"
+        verify = verify_none
+      }
+    }
+    listeners.wss.default {
+      bind = "0.0.0.0:8084"
+      max_connections = 512000
+      ssl_options {
+        cacertfile = "/opt/emqx/etc/certs/ca.crt"
+        certfile = "/opt/emqx/etc/certs/tls.crt"
+        keyfile = "/opt/emqx/etc/certs/tls.key"
+        verify = verify_none
+      }
+    }
+  }
 
