@@ -95,7 +95,22 @@ metrics:
   enabled: true
   type: prometheus
 
-# Volume mounts for TLS certificates
+# Ingress configuration for Tailscale Funnel
+ingress:
+  dashboard:
+    enabled: true
+    ingressClassName: tailscale
+    annotations:
+      tailscale.com/funnel: "true"
+    path: /
+    pathType: Prefix
+    hosts:
+      - emqx
+    tls:
+      - hosts:
+          - emqx
+
+# Volume mounts for TLS certificates (for future MQTTS support)
 extraVolumes:
   - name: emqx-tls
     secret:
