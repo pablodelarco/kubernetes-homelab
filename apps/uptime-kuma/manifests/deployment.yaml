@@ -19,6 +19,13 @@ spec:
         app: uptime-kuma
     spec:
       serviceAccountName: uptime-kuma-sa
+      # DNS override for local access to avoid hairpin NAT issues
+      hostAliases:
+        - ip: "192.168.1.233"
+          hostnames:
+            - "roomiorentals.com"
+            - "dev.roomiorentals.com"
+            - "staging.roomiorentals.com"
       containers:
         - name: uptime-kuma
           image: louislam/uptime-kuma:latest
