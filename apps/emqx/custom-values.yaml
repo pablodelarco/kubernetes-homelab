@@ -86,25 +86,21 @@ metrics:
   enabled: true
   type: prometheus
 
-# Ingress configuration for Traefik (Dashboard only)
-# Using Traefik instead of Tailscale because EMQX dashboard has too many
-# JavaScript files that cause timeouts with Tailscale proxy
+# Ingress configuration for Tailscale (Dashboard only - private, not Funnel)
 ingress:
   dashboard:
     enabled: true
-    ingressClassName: traefik
+    ingressClassName: tailscale
     annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-prod"
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
+      # Removed tailscale.com/funnel to make it private (Tailscale network only)
+      # This prevents public internet access and bot attacks
     path: /
     pathType: Prefix
     hosts:
-      - emqx.pablodelarco.com
+      - emqx
     tls:
-      - secretName: emqx-dashboard-tls
-        hosts:
-          - emqx.pablodelarco.com
+      - hosts:
+          - emqx
 
 # Volume mounts for TLS certificates (for future MQTTS support)
 extraVolumes:
