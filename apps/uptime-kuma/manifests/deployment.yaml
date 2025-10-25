@@ -20,20 +20,55 @@ spec:
     spec:
       serviceAccountName: uptime-kuma-sa
       # DNS override for local access to avoid hairpin NAT issues
+      # Note: hostAliases only supports IPv4, so we use dnsConfig to force IPv4
       hostAliases:
         - ip: "192.168.1.233"
           hostnames:
             - "roomiorentals.com"
             - "dev.roomiorentals.com"
             - "staging.roomiorentals.com"
+      # Force DNS to use IPv4 by setting single-request option
+      dnsConfig:
+        options:
+          - name: single-request
+          - name: ndots
+            value: "1"
+      # Init container to add Cloudflare Origin CA to trusted certificates
+      initContainers:
+        - name: install-ca-cert
+          image: louislam/uptime-kuma:latest
+          command:
+            - sh
+            - -c
+            - |
+              # For Alpine Linux / Node.js
+              # Copy Cloudflare CA to a location Node.js can use
+              mkdir -p /tmp/ca-certs
+              cp /cloudflare-ca/cloudflare-origin-ca.crt /tmp/ca-certs/
+              echo "Cloudflare Origin CA certificate copied"
+              ls -la /tmp/ca-certs/
+          volumeMounts:
+            - name: cloudflare-ca
+              mountPath: /cloudflare-ca
+            - name: ca-certs
+              mountPath: /tmp/ca-certs
       containers:
         - name: uptime-kuma
           image: louislam/uptime-kuma:latest
+          env:
+            # Disable IPv6 to force IPv4 resolution for local monitoring
+            - name: NODE_OPTIONS
+              value: "--dns-result-order=ipv4first"
+            # Use custom CA certificates - point to Cloudflare Origin CA
+            - name: NODE_EXTRA_CA_CERTS
+              value: "/tmp/ca-certs/cloudflare-origin-ca.crt"
           ports:
             - containerPort: 3001
           volumeMounts:
             - name: data
               mountPath: /app/data
+            - name: ca-certs
+              mountPath: /tmp/ca-certs
           livenessProbe:
             httpGet:
               path: /
@@ -50,3 +85,8 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: uptime-kuma-pvc
+        - name: cloudflare-ca
+          configMap:
+            name: cloudflare-origin-ca
+        - name: ca-certs
+          emptyDir: {}
