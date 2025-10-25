@@ -48,8 +48,6 @@ emqxConfig:
   # Disable SSL/TLS listeners - not needed for local network (Home Assistant)
   EMQX_LISTENERS__SSL__DEFAULT__ENABLE: "false"
   EMQX_LISTENERS__WSS__DEFAULT__ENABLE: "false"
-  # Enable proxy headers for Tailscale ingress
-  EMQX_DASHBOARD__LISTENERS__HTTP__PROXY_HEADER: "true"
   # NOTE: Dashboard credentials are NOT set here
   # They come from envFromSecret (below) which loads them from the SealedSecret
   # This prevents the Helm chart from using its default password "public"
