@@ -86,13 +86,14 @@ metrics:
   enabled: true
   type: prometheus
 
-# Ingress configuration for Tailscale Funnel (Dashboard only)
+# Ingress configuration for Tailscale (Dashboard only - private, not Funnel)
 ingress:
   dashboard:
     enabled: true
     ingressClassName: tailscale
     annotations:
-      tailscale.com/funnel: "true"
+      # Removed tailscale.com/funnel to make it private (Tailscale network only)
+      # This prevents public internet access and bot attacks
     path: /
     pathType: Prefix
     hosts:
