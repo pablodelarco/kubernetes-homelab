@@ -32,11 +32,6 @@ spec:
               mountPath: /config
             - name: downloads
               mountPath: /downloads
-          ports:
-            - containerPort: 8080
-            - containerPort: 6881 # Add this port for torrent traffic
-            - containerPort: 6881 # UDP for tracker communication
-              protocol: UDP
           livenessProbe:
             httpGet:
               path: /
@@ -77,6 +72,14 @@ spec:
               value: "off"
             - name: SHADOWSOCKS
               value: "off"
+          ports:
+            - containerPort: 8080
+              name: qbitt-web
+            - containerPort: 6881
+              name: qbitt-tcp
+            - containerPort: 6881
+              protocol: UDP
+              name: qbitt-udp
           securityContext:
             capabilities:
               add:
