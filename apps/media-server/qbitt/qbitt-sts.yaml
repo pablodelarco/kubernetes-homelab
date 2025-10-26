@@ -67,18 +67,22 @@ spec:
             - name: SERVER_COUNTRIES
               value: "Switzerland"
             - name: FIREWALL_INPUT_PORTS
-              value: "8080"
+              value: "8080,8888"
             - name: FIREWALL_VPN_INPUT_PORTS
               value: "6881,6969,1337"
             - name: DOT
               value: "off"
             - name: HTTPPROXY
-              value: "off"
+              value: "on"
+            - name: HTTPPROXY_LISTENING_ADDRESS
+              value: ":8888"
             - name: SHADOWSOCKS
               value: "off"
           ports:
             - containerPort: 8080
               name: qbitt-web
+            - containerPort: 8888
+              name: http-proxy
             - containerPort: 6881
               name: qbitt-tcp
             - containerPort: 6881
