@@ -40,6 +40,10 @@ spec:
               mountPath: /config
             - name: videos
               mountPath: /data/videos
+            - name: cache
+              mountPath: /cache
+            - name: transcode
+              mountPath: /config/transcodes
           livenessProbe:
             httpGet:
               path: /health
@@ -63,3 +67,9 @@ spec:
         - name: videos
           persistentVolumeClaim:
             claimName: jellyfin-videos
+        - name: cache
+          emptyDir:
+            sizeLimit: 20Gi
+        - name: transcode
+          emptyDir:
+            sizeLimit: 50Gi
