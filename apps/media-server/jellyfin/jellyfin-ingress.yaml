@@ -4,7 +4,8 @@ metadata:
   name: jellyfin
   namespace: media
   annotations:
-    tailscale.com/funnel: "true"
+    # Removed tailscale.com/funnel to fix authentication issues
+    # Jellyfin will only be accessible on your Tailnet, not publicly
 spec:
   ingressClassName: tailscale
   defaultBackend:
