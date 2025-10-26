@@ -28,7 +28,7 @@ spec:
         - containerPort: 9117
         livenessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 9117
           initialDelaySeconds: 60
           periodSeconds: 30
@@ -36,7 +36,7 @@ spec:
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 9117
           initialDelaySeconds: 30
           periodSeconds: 10
