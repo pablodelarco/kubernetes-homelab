@@ -38,7 +38,7 @@ spec:
               port: 8080
             initialDelaySeconds: 120
             periodSeconds: 30
-            timeoutSeconds: 10
+            timeoutSeconds: 30
             failureThreshold: 5
           readinessProbe:
             httpGet:
@@ -46,7 +46,7 @@ spec:
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 10
-            timeoutSeconds: 10
+            timeoutSeconds: 30
             failureThreshold: 5
 
         - name: gluetun
