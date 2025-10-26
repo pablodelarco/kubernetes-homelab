@@ -30,6 +30,9 @@ spec:
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:latest
+          env:
+            - name: JELLYFIN_PublishedServerUrl
+              value: "https://jellyfin.tabby-carp.ts.net"
           ports:
             - containerPort: 8096
           securityContext:
@@ -48,8 +51,6 @@ spec:
               mountPath: /data/videos
             - name: cache
               mountPath: /cache
-            - name: transcode
-              mountPath: /config/transcodes
             - name: dri
               mountPath: /dev/dri
           livenessProbe:
@@ -76,9 +77,6 @@ spec:
           persistentVolumeClaim:
             claimName: jellyfin-videos
         - name: cache
-          emptyDir:
-            sizeLimit: 20Gi
-        - name: transcode
           emptyDir:
             sizeLimit: 50Gi
         - name: dri
