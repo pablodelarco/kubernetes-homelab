@@ -72,9 +72,11 @@ spec:
             - name: SERVER_COUNTRIES
               value: "Switzerland"
             - name: FIREWALL_VPN_INPUT_PORTS
-              value: "6881,6969,1337" # Allow input traffic for common BitTorrent ports
-            - name: FIREWALL_VPN_OUTPUT_PORTS
-              value: "6881,6969,1337" # Allow output traffic for common BitTorrent ports
+              value: "8080,6881,6969,1337" # Allow Web UI (8080) and BitTorrent ports
+            - name: HTTPPROXY
+              value: "off"
+            - name: SHADOWSOCKS
+              value: "off"
           securityContext:
             capabilities:
               add:
