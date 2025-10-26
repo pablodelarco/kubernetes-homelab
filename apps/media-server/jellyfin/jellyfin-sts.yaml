@@ -33,6 +33,11 @@ spec:
           env:
             - name: JELLYFIN_PublishedServerUrl
               value: "https://jellyfin.tabby-carp.ts.net"
+            # Trust Tailscale proxy IPs
+            - name: JELLYFIN_NETWORK_ENABLEIPV4
+              value: "true"
+            - name: JELLYFIN_NETWORK_ENABLEIPV6
+              value: "false"
           ports:
             - containerPort: 8096
           securityContext:
