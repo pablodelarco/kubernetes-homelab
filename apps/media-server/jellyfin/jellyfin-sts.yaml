@@ -28,6 +28,14 @@ spec:
           image: jellyfin/jellyfin:latest
           ports:
             - containerPort: 8096
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              add:
+                - CHOWN
+                - SETUID
+                - SETGID
           resources:
             requests:
               memory: "1Gi"
@@ -44,6 +52,8 @@ spec:
               mountPath: /cache
             - name: transcode
               mountPath: /config/transcodes
+            - name: dri
+              mountPath: /dev/dri
           livenessProbe:
             httpGet:
               path: /health
@@ -73,3 +83,7 @@ spec:
         - name: transcode
           emptyDir:
             sizeLimit: 50Gi
+        - name: dri
+          hostPath:
+            path: /dev/dri
+            type: Directory
