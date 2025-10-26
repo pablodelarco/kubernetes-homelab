@@ -21,6 +21,10 @@ spec:
           value: "65534"
         - name: PGID
           value: "65534"
+        - name: HTTP_PROXY
+          value: "http://qbitt.media.svc.cluster.local:8888"
+        - name: HTTPS_PROXY
+          value: "http://qbitt.media.svc.cluster.local:8888"
         volumeMounts:
         - name: config
           mountPath: /config
