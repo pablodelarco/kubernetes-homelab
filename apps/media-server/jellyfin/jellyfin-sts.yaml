@@ -13,6 +13,8 @@ spec:
     metadata:
       labels:
         app: jellyfin
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/jellyfin: unconfined
     spec:
       securityContext:
         supplementalGroups: [44, 993]
@@ -31,8 +33,7 @@ spec:
           ports:
             - containerPort: 8096
           securityContext:
-            privileged: false
-            allowPrivilegeEscalation: false
+            privileged: true
           resources:
             requests:
               memory: "1Gi"
