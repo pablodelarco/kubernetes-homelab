@@ -67,7 +67,9 @@ spec:
             - name: SERVER_COUNTRIES
               value: "Switzerland"
             - name: FIREWALL_VPN_INPUT_PORTS
-              value: "8080,6881,6969,1337" # Allow Web UI (8080) and BitTorrent ports
+              value: "6881,6969,1337" # Allow BitTorrent ports through VPN
+            - name: FIREWALL_INPUT_PORTS
+              value: "8080" # Allow Web UI from local network
             - name: FIREWALL_OUTBOUND_SUBNETS
               value: "10.42.0.0/16,10.43.0.0/16" # Allow Kubernetes pod and service networks
             - name: HTTPPROXY
