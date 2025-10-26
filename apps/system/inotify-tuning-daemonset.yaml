@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: inotify-tuning
+  namespace: kube-system
+  labels:
+    app: inotify-tuning
+spec:
+  selector:
+    matchLabels:
+      app: inotify-tuning
+  template:
+    metadata:
+      labels:
+        app: inotify-tuning
+    spec:
+      hostPID: true
+      hostNetwork: true
+      initContainers:
+        - name: sysctl-tuning
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - |
+              # Increase inotify limits for applications like Jellyfin
+              sysctl -w fs.inotify.max_user_instances=1024
+              sysctl -w fs.inotify.max_user_watches=524288
+              sysctl -w fs.inotify.max_queued_events=32768
+              echo "inotify limits increased successfully"
+          securityContext:
+            privileged: true
+      containers:
+        - name: pause
+          image: gcr.io/google_containers/pause:3.2
+          resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
+            limits:
+              cpu: 10m
+              memory: 10Mi
+
