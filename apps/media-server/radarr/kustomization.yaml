@@ -1,0 +1,8 @@
+resources:
+  - radarr-pvc.yaml
+  - radarr-sts.yaml
+  - radarr-svc.yaml
+  - radarr-ingress.yaml
+
+namespace: media
+

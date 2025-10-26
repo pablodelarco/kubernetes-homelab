@@ -4,7 +4,7 @@ metadata:
   name: qbitt
   namespace: media
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: qbitt
   ports:

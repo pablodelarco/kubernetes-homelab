@@ -1,0 +1,9 @@
+resources:
+  - nfs-download-pv-pvc.yaml
+  - qbitt-pvc.yaml
+  - qbitt-sts.yaml
+  - qbitt-svc.yaml
+  - qbitt-ingress.yaml
+
+namespace: media
+
