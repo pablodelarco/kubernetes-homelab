@@ -37,6 +37,22 @@ spec:
             - containerPort: 6881 # Add this port for torrent traffic
             - containerPort: 6881 # UDP for tracker communication
               protocol: UDP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
 
         - name: gluetun
           image: qmcgaw/gluetun

@@ -19,9 +19,9 @@ spec:
           image: linuxserver/radarr
           env:
             - name: PUID
-              value: "65534"  
+              value: "65534"
             - name: PGID
-              value: "65534"  
+              value: "65534"
           volumeMounts:
             - name: config
               mountPath: /config
@@ -31,6 +31,22 @@ spec:
               mountPath: /downloads
           ports:
             - containerPort: 7878
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 7878
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 7878
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
       volumes:
         - name: config
           persistentVolumeClaim:

@@ -1,0 +1,9 @@
+resources:
+  - nfs-media-pv-pvc.yaml
+  - jellyfin-pvc.yaml
+  - jellyfin-sts.yaml
+  - jellyfin-svc.yaml
+  - jellyfin-ingress.yaml
+
+namespace: media
+
