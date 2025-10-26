@@ -66,8 +66,12 @@ spec:
                   key: NORDVPN_PASSWORD
             - name: SERVER_COUNTRIES
               value: "Switzerland"
-            - name: FIREWALL
-              value: "off" # Disable firewall to allow local network access
+            - name: FIREWALL_INPUT_PORTS
+              value: "8080"
+            - name: FIREWALL_VPN_INPUT_PORTS
+              value: "6881,6969,1337"
+            - name: DOT
+              value: "off"
             - name: HTTPPROXY
               value: "off"
             - name: SHADOWSOCKS
