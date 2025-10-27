@@ -162,9 +162,7 @@ statefulSet:
   # -- Optional extra annotations to add to the service resource
   annotations: {}
   # -- Optional extra annotations to add to the pods in the statefulset
-  podAnnotations:
-    # Allow privileged access for GPU
-    container.apparmor.security.beta.kubernetes.io/plex: unconfined
+  podAnnotations: {}
 
   # Security context for GPU access (same as Jellyfin)
   # Add video (44) and render (993) groups for /dev/dri access
