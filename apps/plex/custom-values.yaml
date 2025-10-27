@@ -182,6 +182,7 @@ service:
   # Use NodePort for local network access (same pattern as Jellyfin)
   type: NodePort
   port: 32400
+  # Explicitly set nodePort to 32400 (same as Plex default port)
   nodePort: 32400
 
   # Optional extra annotations to add to the service resource
