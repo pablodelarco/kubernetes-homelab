@@ -65,7 +65,7 @@ spec:
                   name: nordvpn-secrets
                   key: NORDVPN_PASSWORD
             - name: SERVER_COUNTRIES
-              value: "Switzerland"
+              value: "Netherlands"
             - name: FIREWALL_INPUT_PORTS
               value: "8080,8888"
             - name: FIREWALL_VPN_INPUT_PORTS

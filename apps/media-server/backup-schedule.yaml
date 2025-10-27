@@ -1,0 +1,76 @@
+---
+# Backup schedule for Jellyfin config
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: jellyfin-config-backup
+  namespace: longhorn-system
+spec:
+  name: jellyfin-config-backup
+  cron: "0 2 * * *"  # Daily at 2 AM
+  task: "backup"
+  groups:
+    - default
+  retain: 7  # Keep 7 daily backups
+  concurrency: 2
+  labels:
+    app: jellyfin
+    type: config
+
+---
+# Backup schedule for Radarr config
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: radarr-config-backup
+  namespace: longhorn-system
+spec:
+  name: radarr-config-backup
+  cron: "0 2 * * *"  # Daily at 2 AM
+  task: "backup"
+  groups:
+    - default
+  retain: 7  # Keep 7 daily backups
+  concurrency: 2
+  labels:
+    app: radarr
+    type: config
+
+---
+# Backup schedule for qBittorrent config
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: qbitt-config-backup
+  namespace: longhorn-system
+spec:
+  name: qbitt-config-backup
+  cron: "0 2 * * *"  # Daily at 2 AM
+  task: "backup"
+  groups:
+    - default
+  retain: 7  # Keep 7 daily backups
+  concurrency: 2
+  labels:
+    app: qbittorrent
+    type: config
+
+---
+# Backup schedule for Jackett config
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: jackett-config-backup
+  namespace: longhorn-system
+spec:
+  name: jackett-config-backup
+  cron: "0 2 * * *"  # Daily at 2 AM
+  task: "backup"
+  groups:
+    - default
+  retain: 7  # Keep 7 daily backups
+  concurrency: 2
+  labels:
+    app: jackett
+    type: config
+
