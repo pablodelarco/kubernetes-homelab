@@ -1,71 +1,62 @@
+# ============================================
+# PLEX MEDIA SERVER CONFIGURATION
+# ============================================
+# Following GitOps best practices for homelab deployment
+# - Longhorn for config storage (persistent, replicated)
+# - NFS for media library (shared with Jellyfin)
+# - LoadBalancer for direct access (better for streaming than ingress)
+# - Intel Quick Sync GPU for hardware transcoding
+# - Proper resource limits and health checks
+# ============================================
+
 ingress:
-  # Enable the ingress resource for the PMS server
-  enabled: true
-
-  # Specify the ingress class (Tailscale in this case)
-  ingressClassName: "tailscale"
-
-  # Set the URL for the ingress. This will be used as the hostname in the template.
-  url: "plex"  # Replace with a valid domain or subdomain
-
-  # Specify the certificate secret for HTTPS, or leave it blank for the default
-  certificateSecret: ""  # Replace with your certificate secret name, or leave empty
-
-  # Add annotations for the ingress
-  annotations:
-    tailscale.com/funnel: "true"
-
-
+  # Disable ingress - Plex works better with direct LoadBalancer access
+  # Ingress/proxies can cause issues with remote access and streaming
+  enabled: false
 
 pms:
-  # -- The storage class to use when provisioning the pms config volume
-  # this needs to be created manually, null will use the default
-  storageClassName: null
+  # Use Longhorn for config storage (persistent, replicated, backed up)
+  storageClassName: "longhorn"
 
-  # -- The volume size to provision for the PMS database
-  configStorage: 2Gi
+  # Config storage size - Plex metadata can grow large with many movies
+  configStorage: 10Gi
 
-  # -- Name of an existing `PersistentVolumeClaim` for the PMS database
-  # NOTE: When set, 'configStorage' and 'storageClassName' are ignored.
+  # Don't use existing claim - let Helm create it
   configExistingClaim: ""
 
-  # Enabling this will add nvidia.com/gpu: 1 to limits, and will set
-  # environment for the nvidia operator
+  # GPU configuration for hardware transcoding
+  # Note: We'll use Intel Quick Sync, not NVIDIA
   gpu:
     nvidia:
       enabled: false
 
-  resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  # Resource limits - Plex can use significant resources during transcoding
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 4000m      # Allow up to 4 CPUs for transcoding
+      memory: 8Gi     # Plex can use a lot of RAM for transcoding
 
-  # -- Add kubernetes liveness probe to pms container.
-  livenessProbe: {}
-    # httpGet:
-    #   path: /identity
-    #   port: 32400
-    # initialDelaySeconds: 60
-    # periodSeconds: 60
-    # timeoutSeconds: 1
-    # failureThreshold: 3
+  # Health checks for Plex
+  livenessProbe:
+    httpGet:
+      path: /identity
+      port: 32400
+    initialDelaySeconds: 60
+    periodSeconds: 30
+    timeoutSeconds: 5
+    failureThreshold: 3
 
-  # -- Add kubernetes readiness probe to pms container.
-  readinessProbe: {}
-    # httpGet:
-    #   path: /identity
-    #   port: 32400
-    # initialDelaySeconds: 60
-    # periodSeconds: 60
-    # timeoutSeconds: 1
-    # failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /identity
+      port: 32400
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
 
 # -- A basic image that will convert the configmap to a file in the rclone config volume
 # this is ignored if rclone is not enabled
@@ -171,29 +162,31 @@ statefulSet:
   # -- Optional extra annotations to add to the service resource
   annotations: {}
   # -- Optional extra annotations to add to the pods in the statefulset
-  podAnnotations: {}
+  podAnnotations:
+    # Allow privileged access for GPU
+    container.apparmor.security.beta.kubernetes.io/plex: unconfined
+
+  # Security context for GPU access (same as Jellyfin)
+  # Add video (44) and render (993) groups for /dev/dri access
+  podSecurityContext:
+    supplementalGroups: [44, 993]
+    fsGroup: 65534  # nobody group
 
 service:
   type: LoadBalancer
   port: 32400
 
-  # Port to use when type of service is "NodePort" (32400 by default)
-  # nodePort: 32400
+  # Preserve client source IP for proper remote access
+  # This allows Plex to see the real client IP for bandwidth detection
+  externalTrafficPolicy: Local
 
-  # when NodePort is used, plex is unable to determine user IP
-  # all traffic seems to come from within the cluster
-  # setting this to 'Local' will allow Plex to determine the actual IP of user.
-  # used to determine bitrate for remote transcoding
-  # but the pods can only be accessed by the Node IP where the pod is running
-  # Read more here: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-  # https://access.redhat.com/solutions/7028639
-  # externalTrafficPolicy: Local
-
-  # -- Optional extra annotations to add to the service resource
+  # Optional extra annotations to add to the service resource
   annotations: {}
 
-
-nodeSelector: {}
+# Pin Plex to the beelink node (same as Jellyfin)
+# This ensures access to Intel Quick Sync GPU
+nodeSelector:
+  kubernetes.io/hostname: beelink
 
 tolerations: []
 
@@ -205,30 +198,43 @@ priorityClassName: ""
 commonLabels: {}
 
 extraEnv:
-# This claim is optional, and is only used for the first startup of PMS
-# The claim is obtained from https://www.plex.tv/claim/ is is only valid for a few minutes
-  PLEX_CLAIM: "claim-E8EZRhLcoNFuTYw245xU"
+  # Plex claim token - get a new one from https://www.plex.tv/claim/
+  # This is only needed for initial setup (valid for 4 minutes)
+  # After first login, you can remove this
+  PLEX_CLAIM: ""  # Get new token from https://www.plex.tv/claim/
+
+  # Server hostname
   HOSTNAME: "PlexServer"
+
+  # Timezone
   TZ: "Europe/Madrid"
-#   PLEX_UPDATE_CHANNEL: "5"
+
+  # User/Group IDs (nobody:nogroup - same as other media apps)
   PLEX_UID: "65534"
   PLEX_GID: "65534"
-# a list of CIDRs that can use the server without authentication
-  # this is only used for the first startup of PMS
+
+  # Allow local network access without authentication (first startup only)
   ALLOWED_NETWORKS: "192.168.1.0/24"
 
-
-# -- Optionally specify additional volume mounts for the PMS and init containers.
+# Mount NFS media library (same as Jellyfin)
 extraVolumeMounts:
   - name: media
     mountPath: /data/media_player
+  # Mount Intel GPU for hardware transcoding
+  - name: dri
+    mountPath: /dev/dri
 
-# -- Optionally specify additional volumes for the pod.
+# NFS volume for media library + GPU device
 extraVolumes:
   - name: media
     nfs:
       server: 192.168.1.42
-      path: /volume1/media_player 
+      path: /volume1/media_player
+  # Intel Quick Sync GPU device
+  - name: dri
+    hostPath:
+      path: /dev/dri
+      type: Directory
 
 extraContainers: []
 # extraContainers:
