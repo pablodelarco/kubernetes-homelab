@@ -206,7 +206,7 @@ extraEnv:
   # Plex claim token - get a new one from https://www.plex.tv/claim/
   # This is only needed for initial setup (valid for 4 minutes)
   # After first login, you can remove this
-  PLEX_CLAIM: ""  # Get new token from https://www.plex.tv/claim/
+  PLEX_CLAIM: "claim-q51bxkuKdKfJNLYxxom8"  # Get new token from https://www.plex.tv/claim/
 
   # Server hostname
   HOSTNAME: "PlexServer"
