@@ -4,15 +4,23 @@
 # Following GitOps best practices for homelab deployment
 # - Longhorn for config storage (persistent, replicated)
 # - NFS for media library (shared with Jellyfin)
-# - LoadBalancer for direct access (better for streaming than ingress)
+# - NodePort for local network access
+# - Tailscale Ingress (without Funnel) for Tailscale network access
+# - Plex's built-in remote access for external sharing
 # - Intel Quick Sync GPU for hardware transcoding
 # - Proper resource limits and health checks
 # ============================================
 
 ingress:
-  # Disable ingress - Plex works better with direct LoadBalancer access
-  # Ingress/proxies can cause issues with remote access and streaming
-  enabled: false
+  # Enable Tailscale ingress for Tailscale network access
+  # Note: Funnel is NOT enabled (same as Jellyfin) to avoid streaming issues
+  # For external sharing, use Plex's built-in remote access feature
+  enabled: true
+  ingressClassName: "tailscale"
+  url: "plex"
+  certificateSecret: ""
+  annotations: {}
+    # tailscale.com/funnel: "true"  # DISABLED - causes streaming issues
 
 pms:
   # Use Longhorn for config storage (persistent, replicated, backed up)
@@ -171,12 +179,10 @@ statefulSet:
     fsGroup: 65534  # nobody group
 
 service:
-  type: LoadBalancer
+  # Use NodePort for local network access (same pattern as Jellyfin)
+  type: NodePort
   port: 32400
-
-  # Preserve client source IP for proper remote access
-  # This allows Plex to see the real client IP for bandwidth detection
-  externalTrafficPolicy: Local
+  nodePort: 32400
 
   # Optional extra annotations to add to the service resource
   annotations: {}
