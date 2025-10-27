@@ -204,9 +204,8 @@ commonLabels: {}
 
 extraEnv:
   # Plex claim token - get a new one from https://www.plex.tv/claim/
-  # This is only needed for initial setup (valid for 4 minutes)
-  # After first login, you can remove this
-  PLEX_CLAIM: "claim-q51bxkuKdKfJNLYxxom8"  # Get new token from https://www.plex.tv/claim/
+  # Server is now claimed - token removed for security
+  PLEX_CLAIM: ""
 
   # Server hostname
   HOSTNAME: "PlexServer"
@@ -219,7 +218,10 @@ extraEnv:
   PLEX_GID: "65534"
 
   # Allow local network access without authentication (first startup only)
-  ALLOWED_NETWORKS: "192.168.1.0/24"
+  ALLOWED_NETWORKS: "192.168.1.0/24,10.0.0.0/8,172.16.0.0/12"
+
+  # Advertise the server URL for proper remote access
+  ADVERTISE_IP: "http://192.168.1.106:32400/"
 
 # Mount NFS media library (same as Jellyfin)
 extraVolumeMounts:
