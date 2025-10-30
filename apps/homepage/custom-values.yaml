@@ -23,7 +23,66 @@ config:
               href: https://prometheus.io/docs/
 
   services:
-    - Media Server:
+    - Infra:
+        - Home Assistant:
+            icon: homeassistant.png
+            href: https://home-assistant.tabby-carp.ts.net/
+            description: Home automation platform
+            ping: https://home-assistant.tabby-carp.ts.net
+            widget:
+              type: homeassistant
+              url: https://home-assistant.tabby-carp.ts.net/
+              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
+
+    - CI/CD:
+        - ArgoCD:
+            icon: argocd.png
+            href: https://argocd.tabby-carp.ts.net/
+            description: GitOps continuous delivery
+
+    - Storage:
+        - MinIO:
+            icon: minio.png
+            href: https://minio-console.tabby-carp.ts.net/
+            description: S3-compatible object storage
+        - Longhorn:
+            icon: longhorn.png
+            href: https://longhorn.tabby-carp.ts.net/
+            description: Distributed block storage
+            widget:
+              type: longhorn
+              url: https://longhorn.tabby-carp.ts.net/
+
+    - Networking:
+        - Traefik:
+            icon: traefik.png
+            href: http://beelink:9000/
+            description: Reverse proxy & load balancer
+
+    - Monitoring:
+        - Uptime Kuma:
+            icon: uptime-kuma.png
+            href: https://uptime-kuma.tabby-carp.ts.net/
+            description: Uptime monitoring
+            widget:
+              type: uptimekuma
+              url: https://uptime-kuma.tabby-carp.ts.net/
+              slug: homelab
+        - Grafana:
+            icon: grafana.png
+            href: https://grafana.tabby-carp.ts.net/
+            description: Metrics & dashboards
+            widget:
+              type: grafana
+              url: https://grafana.tabby-carp.ts.net/
+              username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
+              password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
+        - Prometheus:
+            icon: prometheus.png
+            href: http://beelink:9090/
+            description: Metrics collection
+
+    - Media:
         - Jellyfin:
             icon: jellyfin.png
             href: https://jellyfin.tabby-carp.ts.net/
@@ -60,60 +119,6 @@ config:
             widget:
               type: qbittorrent
               url: https://qbitt.tabby-carp.ts.net/
-
-    - Monitoring & Observability:
-        - Grafana:
-            icon: grafana.png
-            href: https://grafana.tabby-carp.ts.net/
-            description: Metrics & dashboards
-            widget:
-              type: grafana
-              url: https://grafana.tabby-carp.ts.net/
-              username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
-              password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
-        - Uptime Kuma:
-            icon: uptime-kuma.png
-            href: https://uptime-kuma.tabby-carp.ts.net/
-            description: Uptime monitoring
-            widget:
-              type: uptimekuma
-              url: https://uptime-kuma.tabby-carp.ts.net/
-              slug: homelab
-
-    - Infrastructure & Storage:
-        - Longhorn:
-            icon: longhorn.png
-            href: https://longhorn.tabby-carp.ts.net/
-            description: Distributed block storage
-            widget:
-              type: longhorn
-              url: https://longhorn.tabby-carp.ts.net/
-        - MinIO:
-            icon: minio.png
-            href: https://minio-console.tabby-carp.ts.net/
-            description: S3-compatible object storage
-        - MinIO API:
-            icon: minio.png
-            href: https://minio.tabby-carp.ts.net/
-            description: MinIO S3 API endpoint
-
-    - Home Automation & IoT:
-        - Home Assistant:
-            icon: homeassistant.png
-            href: https://home-assistant.tabby-carp.ts.net/
-            description: Home automation platform
-            ping: https://home-assistant.tabby-carp.ts.net
-            widget:
-              type: homeassistant
-              url: https://home-assistant.tabby-carp.ts.net/
-              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
-        - EMQX Dashboard:
-            icon: emqx.png
-            href: https://emqx.tabby-carp.ts.net/
-            description: MQTT broker dashboard
-            widget:
-              type: emqx
-              url: https://emqx.tabby-carp.ts.net/
 
   widgets:
     - search:
@@ -156,18 +161,24 @@ config:
     headerStyle: boxed
     hideVersion: true
     layout:
-      Media Server:
-        style: row
-        columns: 4
-      Monitoring & Observability:
+      Infra:
         style: row
         columns: 2
-      Infrastructure & Storage:
+      CI/CD:
+        style: row
+        columns: 2
+      Storage:
+        style: row
+        columns: 2
+      Networking:
+        style: row
+        columns: 2
+      Monitoring:
         style: row
         columns: 3
-      Home Automation & IoT:
+      Media:
         style: row
-        columns: 2
+        columns: 4
 
 # Environment variables for API keys and credentials
 # These can be referenced in the config using {{HOMEPAGE_VAR_NAME}}
