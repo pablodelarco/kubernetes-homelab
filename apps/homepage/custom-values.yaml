@@ -1,35 +1,27 @@
 config:
-  # Bookmarks for quick access to useful resources
   bookmarks:
     - Developer:
         - GitHub:
-            - icon: github.png
+            - abbr: GH
               href: https://github.com/pablodelarco/kubernetes-homelab
-              description: Kubernetes Homelab Repository
-        - Kubernetes Docs:
-            - icon: kubernetes.png
+        - Kubernetes:
+            - abbr: K8s
               href: https://kubernetes.io/docs/
-              description: Official Kubernetes Documentation
     - Media:
-        - Jellyfin Docs:
-            - icon: jellyfin.png
+        - Jellyfin:
+            - abbr: JF
               href: https://jellyfin.org/docs/
-              description: Jellyfin Documentation
-        - Radarr Wiki:
-            - icon: radarr.png
+        - Radarr:
+            - abbr: RD
               href: https://wiki.servarr.com/radarr
-              description: Radarr Wiki
     - Monitoring:
-        - Grafana Dashboards:
-            - icon: grafana.png
+        - Grafana:
+            - abbr: GR
               href: https://grafana.com/grafana/dashboards/
-              description: Community Dashboards
-        - Prometheus Docs:
-            - icon: prometheus.png
+        - Prometheus:
+            - abbr: PM
               href: https://prometheus.io/docs/
-              description: Prometheus Documentation
 
-  # Services organized by category
   services:
     - Media Server:
         - Jellyfin:
@@ -123,24 +115,16 @@ config:
               type: emqx
               url: https://emqx.tabby-carp.ts.net/
 
-  # Widgets displayed at the top of the homepage
   widgets:
-    - logo:
-        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
-    - greeting:
-        text_size: xl
-        text: "Homelab Dashboard"
+    - search:
+        provider: google
+        target: _blank
     - datetime:
         text_size: xl
         format:
           dateStyle: long
           timeStyle: short
           hour12: false
-    - search:
-        provider: google
-        target: _blank
-
-    # Kubernetes cluster overview
     - kubernetes:
         cluster:
           show: true
@@ -153,8 +137,6 @@ config:
           cpu: true
           memory: true
           showLabel: true
-
-    # System resources widget
     - resources:
         backend: kubernetes
         expanded: true
