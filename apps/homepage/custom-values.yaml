@@ -35,29 +35,65 @@ config:
               key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
 
     - CI/CD:
+        - Gitea:
+            icon: gitea.png
+            href: https://github.com/pablodelarco/kubernetes-homelab
+            description: Git repository
+        - Jenkins:
+            icon: jenkins.png
+            href: #
+            description: CI/CD automation
         - ArgoCD:
             icon: argocd.png
             href: https://argocd.tabby-carp.ts.net/
-            description: GitOps continuous delivery
+            description: GitOps CD
+        - Vault:
+            icon: vault.png
+            href: #
+            description: Secrets management
 
     - Storage:
+        - Synology:
+            icon: synology.png
+            href: http://192.168.1.106:5000/
+            description: NAS storage
         - MinIO:
             icon: minio.png
             href: https://minio-console.tabby-carp.ts.net/
-            description: S3-compatible object storage
+            description: S3 object storage
         - Longhorn:
             icon: longhorn.png
             href: https://longhorn.tabby-carp.ts.net/
-            description: Distributed block storage
+            description: Block storage
             widget:
               type: longhorn
               url: https://longhorn.tabby-carp.ts.net/
+        - PostgreSQL:
+            icon: postgresql.png
+            href: #
+            description: Database
 
     - Networking:
+        - AdGuard:
+            icon: adguard-home.png
+            href: #
+            description: DNS & ad blocking
+        - WireGuard:
+            icon: wireguard.png
+            href: #
+            description: VPN
         - Traefik:
             icon: traefik.png
             href: http://beelink:9000/
-            description: Reverse proxy & load balancer
+            description: Reverse proxy
+        - Dynamic DNS:
+            icon: dns.png
+            href: #
+            description: DDNS service
+        - NPM:
+            icon: nginx-proxy-manager.png
+            href: #
+            description: Proxy manager
 
     - Monitoring:
         - Uptime Kuma:
@@ -68,10 +104,14 @@ config:
               type: uptimekuma
               url: https://uptime-kuma.tabby-carp.ts.net/
               slug: homelab
+        - Speedtest:
+            icon: speedtest-tracker.png
+            href: #
+            description: Network speed
         - Grafana:
             icon: grafana.png
             href: https://grafana.tabby-carp.ts.net/
-            description: Metrics & dashboards
+            description: Dashboards
             widget:
               type: grafana
               url: https://grafana.tabby-carp.ts.net/
@@ -80,13 +120,13 @@ config:
         - Prometheus:
             icon: prometheus.png
             href: http://beelink:9090/
-            description: Metrics collection
+            description: Metrics
 
     - Media:
         - Jellyfin:
             icon: jellyfin.png
             href: https://jellyfin.tabby-carp.ts.net/
-            description: Media streaming server
+            description: Media server
             widget:
               type: jellyfin
               url: https://jellyfin.tabby-carp.ts.net/
@@ -100,18 +140,30 @@ config:
               enableUser: false
               showEpisodeNumber: true
               expandOneStreamToTwoRows: false
+        - Jellyseerr:
+            icon: jellyseerr.png
+            href: #
+            description: Media requests
+        - Sonarr:
+            icon: sonarr.png
+            href: #
+            description: TV shows
         - Radarr:
             icon: radarr.png
             href: https://radarr.tabby-carp.ts.net/
-            description: Movie collection manager
+            description: Movies
             widget:
               type: radarr
               url: https://radarr.tabby-carp.ts.net/
               key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-        - Jackett:
-            icon: jackett.png
-            href: https://jackett.tabby-carp.ts.net/
-            description: Indexer proxy
+        - Bazarr:
+            icon: bazarr.png
+            href: #
+            description: Subtitles
+        - Prowlarr:
+            icon: prowlarr.png
+            href: #
+            description: Indexer manager
         - qBittorrent:
             icon: qbittorrent.png
             href: https://qbitt.tabby-carp.ts.net/
@@ -119,6 +171,46 @@ config:
             widget:
               type: qbittorrent
               url: https://qbitt.tabby-carp.ts.net/
+        - Jackett:
+            icon: jackett.png
+            href: https://jackett.tabby-carp.ts.net/
+            description: Indexer proxy
+
+    - Tools:
+        - Pinguin:
+            icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/pingvin-share.png
+            href: #
+            description: File sharing
+        - IT-Tools:
+            icon: it-tools.png
+            href: #
+            description: Developer tools
+        - Stirling PDF:
+            icon: stirling-pdf.png
+            href: #
+            description: PDF tools
+        - TwitchPoints:
+            icon: twitch.png
+            href: #
+            description: Twitch automation
+
+    - Extra:
+        - Minecraft Stats:
+            icon: minecraft.png
+            href: #
+            description: Server stats
+        - Minecraft Map:
+            icon: minecraft.png
+            href: #
+            description: World map
+        - Watchtower Bing:
+            icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/bing.png
+            href: #
+            description: Container updates
+        - Watchtower TV:
+            icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/plex.png
+            href: #
+            description: Media updates
 
   widgets:
     - search:
@@ -163,20 +255,26 @@ config:
     layout:
       Infra:
         style: row
-        columns: 2
+        columns: 1
       CI/CD:
         style: row
-        columns: 2
+        columns: 4
       Storage:
         style: row
-        columns: 2
+        columns: 4
       Networking:
         style: row
-        columns: 2
+        columns: 5
       Monitoring:
         style: row
-        columns: 3
+        columns: 4
       Media:
+        style: row
+        columns: 8
+      Tools:
+        style: row
+        columns: 4
+      Extra:
         style: row
         columns: 4
 
