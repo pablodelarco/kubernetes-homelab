@@ -50,10 +50,10 @@ renovate:
       },
       "regexManagers": [
         {
-          "description": "Process ArgoCD Application targetRevision",
+          "description": "Process ArgoCD Application Helm charts",
           "fileMatch": ["argocd-apps/.+\\.ya?ml$"],
           "matchStrings": [
-            "chart: (?<depName>.*?)\\n.*?targetRevision: (?<currentValue>.*)"
+            "repoURL: ['\"]?(?<registryUrl>.*?)['\"]?\\s+chart: (?<depName>[^\\s]+)\\s+targetRevision: (?<currentValue>.*)"
           ],
           "datasourceTemplate": "helm"
         }
