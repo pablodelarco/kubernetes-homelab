@@ -72,10 +72,12 @@ renovate:
     }
 
 # Secret for GitHub token
-# Create with: kubectl create secret generic renovate-secret --from-literal=token=YOUR_GITHUB_TOKEN -n renovate
-existingSecret: renovate-secret
-secretKeyRef:
-  key: token
+# The secret should contain RENOVATE_TOKEN key
+secrets:
+  RENOVATE_TOKEN:
+    secretKeyRef:
+      name: renovate-secret
+      key: token
 
 # Resources
 resources:
