@@ -7,7 +7,7 @@ replicaCount: 1
 # Image configuration
 image:
   repository: emqx/emqx
-  tag: "5.5.0"
+  tag: "5.10.1"
   pullPolicy: IfNotPresent
 
 # Service configuration
