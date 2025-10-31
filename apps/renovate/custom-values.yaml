@@ -72,12 +72,8 @@ renovate:
     }
 
 # Secret for GitHub token
-# The secret should contain RENOVATE_TOKEN key
-secrets:
-  RENOVATE_TOKEN:
-    secretKeyRef:
-      name: renovate-secret
-      key: token
+# The secret should contain RENOVATE_TOKEN environment variable
+existingSecret: renovate-secret
 
 # Resources
 resources:
