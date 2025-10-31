@@ -40,6 +40,8 @@ renovate:
       "suppressNotifications": ["prEditedNotification"],
       "rebaseWhen": "conflicted",
       "schedule": ["at any time"],
+      "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
+      "platformCommit": true,
       "kubernetes": {
         "fileMatch": [
           "cluster/.+\\.ya?ml$",
@@ -58,15 +60,25 @@ renovate:
       ],
       "packageRules": [
         {
-          "description": "Auto-merge patch updates",
-          "matchUpdateTypes": ["patch"],
+          "description": "Auto-merge all updates",
+          "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
           "automerge": true,
-          "automergeType": "pr"
+          "automergeType": "branch",
+          "platformAutomerge": false
         },
         {
-          "description": "Group ArgoCD apps",
-          "matchFileNames": ["argocd-apps/**"],
-          "groupName": "ArgoCD Applications"
+          "description": "Auto-merge major updates for non-critical apps",
+          "matchUpdateTypes": ["major"],
+          "excludePackageNames": ["longhorn", "kube-prometheus-stack"],
+          "automerge": true,
+          "automergeType": "branch",
+          "platformAutomerge": false
+        },
+        {
+          "description": "Create PR for major updates of critical apps",
+          "matchUpdateTypes": ["major"],
+          "matchPackageNames": ["longhorn", "kube-prometheus-stack"],
+          "automerge": false
         }
       ]
     }
