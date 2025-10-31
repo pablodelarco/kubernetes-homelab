@@ -1,0 +1,97 @@
+# Renovate Helm Chart Values
+# Automatically updates Helm charts and container images
+
+cronjob:
+  # Run every 2 hours
+  schedule: '0 */2 * * *'
+  
+  # Job history
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  
+  # Concurrency
+  concurrencyPolicy: Forbid
+
+renovate:
+  # Platform configuration
+  platform: github
+  endpoint: https://api.github.com/
+  
+  # Repository to scan
+  autodiscover: false
+  
+  # Logging
+  logLevel: info
+  
+  # Git configuration
+  gitAuthor: "Renovate Bot <bot@renovateapp.com>"
+  
+  # Renovate config file
+  config: |
+    {
+      "repositories": ["pablodelarco/kubernetes-homelab"],
+      "extends": [
+        "config:recommended"
+      ],
+      "timezone": "Europe/Madrid",
+      "semanticCommits": "enabled",
+      "dependencyDashboard": true,
+      "dependencyDashboardTitle": "🤖 Renovate Dashboard",
+      "suppressNotifications": ["prEditedNotification"],
+      "rebaseWhen": "conflicted",
+      "schedule": ["at any time"],
+      "kubernetes": {
+        "fileMatch": [
+          "cluster/.+\\.ya?ml$",
+          "argocd-apps/.+\\.ya?ml$"
+        ]
+      },
+      "regexManagers": [
+        {
+          "description": "Process ArgoCD Application targetRevision",
+          "fileMatch": ["argocd-apps/.+\\.ya?ml$"],
+          "matchStrings": [
+            "chart: (?<depName>.*?)\\n.*?targetRevision: (?<currentValue>.*)"
+          ],
+          "datasourceTemplate": "helm"
+        }
+      ],
+      "packageRules": [
+        {
+          "description": "Auto-merge patch updates",
+          "matchUpdateTypes": ["patch"],
+          "automerge": true,
+          "automergeType": "pr"
+        },
+        {
+          "description": "Group ArgoCD apps",
+          "matchFileNames": ["argocd-apps/**"],
+          "groupName": "ArgoCD Applications"
+        }
+      ]
+    }
+
+# Secret for GitHub token
+# Create with: kubectl create secret generic renovate-secret --from-literal=token=YOUR_GITHUB_TOKEN -n renovate
+existingSecret: renovate-secret
+
+# Resources
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# Node affinity - run on beelink
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - beelink
+
