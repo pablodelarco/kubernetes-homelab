@@ -3,6 +3,10 @@ kind: Application
 metadata:
   name: radarr
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: radarr=linuxserver/radarr
+    argocd-image-updater.argoproj.io/radarr.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:

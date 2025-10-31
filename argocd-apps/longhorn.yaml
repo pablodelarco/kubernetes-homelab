@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: longhorn
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: chart=charts.longhorn.io/longhorn
+    argocd-image-updater.argoproj.io/chart.update-strategy: semver
+    argocd-image-updater.argoproj.io/chart.allow-tags: regexp:^1\.7\.
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   sources:
