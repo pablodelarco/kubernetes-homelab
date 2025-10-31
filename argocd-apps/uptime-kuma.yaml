@@ -3,6 +3,10 @@ kind: Application
 metadata:
   name: uptime-kuma
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: uptimekuma=louislam/uptime-kuma
+    argocd-image-updater.argoproj.io/uptimekuma.update-strategy: semver
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:

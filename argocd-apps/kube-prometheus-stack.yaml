@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: monitoring
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: chart=prometheus-community.github.io/helm-charts/kube-prometheus-stack
+    argocd-image-updater.argoproj.io/chart.update-strategy: semver
+    argocd-image-updater.argoproj.io/chart.allow-tags: regexp:^67\.
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   sources:

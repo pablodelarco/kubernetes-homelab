@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: homarr
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: chart=oben01.github.io/charts/homarr
+    argocd-image-updater.argoproj.io/chart.update-strategy: semver
+    argocd-image-updater.argoproj.io/chart.allow-tags: regexp:^1\.
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
