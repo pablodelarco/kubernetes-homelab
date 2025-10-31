@@ -14,10 +14,6 @@ config:
     user: "argocd-image-updater"
     email: "argocd-image-updater@homelab.local"
 
-  # Write-back method: use ArgoCD API (no Git credentials needed)
-  # Applications will be updated via ArgoCD API, then ArgoCD syncs to Git
-  applicationsAPIKind: "applications"
-
   # Registries configuration
   registries:
     - name: Docker Hub
