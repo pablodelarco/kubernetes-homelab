@@ -13,7 +13,7 @@ spec:
   sources:
     - repoURL: 'https://opencost.github.io/opencost-helm-chart'
       chart: opencost
-      targetRevision: 2.3.2
+      targetRevision: 2.4.0
       helm:
         valueFiles:
           - $values/apps/opencost/custom-values.yaml

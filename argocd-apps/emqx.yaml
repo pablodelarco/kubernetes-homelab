@@ -14,7 +14,7 @@ spec:
     # EMQX Helm chart
     - repoURL: 'https://repos.emqx.io/charts'
       chart: emqx
-      targetRevision: 5.5.0
+      targetRevision: 5.8.8
       helm:
         valueFiles:
           - $values/apps/emqx/custom-values.yaml

@@ -17,7 +17,7 @@ spec:
   sources:
     - repoURL: 8gears.container-registry.com
       chart: library/n8n
-      targetRevision: "1.0.6"
+      targetRevision: "1.1.0"
       helm:
         valueFiles:
           - values.yaml

@@ -13,7 +13,7 @@ spec:
   sources:
     - repoURL: 'http://pajikos.github.io/home-assistant-helm-chart/'
       chart: home-assistant
-      targetRevision: 0.2.100
+      targetRevision: 0.3.27
       helm:
         valueFiles:
           - $values/apps/home-assistant/custom-values.yaml
