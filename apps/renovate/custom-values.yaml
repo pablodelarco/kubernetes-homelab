@@ -53,7 +53,7 @@ renovate:
           "description": "Process ArgoCD Application Helm charts",
           "fileMatch": ["argocd-apps/.+\\.ya?ml$"],
           "matchStrings": [
-            "repoURL: ['\"]?(?<registryUrl>.*?)['\"]?\\s+chart: (?<depName>[^\\s]+)\\s+targetRevision: (?<currentValue>.*)"
+            "- repoURL: ['\"](?<registryUrl>.*?)['\"]\\s+chart: (?<depName>\\S+)\\s+targetRevision: (?<currentValue>\\S+)"
           ],
           "datasourceTemplate": "helm"
         }
