@@ -1,0 +1,124 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Europe/Madrid",
+  "semanticCommits": "enabled",
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "🤖 Renovate Dashboard",
+  "suppressNotifications": ["prEditedNotification"],
+  "rebaseWhen": "conflicted",
+  "schedule": ["every weekend"],
+  "pre-commit": {
+    "enabled": true
+  },
+  "flux": {
+    "fileMatch": ["cluster/.+\\.ya?ml$"]
+  },
+  "helm-values": {
+    "fileMatch": ["apps/.+/custom-values\\.ya?ml$"]
+  },
+  "kubernetes": {
+    "fileMatch": [
+      "cluster/.+\\.ya?ml$",
+      "argocd-apps/.+\\.ya?ml$"
+    ]
+  },
+  "regexManagers": [
+    {
+      "description": "Process ArgoCD Application manifests",
+      "fileMatch": ["argocd-apps/.+\\.ya?ml$"],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *targetRevision: (?<currentValue>.*)",
+        "targetRevision: (?<currentValue>.*)\n.*chart: (?<depName>.*)",
+        "chart: (?<depName>.*)\n.*targetRevision: (?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "description": "Process Helm chart dependencies in Chart.yaml",
+      "fileMatch": ["Chart\\.ya?ml$"],
+      "matchStrings": [
+        "- name: (?<depName>.*?)\n\\s+version: (?<currentValue>.*?)\n\\s+repository: (?<registryUrl>.*?)$"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "description": "Process container images in values files",
+      "fileMatch": ["apps/.+/custom-values\\.ya?ml$"],
+      "matchStrings": [
+        "repository: (?<depName>.*?)\\n.*?tag: (?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Auto-merge patch updates",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Auto-merge minor updates for stable apps",
+      "matchUpdateTypes": ["minor"],
+      "matchPackagePatterns": [
+        "longhorn",
+        "sealed-secrets",
+        "homepage",
+        "uptime-kuma"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Require manual approval for major updates",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["major-update", "requires-review"]
+    },
+    {
+      "description": "Group all ArgoCD app updates",
+      "matchFileNames": ["argocd-apps/**"],
+      "groupName": "ArgoCD Applications",
+      "commitMessageTopic": "ArgoCD app {{depName}}"
+    },
+    {
+      "description": "Separate monitoring stack updates",
+      "matchPackagePatterns": [
+        "kube-prometheus-stack",
+        "prometheus",
+        "grafana",
+        "alertmanager"
+      ],
+      "groupName": "Monitoring Stack",
+      "labels": ["monitoring"],
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "description": "Separate media stack updates",
+      "matchPackagePatterns": [
+        "jellyfin",
+        "radarr",
+        "sonarr",
+        "jackett",
+        "qbittorrent"
+      ],
+      "groupName": "Media Stack",
+      "labels": ["media"]
+    },
+    {
+      "description": "Pin digest for critical infrastructure",
+      "matchPackagePatterns": [
+        "longhorn",
+        "sealed-secrets",
+        "argocd"
+      ],
+      "pinDigests": true
+    }
+  ]
+}
+
