@@ -1,0 +1,75 @@
+# ArgoCD Image Updater Configuration
+# Automatically updates container images and Helm chart versions
+
+config:
+  # ArgoCD connection
+  argocd:
+    grpcWeb: true
+    serverAddress: "argocd-server.argocd.svc.cluster.local"
+    insecure: true
+    plaintext: true
+
+  # Git write-back configuration
+  git:
+    user: "argocd-image-updater"
+    email: "argocd-image-updater@homelab.local"
+
+  # Registries configuration
+  registries:
+    - name: Docker Hub
+      api_url: https://registry-1.docker.io
+      ping: yes
+      credentials: pullsecret:argocd/dockerhub-secret
+      default: yes
+    
+    - name: GitHub Container Registry
+      api_url: https://ghcr.io
+      ping: yes
+      prefix: ghcr.io
+    
+    - name: Quay
+      api_url: https://quay.io
+      ping: yes
+      prefix: quay.io
+
+# Update strategy
+updateStrategy:
+  # Check for updates every 2 minutes
+  interval: 2m
+
+# Metrics
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
+    additionalLabels:
+      release: monitoring
+
+# Resources
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# Node affinity
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - beelink
+
+# RBAC
+serviceAccount:
+  create: true
+
+# Log level
+logLevel: info
+

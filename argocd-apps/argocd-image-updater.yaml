@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-image-updater
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://argoproj.github.io/argo-helm'
+      chart: argocd-image-updater
+      targetRevision: 0.11.0
+      helm:
+        valueFiles:
+          - $values/apps/argocd-image-updater/custom-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
