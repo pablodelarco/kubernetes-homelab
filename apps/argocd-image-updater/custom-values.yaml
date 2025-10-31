@@ -4,10 +4,10 @@
 config:
   # ArgoCD connection
   argocd:
-    grpcWeb: true
+    grpcWeb: false
     serverAddress: "argocd-server.argocd.svc.cluster.local"
-    insecure: true
-    plaintext: true
+    insecure: false
+    plaintext: false
 
   # Git write-back configuration
   git:
