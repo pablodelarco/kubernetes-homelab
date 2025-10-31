@@ -79,10 +79,10 @@ existingSecret: renovate-secret
 resources:
   requests:
     cpu: 200m
-    memory: 512Mi
+    memory: 1Gi
   limits:
-    cpu: 1000m
-    memory: 2Gi
+    cpu: 2000m
+    memory: 4Gi
 
 # Node affinity - run on beelink
 affinity:
