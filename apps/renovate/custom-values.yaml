@@ -42,6 +42,7 @@ renovate:
       "schedule": ["at any time"],
       "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
       "platformCommit": true,
+      "enabledManagers": ["argocd", "helm-values", "kubernetes"],
       "argocd": {
         "fileMatch": ["argocd-apps/.+\\.ya?ml$"]
       },
