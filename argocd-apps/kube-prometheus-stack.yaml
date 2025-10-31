@@ -7,7 +7,7 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: chart=prometheus-community.github.io/helm-charts/kube-prometheus-stack
     argocd-image-updater.argoproj.io/chart.update-strategy: semver
     argocd-image-updater.argoproj.io/chart.allow-tags: regexp:^67\.
-    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   project: default
   sources:
