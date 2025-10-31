@@ -42,22 +42,14 @@ renovate:
       "schedule": ["at any time"],
       "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
       "platformCommit": true,
+      "argocd": {
+        "fileMatch": ["argocd-apps/.+\\.ya?ml$"]
+      },
       "kubernetes": {
         "fileMatch": [
-          "cluster/.+\\.ya?ml$",
-          "argocd-apps/.+\\.ya?ml$"
+          "cluster/.+\\.ya?ml$"
         ]
       },
-      "regexManagers": [
-        {
-          "description": "Process ArgoCD Application Helm charts",
-          "fileMatch": ["argocd-apps/.+\\.ya?ml$"],
-          "matchStrings": [
-            "- repoURL: ['\"](?<registryUrl>.*?)['\"]\\s+chart: (?<depName>\\S+)\\s+targetRevision: (?<currentValue>\\S+)"
-          ],
-          "datasourceTemplate": "helm"
-        }
-      ],
       "packageRules": [
         {
           "description": "Auto-merge all updates",
