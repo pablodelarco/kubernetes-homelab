@@ -16,6 +16,25 @@ spec:
             app: recyclarr
         spec:
           restartPolicy: OnFailure
+          securityContext:
+            fsGroup: 1000
+            runAsUser: 1000
+            runAsGroup: 1000
+          initContainers:
+            - name: fix-permissions
+              image: busybox:latest
+              command:
+                - sh
+                - -c
+                - |
+                  mkdir -p /config/cache /config/logs
+                  chown -R 1000:1000 /config
+                  chmod -R 755 /config
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+              securityContext:
+                runAsUser: 0
           containers:
             - name: recyclarr
               image: ghcr.io/recyclarr/recyclarr:latest
