@@ -11,7 +11,7 @@ data:
     
     sonarr:
       sonarr-main:
-        base_url: http://sonarr.media.svc.cluster.local:8989
+        base_url: http://sonarr.media.svc.cluster.local
         api_key: !env_var SONARR_API_KEY
         
         quality_definition:
@@ -37,7 +37,7 @@ data:
     
     radarr:
       radarr-main:
-        base_url: http://radarr.media.svc.cluster.local:7878
+        base_url: http://radarr.media.svc.cluster.local
         api_key: !env_var RADARR_API_KEY
         
         quality_definition:
