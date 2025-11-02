@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bazarr
+  namespace: media
+spec:
+  serviceName: bazarr
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bazarr
+  template:
+    metadata:
+      labels:
+        app: bazarr
+    spec:
+      containers:
+        - name: bazarr
+          image: linuxserver/bazarr:latest
+          env:
+            - name: PUID
+              value: "65534"
+            - name: PGID
+              value: "65534"
+            - name: TZ
+              value: "Europe/Madrid"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: movies
+              mountPath: /movies
+            - name: tv
+              mountPath: /tv
+          ports:
+            - containerPort: 6767
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 6767
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 6767
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: bazarr
+        - name: movies
+          persistentVolumeClaim:
+            claimName: jellyfin-videos
+        - name: tv
+          persistentVolumeClaim:
+            claimName: jellyfin-videos
+

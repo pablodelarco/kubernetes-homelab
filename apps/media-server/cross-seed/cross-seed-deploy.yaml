@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cross-seed
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cross-seed
+  template:
+    metadata:
+      labels:
+        app: cross-seed
+    spec:
+      containers:
+        - name: cross-seed
+          image: ghcr.io/cross-seed/cross-seed:latest
+          command: ["cross-seed", "daemon"]
+          env:
+            - name: TZ
+              value: "Europe/Madrid"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: torrents
+              mountPath: /torrents
+            - name: downloads
+              mountPath: /downloads
+          ports:
+            - containerPort: 2468
+              name: http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: cross-seed
+        - name: torrents
+          persistentVolumeClaim:
+            claimName: qbitt-download
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: qbitt-download
+

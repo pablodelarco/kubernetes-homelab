@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: posterr
+  namespace: media
+spec:
+  schedule: "0 2 * * *"  # Run daily at 2 AM
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: posterr
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: posterr
+              image: petersem/posterr:latest
+              env:
+                - name: TZ
+                  value: "Europe/Madrid"
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                - name: media
+                  mountPath: /media
+          volumes:
+            - name: config
+              persistentVolumeClaim:
+                claimName: posterr
+            - name: media
+              persistentVolumeClaim:
+                claimName: jellyfin-videos
+

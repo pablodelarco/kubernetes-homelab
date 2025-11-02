@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recyclarr-config
+  namespace: media
+data:
+  recyclarr.yml: |
+    # Recyclarr Configuration
+    # You need to configure this with your Sonarr/Radarr API keys and URLs
+    # Documentation: https://recyclarr.dev/wiki/yaml/config-reference/
+    
+    sonarr:
+      sonarr-main:
+        base_url: http://sonarr.media.svc.cluster.local:8989
+        api_key: !env_var SONARR_API_KEY
+        
+        quality_definition:
+          type: series
+        
+        quality_profiles:
+          - name: HD-1080p
+            reset_unmatched_scores:
+              enabled: true
+            upgrade:
+              allowed: true
+              until_quality: Bluray-1080p
+              until_score: 10000
+            min_format_score: 0
+            quality_sort: top
+            qualities:
+              - name: Bluray-1080p
+              - name: WEB 1080p
+                qualities:
+                  - WEBDL-1080p
+                  - WEBRip-1080p
+              - name: HDTV-1080p
+    
+    radarr:
+      radarr-main:
+        base_url: http://radarr.media.svc.cluster.local:7878
+        api_key: !env_var RADARR_API_KEY
+        
+        quality_definition:
+          type: movie
+        
+        quality_profiles:
+          - name: HD-1080p
+            reset_unmatched_scores:
+              enabled: true
+            upgrade:
+              allowed: true
+              until_quality: Bluray-1080p
+              until_score: 10000
+            min_format_score: 0
+            quality_sort: top
+            qualities:
+              - name: Bluray-1080p
+              - name: WEB 1080p
+                qualities:
+                  - WEBDL-1080p
+                  - WEBRip-1080p
+              - name: HDTV-1080p
+
