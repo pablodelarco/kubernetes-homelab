@@ -24,11 +24,27 @@ spec:
               env:
                 - name: TZ
                   value: "Europe/Madrid"
+                - name: RADARR_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: recyclarr-secrets
+                      key: RADARR_API_KEY
+                - name: SONARR_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: recyclarr-secrets
+                      key: SONARR_API_KEY
               volumeMounts:
                 - name: config
                   mountPath: /config
+                - name: recyclarr-config
+                  mountPath: /config/recyclarr.yml
+                  subPath: recyclarr.yml
           volumes:
             - name: config
               persistentVolumeClaim:
                 claimName: recyclarr
+            - name: recyclarr-config
+              configMap:
+                name: recyclarr-config
 
