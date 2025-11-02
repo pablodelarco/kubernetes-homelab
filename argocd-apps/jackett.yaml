@@ -3,10 +3,6 @@ kind: Application
 metadata:
   name: jackett
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: jackett=linuxserver/jackett
-    argocd-image-updater.argoproj.io/jackett.update-strategy: latest
-    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   project: default
   source:

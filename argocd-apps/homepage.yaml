@@ -3,11 +3,6 @@ kind: Application
 metadata:
   name: homepage
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: chart=jameswynn.github.io/helm-charts/homepage
-    argocd-image-updater.argoproj.io/chart.update-strategy: semver
-    argocd-image-updater.argoproj.io/chart.allow-tags: regexp:^2\.
-    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   project: default
   sources:
