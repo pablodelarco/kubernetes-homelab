@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   name: tdarr
   namespace: media
-  annotations:
-    tailscale.com/funnel: "true"
+  # Removed funnel annotation - use Tailscale VPN for better performance
+  # Funnel throttles bandwidth to ~88 KB/s, causing 50s load times for 4MB JS bundle
 spec:
   ingressClassName: tailscale
   rules:
