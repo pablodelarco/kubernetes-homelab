@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tdarr
+  namespace: media
+spec:
+  serviceName: tdarr
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tdarr
+  template:
+    metadata:
+      labels:
+        app: tdarr
+    spec:
+      containers:
+        - name: tdarr
+          image: ghcr.io/haveagitgat/tdarr:latest
+          env:
+            - name: PUID
+              value: "65534"
+            - name: PGID
+              value: "65534"
+            - name: TZ
+              value: "Europe/Madrid"
+            - name: serverIP
+              value: "0.0.0.0"
+            - name: serverPort
+              value: "8266"
+            - name: webUIPort
+              value: "8265"
+            - name: internalNode
+              value: "true"
+            - name: nodeID
+              value: "InternalNode"
+          volumeMounts:
+            - name: config
+              mountPath: /app/configs
+            - name: server
+              mountPath: /app/server
+            - name: logs
+              mountPath: /app/logs
+            - name: media
+              mountPath: /media
+            - name: transcode-cache
+              mountPath: /temp
+          ports:
+            - containerPort: 8265
+              name: webui
+            - containerPort: 8266
+              name: server
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 4000m
+              memory: 4Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: tdarr-config
+        - name: server
+          persistentVolumeClaim:
+            claimName: tdarr-server
+        - name: logs
+          persistentVolumeClaim:
+            claimName: tdarr-logs
+        - name: media
+          persistentVolumeClaim:
+            claimName: jellyfin-videos
+        - name: transcode-cache
+          emptyDir: {}
+

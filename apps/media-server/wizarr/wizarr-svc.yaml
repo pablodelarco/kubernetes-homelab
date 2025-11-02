@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wizarr
+  namespace: media
+spec:
+  selector:
+    app: wizarr
+  ports:
+    - protocol: TCP
+      port: 5690
+      targetPort: 5690
+
