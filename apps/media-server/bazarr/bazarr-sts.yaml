@@ -27,10 +27,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: movies
-              mountPath: /movies
-            - name: tv
-              mountPath: /tv
+            - name: media
+              mountPath: /media
           ports:
             - containerPort: 6767
               name: http
@@ -61,10 +59,7 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: bazarr
-        - name: movies
-          persistentVolumeClaim:
-            claimName: jellyfin-videos
-        - name: tv
+        - name: media
           persistentVolumeClaim:
             claimName: jellyfin-videos
 
