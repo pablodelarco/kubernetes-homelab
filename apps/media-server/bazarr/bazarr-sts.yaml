@@ -29,6 +29,8 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /media
+            - name: downloads
+              mountPath: /downloads
           ports:
             - containerPort: 6767
               name: http
@@ -62,4 +64,7 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: jellyfin-videos
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: qbitt-download
 
