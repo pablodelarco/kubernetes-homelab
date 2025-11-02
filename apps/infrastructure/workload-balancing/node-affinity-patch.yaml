@@ -1,0 +1,56 @@
+# Node Affinity Patch for Media Server Apps
+# This patch adds node affinity to prefer the worker node
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-affinity-config
+  namespace: media
+data:
+  affinity.yaml: |
+    affinity:
+      nodeAffinity:
+        # PREFER worker node (soft requirement)
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: DoesNotExist
+        # REQUIRE a node that is NOT control-plane (hard requirement)
+        # Uncomment this if you want to FORCE pods to worker node only
+        # requiredDuringSchedulingIgnoredDuringExecution:
+        #   nodeSelectorTerms:
+        #     - matchExpressions:
+        #         - key: node-role.kubernetes.io/control-plane
+        #           operator: DoesNotExist
+      
+      # Pod anti-affinity to spread pods across nodes
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - jellyfin
+                      - radarr
+                      - sonarr
+                      - tdarr
+                      - bazarr
+                      - jellyseerr
+                      - qbitt
+                      - jackett
+              topologyKey: kubernetes.io/hostname
+    
+    # Topology spread constraints for even distribution
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/part-of: media-server
+
