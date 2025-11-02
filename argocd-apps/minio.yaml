@@ -3,11 +3,6 @@ kind: Application
 metadata:
   name: minio
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: chart=charts.min.io/minio
-    argocd-image-updater.argoproj.io/chart.update-strategy: semver
-    argocd-image-updater.argoproj.io/chart.allow-tags: regexp:^5\.
-    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   project: default
   sources:

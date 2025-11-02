@@ -3,10 +3,6 @@ kind: Application
 metadata:
   name: qbitt
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: qbittorrent=linuxserver/qbittorrent
-    argocd-image-updater.argoproj.io/qbittorrent.update-strategy: latest
-    argocd-image-updater.argoproj.io/write-back-method: argocd
 spec:
   project: default
   source:
