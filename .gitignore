@@ -15,6 +15,9 @@ kubeconfig
 *-secrets.yaml
 !argocd-apps/sealed-secrets.yaml
 
+# Recyclarr secrets (never commit the actual secret file)
+apps/media-server/recyclarr/recyclarr-secret.yaml
+
 # Local development
 .env
 .env.local
