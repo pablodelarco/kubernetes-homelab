@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jellyfin-network-config
+  namespace: media
+data:
+  network.xml: |
+    <?xml version="1.0" encoding="utf-8"?>
+    <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <BaseUrl />
+      <EnableHttps>false</EnableHttps>
+      <RequireHttps>false</RequireHttps>
+      <CertificatePath />
+      <CertificatePassword />
+      <InternalHttpPort>8096</InternalHttpPort>
+      <InternalHttpsPort>8920</InternalHttpsPort>
+      <PublicHttpPort>8096</PublicHttpPort>
+      <PublicHttpsPort>8920</PublicHttpsPort>
+      <AutoDiscovery>true</AutoDiscovery>
+      <EnableIPv4>true</EnableIPv4>
+      <EnableIPv6>false</EnableIPv6>
+      <EnableRemoteAccess>true</EnableRemoteAccess>
+      <LocalNetworkSubnets />
+      <LocalNetworkAddresses />
+      <!-- Trust Tailscale Funnel proxy - pod network range -->
+      <KnownProxies>
+        <string>10.42.0.0/16</string>
+        <string>100.64.0.0/10</string>
+      </KnownProxies>
+      <IgnoreVirtualInterfaces>true</IgnoreVirtualInterfaces>
+      <VirtualInterfaceNames>
+        <string>veth</string>
+      </VirtualInterfaceNames>
+      <EnablePublishedServerUriByRequest>false</EnablePublishedServerUriByRequest>
+      <PublishedServerUriBySubnet />
+      <!-- Allow Tailscale CGNAT range (100.64.0.0/10) -->
+      <RemoteIPFilter>
+        <string>100.64.0.0/10</string>
+        <string>0.0.0.0/0</string>
+      </RemoteIPFilter>
+      <!-- Whitelist mode (false = whitelist, true = blacklist) -->
+      <IsRemoteIPFilterBlacklist>false</IsRemoteIPFilterBlacklist>
+    </NetworkConfiguration>
+

@@ -1,6 +1,7 @@
 resources:
   - nfs-media-pv-pvc.yaml
   - jellyfin-pvc.yaml
+  - jellyfin-network-config.yaml
   - jellyfin-sts.yaml
   - jellyfin-svc.yaml
   - jellyfin-ingress.yaml

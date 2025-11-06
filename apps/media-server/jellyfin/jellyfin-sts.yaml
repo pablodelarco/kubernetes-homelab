@@ -18,6 +18,26 @@ spec:
     spec:
       securityContext:
         supplementalGroups: [44, 993]
+      # Init container to set up network configuration for Tailscale Funnel
+      initContainers:
+        - name: setup-network-config
+          image: busybox:latest
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /config/config
+              if [ ! -f /config/config/network.xml ]; then
+                cp /network-config/network.xml /config/config/network.xml
+                echo "Network config copied"
+              else
+                echo "Network config already exists, skipping"
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: network-config
+              mountPath: /network-config
       affinity:
         nodeAffinity:
           # Prefer worker node (soft requirement)
@@ -88,3 +108,6 @@ spec:
           hostPath:
             path: /dev/dri
             type: Directory
+        - name: network-config
+          configMap:
+            name: jellyfin-network-config
