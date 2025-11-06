@@ -27,12 +27,9 @@ spec:
             - -c
             - |
               mkdir -p /config/config
-              if [ ! -f /config/config/network.xml ]; then
-                cp /network-config/network.xml /config/config/network.xml
-                echo "Network config copied"
-              else
-                echo "Network config already exists, skipping"
-              fi
+              # Always copy to ensure latest config is applied
+              cp /network-config/network.xml /config/config/network.xml
+              echo "Network config updated for Tailscale Funnel support"
           volumeMounts:
             - name: config
               mountPath: /config
