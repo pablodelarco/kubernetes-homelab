@@ -30,7 +30,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: downloads
+            - name: temp
               mountPath: /downloads
           livenessProbe:
             httpGet:
@@ -96,12 +96,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /gluetun
-            - name: downloads
+            - name: temp
               mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: qbitt
-        - name: downloads
+        - name: temp
           persistentVolumeClaim:
-            claimName: qbitt-download
+            claimName: qbitt-temp
