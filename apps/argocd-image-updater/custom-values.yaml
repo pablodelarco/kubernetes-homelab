@@ -55,16 +55,16 @@ resources:
     cpu: 200m
     memory: 256Mi
 
-# Node affinity
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - beelink
+# Node affinity - removed to allow scheduling on any available node
+# affinity:
+#   nodeAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       nodeSelectorTerms:
+#         - matchExpressions:
+#             - key: kubernetes.io/hostname
+#               operator: In
+#               values:
+#                 - beelink
 
 # RBAC
 serviceAccount:
