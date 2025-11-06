@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: qbitt-download
+  name: qbitt-temp
 spec:
   capacity:
     storage: 400Gi
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: /volume1/media_player/download
+    path: /volume1/media_player/temp
     server: 192.168.1.42
   persistentVolumeReclaimPolicy: Retain
   mountOptions:
@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: qbitt-download
+  name: qbitt-temp
   namespace: media
 spec:
   accessModes:
@@ -29,5 +29,5 @@ spec:
   resources:
     requests:
       storage: 400Gi
-  volumeName: qbitt-download
+  volumeName: qbitt-temp
   storageClassName: ""
