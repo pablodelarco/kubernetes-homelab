@@ -69,8 +69,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: videos
-              mountPath: /data/videos
+            - name: media
+              mountPath: /data/media
             - name: cache
               mountPath: /cache
             - name: dri
@@ -95,7 +95,7 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: jellyfin-config
-        - name: videos
+        - name: media
           persistentVolumeClaim:
             claimName: jellyfin-videos
         - name: cache
