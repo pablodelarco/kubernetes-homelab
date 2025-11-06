@@ -34,8 +34,8 @@ config:
 
 # Update strategy
 updateStrategy:
-  # Check for updates every 2 minutes
-  interval: 2m
+  # Check for updates every 1 week
+  interval: 168h
 
 # Metrics
 metrics:
