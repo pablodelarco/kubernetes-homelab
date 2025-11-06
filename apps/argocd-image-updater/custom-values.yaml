@@ -32,10 +32,10 @@ config:
       ping: yes
       prefix: quay.io
 
-# Update strategy
-updateStrategy:
-  # Check for updates every 1 week
-  interval: 168h
+# Extra arguments for the image updater
+extraArgs:
+  # Check for updates every 1 week (168 hours)
+  - --interval=168h
 
 # Metrics
 metrics:
