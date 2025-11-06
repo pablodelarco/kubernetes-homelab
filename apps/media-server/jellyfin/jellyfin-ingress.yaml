@@ -4,7 +4,16 @@ metadata:
   name: jellyfin
   namespace: media
   annotations:
+    # Enable Tailscale Funnel for public internet access
     tailscale.com/funnel: "true"
+    # Ensure WebSocket support for Jellyfin
+    nginx.ingress.kubernetes.io/websocket-services: "jellyfin"
+    # Preserve client IP and protocol headers for reverse proxy
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
 spec:
   ingressClassName: tailscale
   defaultBackend:
