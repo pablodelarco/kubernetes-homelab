@@ -6,7 +6,7 @@ spec:
   capacity:
     storage: 400Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   nfs:
     path: /volume1/media_player/temp
     server: 192.168.1.42
@@ -25,7 +25,7 @@ metadata:
   namespace: media
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 400Gi
