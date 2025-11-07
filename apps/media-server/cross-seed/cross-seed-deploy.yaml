@@ -43,8 +43,8 @@ spec:
             claimName: cross-seed
         - name: torrents
           persistentVolumeClaim:
-            claimName: qbitt-download
+            claimName: qbitt-temp
         - name: downloads
           persistentVolumeClaim:
-            claimName: qbitt-download
+            claimName: qbitt-temp
 
