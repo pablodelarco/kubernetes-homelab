@@ -8,12 +8,26 @@ metadata:
     tailscale.com/funnel: "true"
     # Ensure WebSocket support for Jellyfin
     nginx.ingress.kubernetes.io/websocket-services: "jellyfin"
+    # Increase buffer sizes for large video streaming
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
+    nginx.ingress.kubernetes.io/proxy-busy-buffers-size: "256k"
+    # Increase body size limit for large video files
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    # Increase timeouts for long video streams
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     # Preserve client IP and protocol headers for reverse proxy
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header X-Real-IP $remote_addr;
+      # Disable buffering for video streaming to reduce latency
+      proxy_buffering off;
+      # Enable TCP optimizations for streaming
+      tcp_nodelay on;
+      tcp_nopush on;
 spec:
   ingressClassName: tailscale
   defaultBackend:
