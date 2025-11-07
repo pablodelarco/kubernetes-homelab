@@ -23,9 +23,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: torrents
+            - name: temp
               mountPath: /torrents
-            - name: downloads
+            - name: temp
               mountPath: /downloads
           ports:
             - containerPort: 2468
@@ -41,10 +41,7 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: cross-seed
-        - name: torrents
-          persistentVolumeClaim:
-            claimName: qbitt-temp
-        - name: downloads
+        - name: temp
           persistentVolumeClaim:
             claimName: qbitt-temp
 
