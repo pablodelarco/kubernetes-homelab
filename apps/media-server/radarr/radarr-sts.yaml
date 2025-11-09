@@ -73,8 +73,12 @@ spec:
               value: "Netherlands"
             - name: FIREWALL_INPUT_PORTS
               value: "7878"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
             - name: DOT
               value: "off"
+            - name: DNS_ADDRESS
+              value: "10.43.0.10"
             - name: HTTPPROXY
               value: "on"
             - name: HTTPPROXY_LISTENING_ADDRESS
