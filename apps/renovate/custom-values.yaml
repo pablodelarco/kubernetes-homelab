@@ -100,3 +100,9 @@ affinity:
               values:
                 - beelink
 
+# Tolerate control-plane taint
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
