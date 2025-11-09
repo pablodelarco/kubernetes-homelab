@@ -22,6 +22,12 @@ spec:
               value: "65534"
             - name: PGID
               value: "65534"
+            - name: HTTP_PROXY
+              value: "http://localhost:8888"
+            - name: HTTPS_PROXY
+              value: "http://localhost:8888"
+            - name: NO_PROXY
+              value: "localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.svc.cluster,.svc.cluster.local"
           volumeMounts:
             - name: config
               mountPath: /config
@@ -29,6 +35,8 @@ spec:
               mountPath: /movies
             - name: temp
               mountPath: /downloads
+          ports:
+            - containerPort: 7878
           livenessProbe:
             httpGet:
               path: /ping
@@ -73,11 +81,6 @@ spec:
               value: ":8888"
             - name: SHADOWSOCKS
               value: "off"
-          ports:
-            - containerPort: 7878
-              name: radarr-web
-            - containerPort: 8888
-              name: http-proxy
           securityContext:
             capabilities:
               add:
