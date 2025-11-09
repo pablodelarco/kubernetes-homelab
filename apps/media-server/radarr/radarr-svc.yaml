@@ -6,7 +6,13 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
+    - name: web
+      port: 80
       targetPort: 7878
+      protocol: TCP
+    - name: http-proxy
+      port: 8888
+      targetPort: 8888
+      protocol: TCP
   selector:
     app: radarr
