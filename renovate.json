@@ -62,10 +62,9 @@
       "automergeStrategy": "squash"
     },
     {
-      "description": "Auto-merge minor updates for stable apps",
+      "description": "Auto-merge minor updates for stable apps (excluding Longhorn)",
       "matchUpdateTypes": ["minor"],
       "matchPackagePatterns": [
-        "longhorn",
         "sealed-secrets",
         "homepage",
         "uptime-kuma"
@@ -73,6 +72,49 @@
       "automerge": true,
       "automergeType": "pr",
       "automergeStrategy": "squash"
+    },
+    {
+      "description": "Longhorn: Require manual approval for ALL updates (phased upgrades required)",
+      "matchPackageNames": ["longhorn"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": false,
+      "separateMinorPatch": true,
+      "labels": ["longhorn", "requires-manual-upgrade"],
+      "prPriority": 10,
+      "commitMessagePrefix": "⚠️ [Longhorn]",
+      "prBodyNotes": [
+        "⚠️ **IMPORTANT**: Longhorn requires phased upgrades!",
+        "",
+        "**Upgrade Path**: You can only upgrade one minor version at a time.",
+        "- ✅ Allowed: v1.7.x → v1.8.x → v1.9.x → v1.10.x",
+        "- ❌ Not Allowed: v1.7.x → v1.10.x (skipping versions)",
+        "",
+        "**Before merging this PR:**",
+        "1. Check current Longhorn version: `helm list -n longhorn-system`",
+        "2. Ensure this PR only upgrades by ONE minor version",
+        "3. If multiple versions behind, merge and upgrade ONE version at a time",
+        "4. Verify all volumes are healthy before next upgrade",
+        "",
+        "**Manual Upgrade Command:**",
+        "```bash",
+        "# Backup configuration first",
+        "kubectl get settings -n longhorn-system -o yaml > longhorn-settings-backup.yaml",
+        "",
+        "# Upgrade to next minor version only",
+        "helm upgrade longhorn longhorn/longhorn \\",
+        "  --namespace longhorn-system \\",
+        "  --version <NEXT_MINOR_VERSION> \\",
+        "  --set defaultSettings.backupTarget=\"s3://k8s-backups@us-east-1/\" \\",
+        "  --set defaultSettings.backupTargetCredentialSecret=\"minio-credentials\" \\",
+        "  --set persistence.defaultClass=true \\",
+        "  --set service.ui.type=LoadBalancer \\",
+        "  --set service.ui.port=80",
+        "",
+        "# Verify volumes after upgrade",
+        "kubectl get volumes -n longhorn-system",
+        "kubectl get pods -n media",
+        "```"
+      ]
     },
     {
       "description": "Require manual approval for major updates",

@@ -1,10 +1,31 @@
 persistence:
   defaultClass: true
+
 defaultSettings:
   backupTarget: "s3://k8s-backups@us-east-1/"
   backupTargetCredentialSecret: "minio-credentials"
+
 service:
   ui:
     type: ClusterIP
     port: 80
+
+# Allow Longhorn to run on control-plane nodes
+longhornManager:
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+longhornDriver:
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+longhornUI:
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
 
