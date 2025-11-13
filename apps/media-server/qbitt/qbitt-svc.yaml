@@ -4,13 +4,14 @@ metadata:
   name: qbitt
   namespace: media
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: qbitt
   ports:
     - name: web
       port: 80          # Port on the Service
       targetPort: 8080    # Port on the qBittorrent container
+      nodePort: 30105
     - name: http-proxy
       port: 8888        # HTTP proxy port for Jackett
       targetPort: 8888  # Port on the Gluetun container
