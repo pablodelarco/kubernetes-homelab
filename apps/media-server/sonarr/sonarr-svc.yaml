@@ -4,10 +4,12 @@ metadata:
   name: sonarr
   namespace: media
 spec:
+  type: NodePort
   selector:
     app: sonarr
   ports:
     - protocol: TCP
       port: 8989
       targetPort: 8989
+      nodePort: 30101
 

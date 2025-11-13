@@ -7,8 +7,9 @@ defaultSettings:
 
 service:
   ui:
-    type: ClusterIP
+    type: NodePort
     port: 80
+    nodePort: 30300
 
 # Allow Longhorn to run on control-plane nodes
 longhornManager:

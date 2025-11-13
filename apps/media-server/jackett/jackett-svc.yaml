@@ -4,9 +4,10 @@ metadata:
   name: jackett
   namespace: media
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 80
       targetPort: 9117
+      nodePort: 30103
   selector:
     app: jackett

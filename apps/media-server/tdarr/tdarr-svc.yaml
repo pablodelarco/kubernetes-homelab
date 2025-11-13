@@ -4,6 +4,7 @@ metadata:
   name: tdarr
   namespace: media
 spec:
+  type: NodePort
   selector:
     app: tdarr
   ports:
@@ -11,6 +12,7 @@ spec:
       protocol: TCP
       port: 8265
       targetPort: 8265
+      nodePort: 30106
     - name: server
       protocol: TCP
       port: 8266

@@ -4,10 +4,12 @@ metadata:
   name: jellyseerr
   namespace: media
 spec:
+  type: NodePort
   selector:
     app: jellyseerr
   ports:
     - protocol: TCP
       port: 5055
       targetPort: 5055
+      nodePort: 30104
 
