@@ -160,10 +160,11 @@ Complete media automation and streaming solution with VPN protection.
 ## 🛠️ Infrastructure & Management
 
 ### **ArgoCD** - GitOps Continuous Delivery
-**Purpose:** Kubernetes application deployment and management  
+**Purpose:** Kubernetes application deployment and management
 **Access:**
 - 🌐 Tailscale: `https://argocd.tabby-carp.ts.net`
-- 🔧 LoadBalancer: `http://192.168.1.235`
+- 🔌 NodePort HTTP: `http://100.113.23.108:31938` or `http://100.96.103.31:31938`
+- 🔌 NodePort HTTPS: `http://100.113.23.108:30355` or `http://100.96.103.31:30355`
 
 **Features:**
 - GitOps-based deployments
@@ -251,7 +252,8 @@ Complete media automation and streaming solution with VPN protection.
 ### **Traefik** - Ingress Controller
 **Purpose:** HTTP/HTTPS routing and load balancing
 **Access:**
-- 🔧 LoadBalancer: `http://192.168.1.233`
+- 🔌 NodePort HTTP: `http://100.113.23.108:30209` or `http://100.96.103.31:30209`
+- 🔌 NodePort HTTPS: `http://100.113.23.108:31044` or `http://100.96.103.31:31044`
 
 **Features:**
 - Automatic HTTPS with Let's Encrypt
@@ -312,7 +314,7 @@ Complete media automation and streaming solution with VPN protection.
 **Purpose:** Monitor service availability and uptime
 **Access:**
 - 🌐 Tailscale: `https://uptime-kuma.tabby-carp.ts.net`
-- 🔧 LoadBalancer: `http://192.168.1.238`
+- 🔌 NodePort: `http://100.113.23.108:30500` or `http://100.96.103.31:30500`
 
 **Features:**
 - Service health monitoring
@@ -328,7 +330,7 @@ Complete media automation and streaming solution with VPN protection.
 **Purpose:** Home automation and IoT device management
 **Access:**
 - 🌐 Tailscale: `https://home-assistant.tabby-carp.ts.net`
-- 🔧 LoadBalancer: `http://192.168.1.230`
+- 🔌 NodePort: `http://100.113.23.108:30400` or `http://100.96.103.31:30400`
 - 🔌 Code Server: `http://100.113.23.108:30212` or `http://100.96.103.31:30212`
 
 **Features:**
@@ -345,7 +347,9 @@ Complete media automation and streaming solution with VPN protection.
 **Purpose:** Message broker for IoT devices
 **Access:**
 - 🌐 Dashboard: `https://emqx.tabby-carp.ts.net`
-- 🔧 MQTT: `192.168.1.239:1883`
+- 🔌 MQTT: `100.113.23.108:30486` or `100.96.103.31:30486`
+- 🔌 WebSocket: `100.113.23.108:30996` or `100.96.103.31:30996`
+- 🔌 Dashboard NodePort: `http://100.113.23.108:31951` or `http://100.96.103.31:31951`
 
 **Features:**
 - High-performance MQTT broker
@@ -433,12 +437,12 @@ Your cluster supports **three access methods** for services:
 
 ---
 
-### **3. LoadBalancer (Local Network)**
-- **URL Pattern:** `http://<external-ip>`
-- **Access:** Only from local network (192.168.1.x)
-- **Services:** ArgoCD, Home Assistant, Uptime Kuma, Traefik, EMQX
+### **3. Local Network Access (LAN)**
+- **URL Pattern:** `http://192.168.1.X:<nodeport>` or `http://<node-local-ip>:<nodeport>`
+- **Access:** From local network (192.168.1.x)
+- **Note:** All services use NodePort for consistent access across networks
 
-**Example:** `http://192.168.1.235` (ArgoCD)
+**Example:** `http://192.168.1.232:30400` (Home Assistant via LAN)
 
 ---
 
@@ -459,30 +463,31 @@ Your cluster supports **three access methods** for services:
 
 ### **Infrastructure Services**
 
-| Service | Category | Tailscale URL | NodePort | LoadBalancer |
-|---------|----------|---------------|----------|--------------|
-| **ArgoCD** | GitOps | `https://argocd.tabby-carp.ts.net` | - | `192.168.1.235` |
-| **Longhorn** | Storage | `https://longhorn.tabby-carp.ts.net` | `:30300` | - |
-| **MinIO API** | S3 Storage | `https://minio.tabby-carp.ts.net` | - | - |
-| **MinIO Console** | S3 UI | `https://minio-console.tabby-carp.ts.net` | - | - |
-| **Traefik** | Ingress | - | - | `192.168.1.233` |
+| Service | Category | Tailscale URL | NodePort |
+|---------|----------|---------------|----------|
+| **ArgoCD** | GitOps | `https://argocd.tabby-carp.ts.net` | `:31938` (HTTP), `:30355` (HTTPS) |
+| **Longhorn** | Storage | `https://longhorn.tabby-carp.ts.net` | `:30300` |
+| **MinIO API** | S3 Storage | `https://minio.tabby-carp.ts.net` | - |
+| **MinIO Console** | S3 UI | `https://minio-console.tabby-carp.ts.net` | - |
+| **Traefik** | Ingress | - | `:30209` (HTTP), `:31044` (HTTPS) |
 
 ### **Monitoring Services**
 
-| Service | Category | Tailscale URL | NodePort | LoadBalancer |
-|---------|----------|---------------|----------|--------------|
-| **Grafana** | Dashboards | `https://grafana.tabby-carp.ts.net` | `:30200` | - |
-| **OpenCost** | Cost Tracking | `https://opencost.tabby-carp.ts.net` | - | - |
-| **Uptime Kuma** | Uptime | `https://uptime-kuma.tabby-carp.ts.net` | - | `192.168.1.238` |
+| Service | Category | Tailscale URL | NodePort |
+|---------|----------|---------------|----------|
+| **Grafana** | Dashboards | `https://grafana.tabby-carp.ts.net` | `:30200` |
+| **OpenCost** | Cost Tracking | `https://opencost.tabby-carp.ts.net` | - |
+| **Uptime Kuma** | Uptime | `https://uptime-kuma.tabby-carp.ts.net` | `:30500` |
 
 ### **Home Automation Services**
 
-| Service | Category | Tailscale URL | NodePort | LoadBalancer |
-|---------|----------|---------------|----------|--------------|
-| **Home Assistant** | Smart Home | `https://home-assistant.tabby-carp.ts.net` | - | `192.168.1.230` |
-| **Home Assistant Code** | Config Editor | - | `:30212` | - |
-| **EMQX Dashboard** | MQTT UI | `https://emqx.tabby-carp.ts.net` | - | - |
-| **EMQX Broker** | MQTT | - | - | `192.168.1.239:1883` |
+| Service | Category | Tailscale URL | NodePort |
+|---------|----------|---------------|----------|
+| **Home Assistant** | Smart Home | `https://home-assistant.tabby-carp.ts.net` | `:30400` |
+| **Home Assistant Code** | Config Editor | - | `:30212` |
+| **EMQX Dashboard** | MQTT UI | `https://emqx.tabby-carp.ts.net` | `:31951` |
+| **EMQX MQTT** | MQTT Broker | - | `:30486` |
+| **EMQX WebSocket** | MQTT WS | - | `:30996` |
 
 ### **Web Applications**
 
