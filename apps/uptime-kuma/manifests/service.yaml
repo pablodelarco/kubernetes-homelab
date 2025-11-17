@@ -9,5 +9,6 @@ spec:
   ports:
     - port: 80      # Port to expose
       targetPort: 3001
+      nodePort: 30500  # NodePort for external access
       protocol: TCP
-  type: LoadBalancer
+  type: NodePort

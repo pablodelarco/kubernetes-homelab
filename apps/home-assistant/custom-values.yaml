@@ -1,8 +1,10 @@
 service:
   # Service type (ClusterIP, NodePort, LoadBalancer, or ExternalName)
-  type: LoadBalancer
+  type: NodePort
   # Service port
   port: 80
+  # NodePort for external access (30000-32767)
+  nodePort: 30400
 
 # Persistence configuration
 persistence:
