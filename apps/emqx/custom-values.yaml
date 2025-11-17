@@ -12,13 +12,14 @@ image:
 
 # Service configuration
 service:
-  type: LoadBalancer  # Uses MetalLB to get a dedicated IP
-  annotations:
-    metallb.universe.tf/allow-shared-ip: emqx  # Share IP across services if needed
+  type: NodePort  # Use NodePort for consistent access across networks
   # Port configuration (integers, not objects)
   mqtt: 1883          # MQTT port (for Home Assistant and local devices)
+  mqttNodePort: 30600 # NodePort for MQTT
   ws: 8083            # WebSocket port (for web-based MQTT clients)
+  wsNodePort: 30601   # NodePort for WebSocket
   dashboard: 18083    # Dashboard port
+  dashboardNodePort: 30602  # NodePort for Dashboard
   # SSL/TLS ports not needed for local network use
   # mqttssl: 8883       # MQTT over SSL/TLS
   # wss: 8084           # WebSocket over SSL/TLS
