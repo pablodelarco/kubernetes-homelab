@@ -13,7 +13,7 @@ spec:
   task: "backup"
   groups:
     - default
-  retain: 14  # Keep 14 daily backups (2 weeks) - more than media due to importance
+  retain: 7  # Keep 7 daily backups (1 week) - same as media backups
   concurrency: 2
   labels:
     app: home-assistant
