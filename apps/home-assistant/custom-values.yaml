@@ -107,10 +107,14 @@ configuration:
     frontend:
       themes: !include_dir_merge_named themes
 
-    # Matter/Thread integration
+    # Matter/Thread/Zigbee integration
     # Requires hostNetwork: true to discover devices on local LAN
-    # IKEA Dirigera hub will act as Matter/Thread controller
-    # No additional configuration needed here - configure via UI
+    # Home Assistant Connect ZBT-1 provides:
+    #   - Thread Border Router (built-in)
+    #   - Zigbee coordinator (built-in)
+    #   - Matter controller capabilities
+    # USB device will be auto-discovered via /dev/ttyUSB* or /dev/ttyACM*
+    # Configure integrations via UI after connecting ZBT-1 to worker node
 
     automation: !include automations.yaml
     script: !include scripts.yaml
@@ -122,12 +126,21 @@ podSecurityContext:
   runAsGroup: 0
 
 
-# Network configuration for Matter/Thread support
-# hostNetwork: true allows Home Assistant to discover devices on the local LAN
-# This is REQUIRED for Matter/Thread integration with IKEA Dirigera hub
+# Network configuration for Matter/Thread/Zigbee support
+# hostNetwork: true allows Home Assistant to:
+#   1. Discover devices on the local LAN (Matter/Thread)
+#   2. Access USB devices directly (Home Assistant Connect ZBT-1)
+#   3. Use mDNS for Matter commissioning
+# This is REQUIRED for Home Assistant Connect ZBT-1 integration
 hostNetwork: true
 
 # DNS policy for hostNetwork mode
 # ClusterFirstWithHostNet allows the pod to resolve k8s service DNS while using host network
 dnsPolicy: ClusterFirstWithHostNet
+
+# Security context for container
+# privileged: true allows access to USB devices on the host
+# Required for Home Assistant Connect ZBT-1 (Thread/Zigbee coordinator)
+securityContext:
+  privileged: true
 
