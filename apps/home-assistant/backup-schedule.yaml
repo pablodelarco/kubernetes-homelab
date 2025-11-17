@@ -1,0 +1,22 @@
+---
+# Backup schedule for Home Assistant config
+# This creates daily backups of Home Assistant configuration to MinIO S3
+# Includes: automations, device configs, ZBT-1 pairings, user data, dashboards
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: home-assistant-config-backup
+  namespace: longhorn-system
+spec:
+  name: home-assistant-config-backup
+  cron: "0 3 * * *"  # Daily at 3 AM (offset from media backups at 2 AM)
+  task: "backup"
+  groups:
+    - default
+  retain: 14  # Keep 14 daily backups (2 weeks) - more than media due to importance
+  concurrency: 2
+  labels:
+    app: home-assistant
+    type: config
+    critical: "true"
+
