@@ -21,6 +21,6 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: false  # Disabled to allow manual NodePort configuration
+      selfHeal: true  # Re-enabled - NodePort now configured in Git
     syncOptions:
       - CreateNamespace=true
