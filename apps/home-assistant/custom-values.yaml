@@ -39,7 +39,7 @@ addons:
       port: 30030
 
 
-# Node affinity
+# Node affinity - Pin to worker node (going to Valencia)
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -48,7 +48,7 @@ affinity:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - beelink
+                - worker
 
 
 # Environment variables
@@ -84,6 +84,7 @@ configuration:
     - 10.43.0.0/16    # K8s Services Network
     - 100.64.0.0/10   # Tailscale IPv4 Range
     - fd7a:115c:a1e0::/48  # Tailscale IPv6 Range
+    - 192.168.1.0/24  # Local LAN (for Matter/Thread device discovery)
   templateConfig: |-
     default_config:
 
@@ -106,6 +107,11 @@ configuration:
     frontend:
       themes: !include_dir_merge_named themes
 
+    # Matter/Thread integration
+    # Requires hostNetwork: true to discover devices on local LAN
+    # IKEA Dirigera hub will act as Matter/Thread controller
+    # No additional configuration needed here - configure via UI
+
     automation: !include automations.yaml
     script: !include scripts.yaml
     scene: !include scenes.yaml
@@ -114,4 +120,14 @@ configuration:
 podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
+
+
+# Network configuration for Matter/Thread support
+# hostNetwork: true allows Home Assistant to discover devices on the local LAN
+# This is REQUIRED for Matter/Thread integration with IKEA Dirigera hub
+hostNetwork: true
+
+# DNS policy for hostNetwork mode
+# ClusterFirstWithHostNet allows the pod to resolve k8s service DNS while using host network
+dnsPolicy: ClusterFirstWithHostNet
 
