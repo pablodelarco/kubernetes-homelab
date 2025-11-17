@@ -21,6 +21,6 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
-    syncOptions: 
+      selfHeal: false  # Disabled to allow manual NodePort configuration
+    syncOptions:
       - CreateNamespace=true
