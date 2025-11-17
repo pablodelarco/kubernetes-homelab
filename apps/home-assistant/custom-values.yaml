@@ -125,6 +125,11 @@ podSecurityContext:
   runAsUser: 0
   runAsGroup: 0
 
+# Container security context
+# privileged: true allows access to USB devices on the host
+# Required for Home Assistant Connect ZBT-1 (Thread/Zigbee coordinator)
+securityContext:
+  privileged: true
 
 # Network configuration for Matter/Thread/Zigbee support
 # hostNetwork: true allows Home Assistant to:
@@ -137,10 +142,4 @@ hostNetwork: true
 # DNS policy for hostNetwork mode
 # ClusterFirstWithHostNet allows the pod to resolve k8s service DNS while using host network
 dnsPolicy: ClusterFirstWithHostNet
-
-# Security context for container
-# privileged: true allows access to USB devices on the host
-# Required for Home Assistant Connect ZBT-1 (Thread/Zigbee coordinator)
-securityContext:
-  privileged: true
 
