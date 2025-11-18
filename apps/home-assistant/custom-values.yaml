@@ -108,17 +108,11 @@ configuration:
       themes: !include_dir_merge_named themes
 
     # MQTT Integration with Mosquitto
-    mqtt:
-      broker: mosquitto.mosquitto.svc.cluster.local
-      port: 1883
-      discovery: true
-      discovery_prefix: homeassistant
-      birth_message:
-        topic: 'homeassistant/status'
-        payload: 'online'
-      will_message:
-        topic: 'homeassistant/status'
-        payload: 'offline'
+    # Configure via Home Assistant UI:
+    # Settings → Devices & Services → Add Integration → MQTT
+    # Broker: mosquitto.mosquitto.svc.cluster.local
+    # Port: 1883
+    # Leave username/password empty (anonymous auth enabled)
 
     # Matter/Thread/Zigbee integration
     # Requires hostNetwork: true to discover devices on local LAN
