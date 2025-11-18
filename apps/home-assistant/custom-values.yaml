@@ -107,6 +107,19 @@ configuration:
     frontend:
       themes: !include_dir_merge_named themes
 
+    # MQTT Integration with Mosquitto
+    mqtt:
+      broker: mosquitto.mosquitto.svc.cluster.local
+      port: 1883
+      discovery: true
+      discovery_prefix: homeassistant
+      birth_message:
+        topic: 'homeassistant/status'
+        payload: 'online'
+      will_message:
+        topic: 'homeassistant/status'
+        payload: 'offline'
+
     # Matter/Thread/Zigbee integration
     # Requires hostNetwork: true to discover devices on local LAN
     # Home Assistant Connect ZBT-1 provides:
