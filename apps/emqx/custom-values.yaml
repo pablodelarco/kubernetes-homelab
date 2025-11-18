@@ -25,11 +25,14 @@ service:
   # wss: 8084           # WebSocket over SSL/TLS
 
 # Persistence for EMQX data
+# DISABLED due to recurring Longhorn volume corruption issues
+# EMQX configuration will be lost on pod restart
+# TODO: Re-enable once Longhorn stability improves or migrate to different storage
 persistence:
-  enabled: true
-  storageClass: "longhorn"
-  accessMode: ReadWriteOnce
-  size: 5Gi
+  enabled: false
+  # storageClass: "longhorn"
+  # accessMode: ReadWriteOnce
+  # size: 5Gi
 
 # Resource limits
 resources:
