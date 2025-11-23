@@ -30,6 +30,10 @@ grafana:
                 operator: In
                 values:
                   - beelink
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
 
 prometheus:
   prometheusSpec:
