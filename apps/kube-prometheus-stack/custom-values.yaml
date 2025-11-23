@@ -50,15 +50,7 @@ prometheus:
 
 alertmanager:
   alertmanagerSpec:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                    - beelink
+    # Removed affinity to beelink - Longhorn CSI driver not available on control-plane node
     storage:
       volumeClaimTemplate:
         spec:
