@@ -9,14 +9,30 @@ This document maps PVCs to their underlying PVs/volumes for troubleshooting and 
 1. **Restored volumes** (from disaster recovery): `pvc-<app>-restored`
    - Example: `pvc-jackett-restored`, `pvc-home-assistant-restored-v2`
    - These were restored from S3 backups on 2025-11-23
+   - **13 volumes** - Easy to identify ✅
 
 2. **Fresh volumes** (created after disaster): `pvc-<uuid>`
    - Example: `pvc-623a87a9-0510-4195-8bec-671f04c9be20`
    - These are monitoring volumes created fresh (no backup existed)
+   - **3 volumes** - Hard to identify, but now have labels ✅
 
 3. **Manual volumes** (pre-existing): `<app>-<purpose>`
    - Example: `jellyfin-videos`, `qbitt-temp`
    - These are NFS volumes for large media storage
+   - **3 volumes** - Easy to identify ✅
+
+### How to Identify Volumes
+
+**For UUID volumes (monitoring), use labels:**
+```bash
+kubectl get volumes.longhorn.io -n longhorn-system \
+  -o custom-columns=NAME:.metadata.name,APP:.metadata.labels.app,SIZE:.spec.size
+```
+
+**Labels added:**
+- `pvc-623a87a9-0510-4195-8bec-671f04c9be20` → app=alertmanager, component=monitoring
+- `pvc-6c391b81-2761-4797-895f-831d23796af5` → app=prometheus, component=monitoring
+- `pvc-8c3a8756-f6e5-4712-92ab-61521eceb5e9` → app=grafana, component=monitoring
 
 ### Backup Status
 
