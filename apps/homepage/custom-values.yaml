@@ -323,7 +323,9 @@ persistence:
   logs:
     enabled: true
     type: pvc
-    existingClaim: homepage-logs  # Rollback to original
+    storageClass: longhorn
+    accessMode: ReadWriteOnce
+    size: 5Gi
     mountPath: /app/config/logs
 
 
