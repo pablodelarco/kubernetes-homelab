@@ -14,10 +14,11 @@ config:
     base_topic: zigbee2mqtt
     server: mqtt://mosquitto.mosquitto.svc.cluster.local:1883
   
-  # Serial settings - Will auto-detect when ZBT-1 is plugged in
-  serial:
-    port: /dev/ttyACM0
-    adapter: ezsp  # Home Assistant Connect ZBT-1 uses EZSP protocol
+  # Serial settings - Commented out until ZBT-1 is connected
+  # When you plug in the ZBT-1, uncomment these lines and restart the pod
+  # serial:
+  #   port: /dev/ttyACM0
+  #   adapter: ezsp  # Home Assistant Connect ZBT-1 uses EZSP protocol
   
   # Frontend (Web UI)
   frontend:
