@@ -21,19 +21,8 @@ grafana:
     accessModes:
       - ReadWriteOnce
     size: 8Gi
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                  - beelink
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
+  # Removed affinity to beelink because Longhorn CSI driver is not available on control-plane node
+  # Grafana will run on worker node where Longhorn volumes can be attached
 
 prometheus:
   prometheusSpec:
