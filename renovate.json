@@ -7,7 +7,8 @@
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "🤖 Renovate Dashboard",
-  "suppressNotifications": ["prEditedNotification"],
+  "dependencyDashboardLabels": ["renovate", "dependencies"],
+  "suppressNotifications": [],
   "rebaseWhen": "conflicted",
   "schedule": ["every weekend"],
   "pre-commit": {
@@ -72,7 +73,9 @@
       ],
       "automerge": true,
       "automergeType": "pr",
-      "automergeStrategy": "squash"
+      "automergeStrategy": "squash",
+      "labels": ["auto-merge", "minor-update"],
+      "assignees": ["pablodelarco"]
     },
     {
       "description": "Longhorn: Require manual approval for ALL updates (phased upgrades required)",
@@ -151,6 +154,29 @@
       ],
       "groupName": "Media Stack",
       "labels": ["media"]
+    },
+    {
+      "description": "Home Assistant updates with notifications",
+      "matchPackageNames": ["home-assistant"],
+      "labels": ["home-assistant", "smart-home"],
+      "assignees": ["pablodelarco"],
+      "prPriority": 5,
+      "commitMessagePrefix": "🏠 [Home Assistant]",
+      "prBodyNotes": [
+        "🏠 **Home Assistant Update Available!**",
+        "",
+        "**What's New:**",
+        "- Check the [Home Assistant Release Notes](https://www.home-assistant.io/blog/) for details",
+        "",
+        "**Auto-Merge:**",
+        "- ✅ Minor/Patch updates will auto-merge after CI passes",
+        "- ⚠️ Major updates require manual approval",
+        "",
+        "**Testing:**",
+        "- Verify Home Assistant is accessible after update",
+        "- Check all integrations are working (MQTT, Zigbee, etc.)",
+        "- Test automations"
+      ]
     },
     {
       "description": "Pin digest for critical infrastructure",
