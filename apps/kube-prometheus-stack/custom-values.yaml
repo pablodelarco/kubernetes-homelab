@@ -61,8 +61,7 @@ alertmanager:
             requests:
               storage: 5Gi
 
-kubeStateMetrics:
-  # Removed affinity to beelink - let it run on any available node
+# kubeStateMetrics - using default configuration (no affinity)
 
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
