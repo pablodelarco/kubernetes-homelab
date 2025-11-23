@@ -323,9 +323,7 @@ persistence:
   logs:
     enabled: true
     type: pvc
-    storageClass: longhorn
-    accessMode: ReadWriteOnce
-    size: 5Gi
+    existingClaim: homepage  # Use manual PVC -> creates volume 'pvc-homepage'
     mountPath: /app/config/logs
 
 
