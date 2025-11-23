@@ -9,7 +9,7 @@ spec:
     # renovate: registryUrl=https://charts.zigbee2mqtt.io
     - repoURL: https://charts.zigbee2mqtt.io
       chart: zigbee2mqtt
-      targetRevision: 1.37.1
+      targetRevision: 2.6.3
       helm:
         valueFiles:
           - $values/apps/zigbee2mqtt/custom-values.yaml
