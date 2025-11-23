@@ -1,0 +1,66 @@
+# Zigbee2MQTT Helm Chart Custom Values
+# Official chart: https://charts.zigbee2mqtt.io
+
+# Zigbee2MQTT configuration (1:1 mapping to configuration.yaml)
+config:
+  # Home Assistant integration (MQTT discovery)
+  homeassistant: true
+  
+  # Allow new devices to join
+  permit_join: true
+  
+  # MQTT settings - Connect to Mosquitto
+  mqtt:
+    base_topic: zigbee2mqtt
+    server: mqtt://mosquitto.mosquitto.svc.cluster.local:1883
+  
+  # Serial settings - Will auto-detect when ZBT-1 is plugged in
+  serial:
+    port: /dev/ttyACM0
+    adapter: ezsp  # Home Assistant Connect ZBT-1 uses EZSP protocol
+  
+  # Frontend (Web UI)
+  frontend:
+    port: 8080
+    host: 0.0.0.0
+  
+  # Advanced settings
+  advanced:
+    log_level: info
+    network_key: GENERATE
+    pan_id: GENERATE
+    channel: 11
+
+# StatefulSet configuration
+statefulset:
+  # Pin to worker node (where ZBT-1 will be connected)
+  nodeSelector:
+    kubernetes.io/hostname: worker
+  
+  # Storage configuration - Using emptyDir to avoid Longhorn issues
+  storage:
+    enabled: false  # Disable PVC for now due to Longhorn formatting bug
+
+# Service configuration
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30880  # Access via http://192.168.1.57:30880
+
+# Security context for USB device access
+securityContext:
+  privileged: true
+
+# Environment variables
+env:
+  TZ: Europe/Madrid
+
+# Resources
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
