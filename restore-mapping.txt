@@ -1,0 +1,24 @@
+# Longhorn Backup Mapping for Restore
+# Format: app-name|namespace|pvc-name|backup-name|original-volume|size-bytes
+
+# Already restored:
+# home-assistant|home-assistant|home-assistant-home-assistant-0|backup-a9ffde902273474e|pvc-d09cc8a2-3ad6-444e-8add-9e7c6be71d7a|5368709120
+# jellyfin|media|jellyfin-config|ALREADY_RESTORED
+# radarr|media|radarr|ALREADY_RESTORED
+# sonarr|media|sonarr|ALREADY_RESTORED
+
+# To restore (from 2025-11-23 02:00 AM backups):
+bazarr|media|bazarr|backup-274197779e7b4262|pvc-f786f7f4-d5fb-4109-a2ac-a19fa36bb131|2147483648
+homepage|homepage|homepage-logs|backup-1912c63560174658|pvc-cffb043e-ce22-411d-8562-385ea5ace69b|5368709120
+uptime-kuma|uptime-kuma|uptime-kuma-pvc|backup-0a3b78e083c94798|pvc-c0c1fa2c-14d1-4322-a76f-a0896ce44e95|5368709120
+opencost|opencost|opencost-pvc|backup-e0f33055c166494a|pvc-ea70bc07-c89f-4070-ba7c-3ecaf48f3ff3|5368709120
+jellyseerr|media|jellyseerr|backup-809b977e45324f1a|pvc-c4a92ff6-ed00-4d20-8516-7498afa33b95|1073741824
+qbitt|media|qbitt|backup-9900a4231b5640cf|pvc-ba8a8207-ba3c-41ef-a24c-37356ce6bed2|5368709120
+tdarr-config|media|tdarr-config|backup-fa473df1488c4020|pvc-e594d93e-c58c-45b8-b61c-8b8daac7088e|1073741824
+
+# Additional backups found:
+jackett|media|jackett|backup-47b9821b77e644c5|pvc-957a26f3-82a0-4c67-b4fc-963ab09edddc|5368709120
+posterr|media|posterr|backup-487149139d3a40f4|pvc-04210ad0-4c24-4211-9cc7-d578856275d3|536870912
+tdarr-logs|media|tdarr-logs|backup-42dd775ce251402c|pvc-9ea33e3c-c9fa-476e-bd2d-4bb399bcce1a|1073741824
+tdarr-server|media|tdarr-server|backup-5d609c27a0ad4455|pvc-066fc67f-d673-4f78-820b-01eed74245f5|10737418240
+

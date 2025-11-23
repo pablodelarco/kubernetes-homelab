@@ -1,0 +1,352 @@
+---
+# Bazarr
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-bazarr-restored
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-bazarr-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: bazarr
+    namespace: media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bazarr
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: longhorn
+  volumeName: pvc-bazarr-restored
+---
+# Jellyseerr
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-jellyseerr-restored
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-jellyseerr-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: jellyseerr
+    namespace: media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyseerr
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
+  volumeName: pvc-jellyseerr-restored
+---
+# Qbitt
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-qbitt-restored
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-qbitt-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: qbitt
+    namespace: media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbitt
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+  volumeName: pvc-qbitt-restored
+---
+# Tdarr Config
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-tdarr-config-restored
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-tdarr-config-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: tdarr-config
+    namespace: media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tdarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
+  volumeName: pvc-tdarr-config-restored
+---
+# Tdarr Logs
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-tdarr-logs-restored
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-tdarr-logs-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: tdarr-logs
+    namespace: media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tdarr-logs
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn
+  volumeName: pvc-tdarr-logs-restored
+---
+# Tdarr Server
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-tdarr-server-restored
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-tdarr-server-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: tdarr-server
+    namespace: media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tdarr-server
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn
+  volumeName: pvc-tdarr-server-restored
+---
+# Homepage
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-homepage-restored
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-homepage-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: homepage-logs
+    namespace: homepage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homepage-logs
+  namespace: homepage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+  volumeName: pvc-homepage-restored
+---
+# Uptime Kuma
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-uptime-kuma-restored
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-uptime-kuma-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: uptime-kuma-pvc
+    namespace: uptime-kuma
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uptime-kuma-pvc
+  namespace: uptime-kuma
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+  volumeName: pvc-uptime-kuma-restored
+---
+# Opencost
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-opencost-restored
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn
+  csi:
+    driver: driver.longhorn.io
+    fsType: ext4
+    volumeAttributes:
+      numberOfReplicas: "2"
+    volumeHandle: pvc-opencost-restored
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: opencost-pvc
+    namespace: opencost
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: opencost-pvc
+  namespace: opencost
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+  volumeName: pvc-opencost-restored
+
