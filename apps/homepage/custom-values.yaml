@@ -323,7 +323,7 @@ persistence:
   logs:
     enabled: true
     type: pvc
-    existingClaim: homepage-logs-v2  # Use cloned volume with 2 replicas
+    existingClaim: homepage-logs  # Rollback to original
     mountPath: /app/config/logs
 
 
