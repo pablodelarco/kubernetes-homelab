@@ -49,81 +49,40 @@ jobs:
             echo "✅ Already on latest version: $CURRENT"
           fi
 
-      - name: Create GitHub Issue for Update
+      - name: Send Telegram Notification
         if: steps.compare.outputs.update_available == 'true'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const currentVersion = '${{ steps.current.outputs.version }}';
-            const latestVersion = '${{ steps.latest.outputs.version }}';
-            const latestAppVersion = '${{ steps.latest.outputs.app_version }}';
-            
-            // Check if issue already exists
-            const issues = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: 'home-assistant-update'
-            });
-            
-            if (issues.data.length > 0) {
-              console.log('Update issue already exists, skipping...');
-              return;
-            }
-            
-            // Create new issue
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `🏠 Home Assistant Update Available: ${latestAppVersion}`,
-              labels: ['home-assistant-update', 'notification'],
-              assignees: ['pablodelarco'],
-              body: `## 🏠 Home Assistant Update Available!
-            
-            A new version of Home Assistant is available and ready to install.
-            
-            ### 📊 Version Information
-            
-            | Component | Current | Latest |
-            |-----------|---------|--------|
-            | **Helm Chart** | \`${currentVersion}\` | \`${latestVersion}\` ✨ |
-            | **Home Assistant** | - | \`${latestAppVersion}\` ✨ |
-            
-            ### 📝 What's New?
-            
-            Check the release notes:
-            - [Home Assistant Release Notes](https://www.home-assistant.io/blog/)
-            - [GitHub Releases](https://github.com/home-assistant/core/releases)
-            
-            ### 🚀 How to Update
-            
-            **Option 1: Wait for Renovate (Automatic)**
-            - Renovate will create a PR automatically
-            - Minor/patch updates will auto-merge
-            
-            **Option 2: Manual Update**
-            \`\`\`bash
-            # Update argocd-apps/home-assistant.yaml
-            sed -i 's/targetRevision: ${currentVersion}/targetRevision: ${latestVersion}/' argocd-apps/home-assistant.yaml
-            git add argocd-apps/home-assistant.yaml
-            git commit -m "chore: Update Home Assistant to ${latestVersion}"
-            git push origin main
-            \`\`\`
-            
-            ### ✅ Post-Update Checklist
-            
-            - [ ] Verify Home Assistant is accessible
-            - [ ] Check all integrations are working (MQTT, Zigbee, etc.)
-            - [ ] Test automations
-            - [ ] Close this issue
-            
-            ---
-            
-            *This issue was automatically created by the Home Assistant Update Notifier workflow.*
-            *You can disable notifications by deleting \`.github/workflows/home-assistant-update-notifier.yaml\`*`
-            });
-            
-            console.log('✅ Created update notification issue');
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          CURRENT="${{ steps.current.outputs.version }}"
+          LATEST="${{ steps.latest.outputs.version }}"
+          APP_VERSION="${{ steps.latest.outputs.app_version }}"
+
+          # Create message
+          MESSAGE="🏠 *Home Assistant Update Available!*
+
+          📊 *Version Information*
+          • Helm Chart: \`${CURRENT}\` → \`${LATEST}\` ✨
+          • Home Assistant: \`${APP_VERSION}\` ✨
+
+          📝 *What's New?*
+          [Release Notes](https://www.home-assistant.io/blog/)
+
+          🚀 *How to Update*
+          Renovate will auto-merge the update, or update manually via ArgoCD.
+
+          ✅ *Post-Update*
+          • Verify Home Assistant is accessible
+          • Check integrations (MQTT, Zigbee)
+          • Test automations"
+
+          # Send to Telegram
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="${MESSAGE}" \
+            -d parse_mode="Markdown" \
+            -d disable_web_page_preview=true
 
       - name: Send notification summary
         if: always()
