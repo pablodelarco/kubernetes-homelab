@@ -1,0 +1,136 @@
+name: 🏠 Home Assistant Update Notifier
+
+on:
+  schedule:
+    # Check for updates every day at 9:00 AM (Europe/Madrid time)
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  check-home-assistant-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get current Home Assistant version
+        id: current
+        run: |
+          CURRENT_VERSION=$(grep -A 2 "chart: home-assistant" argocd-apps/home-assistant.yaml | grep "targetRevision:" | awk '{print $2}')
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current chart version: $CURRENT_VERSION"
+
+      - name: Check latest Home Assistant version
+        id: latest
+        run: |
+          # Add Helm repo
+          helm repo add pajikos http://pajikos.github.io/home-assistant-helm-chart/
+          helm repo update pajikos
+          
+          # Get latest version
+          LATEST_VERSION=$(helm search repo pajikos/home-assistant --output json | jq -r '.[0].version')
+          LATEST_APP_VERSION=$(helm search repo pajikos/home-assistant --output json | jq -r '.[0].app_version')
+          
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "app_version=$LATEST_APP_VERSION" >> $GITHUB_OUTPUT
+          echo "Latest chart version: $LATEST_VERSION (Home Assistant $LATEST_APP_VERSION)"
+
+      - name: Compare versions
+        id: compare
+        run: |
+          CURRENT="${{ steps.current.outputs.version }}"
+          LATEST="${{ steps.latest.outputs.version }}"
+          
+          if [ "$CURRENT" != "$LATEST" ]; then
+            echo "update_available=true" >> $GITHUB_OUTPUT
+            echo "🆕 Update available: $CURRENT → $LATEST"
+          else
+            echo "update_available=false" >> $GITHUB_OUTPUT
+            echo "✅ Already on latest version: $CURRENT"
+          fi
+
+      - name: Create GitHub Issue for Update
+        if: steps.compare.outputs.update_available == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const currentVersion = '${{ steps.current.outputs.version }}';
+            const latestVersion = '${{ steps.latest.outputs.version }}';
+            const latestAppVersion = '${{ steps.latest.outputs.app_version }}';
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'home-assistant-update'
+            });
+            
+            if (issues.data.length > 0) {
+              console.log('Update issue already exists, skipping...');
+              return;
+            }
+            
+            // Create new issue
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🏠 Home Assistant Update Available: ${latestAppVersion}`,
+              labels: ['home-assistant-update', 'notification'],
+              assignees: ['pablodelarco'],
+              body: `## 🏠 Home Assistant Update Available!
+            
+            A new version of Home Assistant is available and ready to install.
+            
+            ### 📊 Version Information
+            
+            | Component | Current | Latest |
+            |-----------|---------|--------|
+            | **Helm Chart** | \`${currentVersion}\` | \`${latestVersion}\` ✨ |
+            | **Home Assistant** | - | \`${latestAppVersion}\` ✨ |
+            
+            ### 📝 What's New?
+            
+            Check the release notes:
+            - [Home Assistant Release Notes](https://www.home-assistant.io/blog/)
+            - [GitHub Releases](https://github.com/home-assistant/core/releases)
+            
+            ### 🚀 How to Update
+            
+            **Option 1: Wait for Renovate (Automatic)**
+            - Renovate will create a PR automatically
+            - Minor/patch updates will auto-merge
+            
+            **Option 2: Manual Update**
+            \`\`\`bash
+            # Update argocd-apps/home-assistant.yaml
+            sed -i 's/targetRevision: ${currentVersion}/targetRevision: ${latestVersion}/' argocd-apps/home-assistant.yaml
+            git add argocd-apps/home-assistant.yaml
+            git commit -m "chore: Update Home Assistant to ${latestVersion}"
+            git push origin main
+            \`\`\`
+            
+            ### ✅ Post-Update Checklist
+            
+            - [ ] Verify Home Assistant is accessible
+            - [ ] Check all integrations are working (MQTT, Zigbee, etc.)
+            - [ ] Test automations
+            - [ ] Close this issue
+            
+            ---
+            
+            *This issue was automatically created by the Home Assistant Update Notifier workflow.*
+            *You can disable notifications by deleting \`.github/workflows/home-assistant-update-notifier.yaml\`*`
+            });
+            
+            console.log('✅ Created update notification issue');
+
+      - name: Send notification summary
+        if: always()
+        run: |
+          if [ "${{ steps.compare.outputs.update_available }}" == "true" ]; then
+            echo "::notice title=Home Assistant Update::New version available: ${{ steps.latest.outputs.app_version }}"
+          else
+            echo "::notice title=Home Assistant::Already on latest version"
+          fi
+
