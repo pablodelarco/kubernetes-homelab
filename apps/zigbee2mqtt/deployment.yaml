@@ -92,8 +92,7 @@ spec:
         configMap:
           name: zigbee2mqtt-config
       - name: data
-        persistentVolumeClaim:
-          claimName: zigbee2mqtt-data
+        emptyDir: {}  # Temporary: Using emptyDir to avoid Longhorn issues
       - name: dev
         hostPath:
           path: /dev
