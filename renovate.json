@@ -77,7 +77,6 @@
     {
       "description": "Longhorn: Require manual approval for ALL updates (phased upgrades required)",
       "matchPackageNames": ["longhorn"],
-      "matchUpdateTypes": ["minor", "patch"],
       "automerge": false,
       "separateMinorPatch": true,
       "labels": ["longhorn", "requires-manual-upgrade"],
