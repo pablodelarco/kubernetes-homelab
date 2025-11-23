@@ -7,7 +7,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
-  volumeName: pvc-jellyfin-restored
   resources:
     requests:
       storage: 5Gi
