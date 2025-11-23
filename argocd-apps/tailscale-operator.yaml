@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tailscale-operator
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    # renovate: registryUrl=https://pkgs.tailscale.com/helmcharts
+    - repoURL: 'https://pkgs.tailscale.com/helmcharts'
+      chart: tailscale-operator
+      targetRevision: 1.78.3
+      helm:
+        valueFiles:
+          - $values/apps/tailscale-operator/custom-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: tailscale
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

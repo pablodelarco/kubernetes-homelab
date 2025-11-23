@@ -68,7 +68,8 @@
         "sealed-secrets",
         "homepage",
         "uptime-kuma",
-        "home-assistant"
+        "home-assistant",
+        "tailscale-operator"
       ],
       "automerge": true,
       "automergeType": "pr",
