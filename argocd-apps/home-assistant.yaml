@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: 'http://pajikos.github.io/home-assistant-helm-chart/'
       chart: home-assistant
-      targetRevision: 0.2.100
+      targetRevision: 0.3.32  # Updated to latest chart version (Home Assistant 2025.11.3)
       helm:
         valueFiles:
           - $values/apps/home-assistant/custom-values.yaml
@@ -17,7 +17,7 @@ spec:
       ref: values
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: home-assistant 
+    namespace: home-assistant
   syncPolicy:
     automated:
       prune: true
