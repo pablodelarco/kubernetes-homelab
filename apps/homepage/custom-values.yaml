@@ -327,6 +327,7 @@ persistence:
     accessMode: ReadWriteOnce # Specify the required access mode
     storageClass: "longhorn" # Specify your storage class
     size: 5Gi
+    volumeName: pvc-homepage-restored # Bind to restored volume
 
 
 controller:
