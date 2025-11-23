@@ -58,5 +58,3 @@ This repository is structured to organize and simplify the management of my Kube
 - **Share Knowledge**: Document my progress and learnings to help others interested in setting up their own homelab.
 
 ---
-
-This homelab is a work in progress, and I look forward to expanding it further. Feel free to explore the repository, provide feedback, or draw inspiration for your own Kubernetes journey!
