@@ -46,15 +46,17 @@ spec:
           value: Europe/Madrid
         - name: ZIGBEE2MQTT_DATA
           value: /app/data
+        - name: ZIGBEE2MQTT_CONFIG
+          value: /app/configuration.yaml
         
         volumeMounts:
-        # Configuration from ConfigMap
-        - name: config
-          mountPath: /app/data/configuration.yaml
-          subPath: configuration.yaml
         # Persistent data (device database, network keys, etc.)
         - name: data
           mountPath: /app/data
+        # Configuration from ConfigMap (mounted separately to avoid conflicts)
+        - name: config
+          mountPath: /app/configuration.yaml
+          subPath: configuration.yaml
         # USB device access
         - name: dev
           mountPath: /dev

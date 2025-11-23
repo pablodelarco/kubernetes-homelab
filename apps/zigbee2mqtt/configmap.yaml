@@ -15,47 +15,21 @@ data:
     mqtt:
       base_topic: zigbee2mqtt
       server: mqtt://mosquitto.mosquitto.svc.cluster.local:1883
-      # No authentication needed (Mosquitto allows anonymous)
     
     # Serial settings - Will auto-detect when ZBT-1 is plugged in
     serial:
-      # Common paths for Zigbee coordinators:
-      # - /dev/ttyUSB0 (most USB Zigbee adapters)
-      # - /dev/ttyACM0 (Home Assistant Connect ZBT-1)
-      # - /dev/serial/by-id/... (persistent device path)
       port: /dev/ttyACM0
-      # Adapter type for Home Assistant Connect ZBT-1
       adapter: ezsp
     
     # Frontend (Web UI)
     frontend:
       port: 8080
-      # Allow access from any IP
       host: 0.0.0.0
     
     # Advanced settings
     advanced:
       log_level: info
-      log_output:
-        - console
-      # Network key for Zigbee network (change this for security!)
       network_key: GENERATE
-      # Pan ID (change if you have multiple Zigbee networks)
       pan_id: GENERATE
-      # Channel (11-26, avoid WiFi interference)
       channel: 11
-      
-    # Device options
-    device_options:
-      # Retain MQTT messages
-      retain: true
-    
-    # Availability settings
-    availability:
-      active:
-        # Send availability messages every 10 minutes
-        timeout: 10
-      passive:
-        # Mark device as unavailable after 1 hour
-        timeout: 60
 
