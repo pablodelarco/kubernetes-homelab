@@ -67,7 +67,8 @@
       "matchPackagePatterns": [
         "sealed-secrets",
         "homepage",
-        "uptime-kuma"
+        "uptime-kuma",
+        "home-assistant"
       ],
       "automerge": true,
       "automergeType": "pr",
