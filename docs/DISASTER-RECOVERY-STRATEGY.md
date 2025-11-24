@@ -9,8 +9,25 @@ This document outlines the strategy for recovering from a Longhorn disaster, bas
 ### Automated Backups
 - **Backup Target**: S3-compatible storage (MinIO)
 - **Backup Schedule**: Daily at 3:00 AM (configured via Longhorn recurring jobs)
-- **Retention**: Configurable per volume
+- **Retention**: 7 backups (configurable per job)
+- **Concurrency**: 2 volumes backed up simultaneously
 - **Scope**: All Longhorn volumes with `recurring-job-group.longhorn.io/default: enabled` label
+
+**Recurring Jobs**:
+- `default-backup`: Backs up all volumes in the "default" group (all 16 volumes)
+- `home-assistant-config-backup`: Redundant backup for home-assistant (can be removed)
+
+**Verification**:
+```bash
+# Check recurring jobs
+kubectl get recurringjobs.longhorn.io -n longhorn-system
+
+# Check which volumes have backup enabled
+kubectl get volumes.longhorn.io -n longhorn-system -L recurring-job-group.longhorn.io/default
+
+# Check last backup time for each volume
+kubectl get backupvolumes.longhorn.io -n longhorn-system
+```
 
 ### What Gets Backed Up
 - All application data volumes (media apps, home-assistant, uptime-kuma, opencost, etc.)
@@ -209,11 +226,40 @@ Create a script that automates volume restoration:
 4. **Backup verification is critical** - we were lucky backups existed and were complete
 5. **Documentation saves time** - having this guide will reduce RTO significantly
 
+## Critical Post-Recovery Actions
+
+After recovering from a disaster, **immediately verify backups are configured**:
+
+1. **Check recurring jobs exist**:
+   ```bash
+   kubectl get recurringjobs.longhorn.io -n longhorn-system
+   ```
+   Expected: At least `default-backup` job should exist
+
+2. **Verify all volumes have backup label**:
+   ```bash
+   kubectl get volumes.longhorn.io -n longhorn-system -L recurring-job-group.longhorn.io/default
+   ```
+   Expected: All volumes should show `enabled`
+
+3. **Wait for first backup to complete** (next day at 3:00 AM)
+
+4. **Verify backups were created**:
+   ```bash
+   kubectl get backupvolumes.longhorn.io -n longhorn-system
+   ```
+   Expected: All current volumes should have recent backups
+
+⚠️ **CRITICAL**: After the 2025-11-23 disaster recovery, we discovered that only home-assistant had a recurring backup job configured. All other volumes had the backup label but NO backup job was running! This was fixed by creating the `default-backup` recurring job.
+
 ## Next Steps
 
+- [x] ✅ Create `default-backup` recurring job (completed 2025-11-24)
+- [ ] Remove redundant `home-assistant-config-backup` job (optional)
 - [ ] Implement automated restore script
 - [ ] Set up secondary backup target (external S3)
 - [ ] Create quarterly restore testing schedule
-- [ ] Add backup monitoring and alerts
+- [ ] Add backup monitoring and alerts (alert if backup job fails or no recent backups)
 - [ ] Document application-specific restore procedures
+- [ ] Verify first backup completes successfully (check on 2025-11-25 after 3:00 AM)
 
