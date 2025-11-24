@@ -27,7 +27,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: cache
-          mountPath: /root/.ACEStream
+          mountPath: /home/appuser/.ACEStream
         env:
         # Allow remote access (required for NodePort/Ingress)
         - name: ALLOW_REMOTE_ACCESS
