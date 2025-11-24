@@ -40,6 +40,15 @@ spec:
         # Allow remote access (required for NodePort/Ingress)
         - name: ALLOW_REMOTE_ACCESS
           value: "yes"
+        # Increase buffer for better stability
+        - name: CACHE_DIR
+          value: "/root/.ACEStream/cache"
+        # Live buffer (in seconds) - increase for more stable playback
+        - name: LIVE_BUFFER
+          value: "30"
+        # VOD buffer (in seconds)
+        - name: VOD_BUFFER
+          value: "30"
         resources:
           requests:
             memory: "512Mi"
