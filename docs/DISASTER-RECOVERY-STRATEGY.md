@@ -9,7 +9,7 @@ This document outlines the strategy for recovering from a Longhorn disaster, bas
 ### Automated Backups
 - **Backup Target**: S3-compatible storage (MinIO)
 - **Backup Schedule**: Daily at 3:00 AM (configured via Longhorn recurring jobs)
-- **Retention**: 7 backups (configurable per job)
+- **Retention**: 3 backups (3 days of history)
 - **Concurrency**: 2 volumes backed up simultaneously
 - **Scope**: All Longhorn volumes with `recurring-job-group.longhorn.io/default: enabled` label
 
