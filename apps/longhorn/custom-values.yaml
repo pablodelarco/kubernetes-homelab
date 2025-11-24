@@ -4,6 +4,7 @@ persistence:
 defaultSettings:
   backupTarget: "s3://k8s-backups@us-east-1/"
   backupTargetCredentialSecret: "minio-credentials"
+  defaultReplicaCount: 2
 
 service:
   ui:
