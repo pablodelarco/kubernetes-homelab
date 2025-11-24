@@ -26,6 +26,9 @@ spec:
       containers:
       - name: acestream
         image: ghcr.io/martinbjeldbak/acestream-http-proxy:latest
+        # Add --bind-all flag to allow remote access
+        args:
+          - "--bind-all"
         ports:
         - name: http
           containerPort: 6878
