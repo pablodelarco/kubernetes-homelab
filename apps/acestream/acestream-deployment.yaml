@@ -27,8 +27,13 @@ spec:
       - name: acestream
         image: ghcr.io/martinbjeldbak/acestream-http-proxy:latest
         # Add --bind-all flag to allow remote access
+        # Add buffer settings for better stability
         args:
           - "--bind-all"
+          - "--live-buffer"
+          - "30"
+          - "--vod-buffer"
+          - "30"
         ports:
         - name: http
           containerPort: 6878
