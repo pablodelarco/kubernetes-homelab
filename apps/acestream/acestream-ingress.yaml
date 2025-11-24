@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: acestream
+  namespace: home-assistant
+  annotations:
+    tailscale.com/funnel: "true"
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: acestream
+      port:
+        number: 6878
+  tls:
+  - hosts:
+    - acestream
+

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: acestream
+  namespace: home-assistant
+  labels:
+    app: acestream
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 6878
+    targetPort: 6878
+    nodePort: 30878
+    protocol: TCP
+  selector:
+    app: acestream
+  # Allow access from any node (routes to pod wherever it's running)
+  externalTrafficPolicy: Cluster
+

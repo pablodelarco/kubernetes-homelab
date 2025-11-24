@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acestream
+  namespace: home-assistant
+  labels:
+    app: acestream
+spec:
+  replicas: 1
+  # Use Recreate strategy because PVC is ReadWriteOnce
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: acestream
+  template:
+    metadata:
+      labels:
+        app: acestream
+    spec:
+      containers:
+      - name: acestream
+        image: ghcr.io/martinbjeldbak/acestream-http-proxy:latest
+        ports:
+        - name: http
+          containerPort: 6878
+          protocol: TCP
+        volumeMounts:
+        - name: cache
+          mountPath: /root/.ACEStream
+        env:
+        # Allow remote access (required for NodePort/Ingress)
+        - name: ALLOW_REMOTE_ACCESS
+          value: "yes"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /webui/api/service
+            port: 6878
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /webui/api/service
+            port: 6878
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+      volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: acestream
+
