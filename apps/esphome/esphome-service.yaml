@@ -15,6 +15,6 @@ spec:
     protocol: TCP
   selector:
     app: esphome
-  # Only route to the node where the pod is running (worker)
-  externalTrafficPolicy: Local
+  # Allow access from any node (routes to worker where pod is running)
+  externalTrafficPolicy: Cluster
 
