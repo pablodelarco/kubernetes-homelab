@@ -18,6 +18,11 @@ spec:
       labels:
         app: acestream
     spec:
+      # Run as root to avoid permission issues with PVC
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
       containers:
       - name: acestream
         image: ghcr.io/martinbjeldbak/acestream-http-proxy:latest
@@ -27,7 +32,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: cache
-          mountPath: /home/appuser/.ACEStream
+          mountPath: /root/.ACEStream
         env:
         # Allow remote access (required for NodePort/Ingress)
         - name: ALLOW_REMOTE_ACCESS
