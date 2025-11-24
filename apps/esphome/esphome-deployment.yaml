@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esphome
+  namespace: home-assistant
+  labels:
+    app: esphome
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esphome
+  template:
+    metadata:
+      labels:
+        app: esphome
+    spec:
+      # Pin to worker node (same as Home Assistant for mDNS discovery)
+      nodeSelector:
+        kubernetes.io/hostname: worker
+      # Required for mDNS discovery of ESP devices
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: esphome
+        image: ghcr.io/esphome/esphome:latest
+        ports:
+        - name: http
+          containerPort: 6052
+          protocol: TCP
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        env:
+        - name: ESPHOME_DASHBOARD_USE_PING
+          value: "true"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: esphome
+
