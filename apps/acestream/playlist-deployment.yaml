@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acestream-playlist
+  namespace: home-assistant
+  labels:
+    app: acestream-playlist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: acestream-playlist
+  template:
+    metadata:
+      labels:
+        app: acestream-playlist
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: playlists
+          mountPath: /usr/share/nginx/html
+          readOnly: true
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "10m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+      volumes:
+      - name: playlists
+        configMap:
+          name: acestream-playlists
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acestream-playlist
+  namespace: home-assistant
+  labels:
+    app: acestream-playlist
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    nodePort: 30879
+    protocol: TCP
+  selector:
+    app: acestream-playlist
+  externalTrafficPolicy: Cluster
+
