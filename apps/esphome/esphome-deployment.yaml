@@ -7,6 +7,9 @@ metadata:
     app: esphome
 spec:
   replicas: 1
+  # Use Recreate strategy because PVC is ReadWriteOnce
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: esphome
