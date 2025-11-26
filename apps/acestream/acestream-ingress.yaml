@@ -4,7 +4,7 @@ metadata:
   name: acestream
   namespace: home-assistant
   annotations:
-    tailscale.com/funnel: "false"
+    tailscale.com/funnel: "true"
 spec:
   ingressClassName: tailscale
   defaultBackend:

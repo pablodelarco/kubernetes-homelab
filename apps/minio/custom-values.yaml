@@ -48,7 +48,7 @@ ingress:
   enabled: true
   ingressClassName: tailscale
   annotations:
-    tailscale.com/funnel: "false"
+    tailscale.com/funnel: "true"
   path: /
   hosts:
     - minio
@@ -61,7 +61,7 @@ consoleIngress:
   enabled: true
   ingressClassName: tailscale
   annotations:
-    tailscale.com/funnel: "false"
+    tailscale.com/funnel: "true"
   path: /
   hosts:
     - minio-console
