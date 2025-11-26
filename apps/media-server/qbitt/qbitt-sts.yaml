@@ -14,6 +14,24 @@ spec:
       labels:
         app: qbitt
     spec:
+      initContainers:
+        - name: fix-qbitt-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              CONFIG_FILE="/config/qBittorrent/qBittorrent.conf"
+              if [ -f "$CONFIG_FILE" ]; then
+                echo "Updating qBittorrent config for Tailscale access..."
+                sed -i 's|WebUI\\AuthSubnetWhitelistEnabled=true|WebUI\\AuthSubnetWhitelistEnabled=false|' "$CONFIG_FILE"
+                echo "Config updated - disabled AuthSubnetWhitelist"
+              else
+                echo "Config file not found, will be created on first run"
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /config
       containers:
         - name: qbitt
           image: linuxserver/qbittorrent
