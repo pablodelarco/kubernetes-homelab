@@ -48,7 +48,7 @@ spec:
               mountPath: /config
       containers:
         - name: qbitt
-          image: linuxserver/qbittorrent:5.1.4
+          image: linuxserver/qbittorrent:20.04.1
           resources:
             limits:
               memory: "2Gi"
