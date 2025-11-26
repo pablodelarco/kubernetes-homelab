@@ -35,7 +35,7 @@ spec:
             value: "1"
       containers:
         - name: uptime-kuma
-          image: louislam/uptime-kuma:latest
+          image: louislam/uptime-kuma:1.23.17
           env:
             # Disable IPv6 to force IPv4 resolution for local monitoring
             - name: NODE_OPTIONS

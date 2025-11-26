@@ -22,7 +22,8 @@
   "kubernetes": {
     "fileMatch": [
       "cluster/.+\\.ya?ml$",
-      "argocd-apps/.+\\.ya?ml$"
+      "argocd-apps/.+\\.ya?ml$",
+      "apps/.+/manifests/.+\\.ya?ml$"
     ]
   },
   "regexManagers": [
