@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matter-server
+  namespace: home-assistant
+  labels:
+    app: matter-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: matter-server
+  template:
+    metadata:
+      labels:
+        app: matter-server
+    spec:
+      # Must run on same node as Home Assistant for local communication
+      # Worker node has better network connectivity
+      nodeSelector:
+        kubernetes.io/hostname: worker
+      # Host network required for mDNS discovery
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: matter-server
+        image: ghcr.io/home-assistant-libs/python-matter-server:stable
+        args:
+          - "--storage-path"
+          - "/data"
+          - "--paa-root-cert-dir"
+          - "/data/credentials"
+        ports:
+        - name: websocket
+          containerPort: 5580
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: dbus
+          mountPath: /run/dbus
+          readOnly: true
+        securityContext:
+          # apparmor=unconfined equivalent
+          privileged: false
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        livenessProbe:
+          tcpSocket:
+            port: 5580
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 5580
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: matter-server
+      - name: dbus
+        hostPath:
+          path: /run/dbus
+          type: Directory
+
