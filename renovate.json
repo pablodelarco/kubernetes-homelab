@@ -152,10 +152,15 @@
         "jellyfin",
         "radarr",
         "sonarr",
-        "jackett",
-        "qbittorrent"
+        "jackett"
       ],
       "groupName": "Media Stack",
+      "labels": ["media"]
+    },
+    {
+      "description": "linuxserver/qbittorrent - use semver versioning",
+      "matchPackageNames": ["linuxserver/qbittorrent"],
+      "versioning": "semver",
       "labels": ["media"]
     },
     {
