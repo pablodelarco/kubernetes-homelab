@@ -5,7 +5,7 @@ metadata:
   namespace: media
 spec:
   type: NodePort
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
   ports:
     - name: web
       port: 80
