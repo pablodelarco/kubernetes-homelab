@@ -4,7 +4,7 @@ metadata:
   name: jellyseerr
   namespace: media
   annotations:
-    tailscale.com/funnel: "true"
+    tailscale.com/funnel: "false"
 spec:
   ingressClassName: tailscale
   rules:

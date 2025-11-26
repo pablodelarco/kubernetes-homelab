@@ -4,7 +4,7 @@ metadata:
   name: monitoring-grafana
   namespace: monitoring
   annotations:
-    tailscale.com/funnel: "true"
+    tailscale.com/funnel: "false"
   labels:
     app.kubernetes.io/instance: monitoring
     app.kubernetes.io/name: grafana
