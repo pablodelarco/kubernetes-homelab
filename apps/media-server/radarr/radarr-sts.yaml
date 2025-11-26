@@ -55,7 +55,7 @@ spec:
             failureThreshold: 3
 
         - name: gluetun
-          image: qmcgaw/gluetun:v3.40.0
+          image: qmcgaw/gluetun:v3.40.3
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"
