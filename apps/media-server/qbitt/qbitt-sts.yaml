@@ -24,8 +24,22 @@ spec:
               CONFIG_FILE="/config/qBittorrent/qBittorrent.conf"
               if [ -f "$CONFIG_FILE" ]; then
                 echo "Updating qBittorrent config for Tailscale access..."
+                # Disable HostHeaderValidation (causes "Unauthorized" with reverse proxy/different hosts)
+                if grep -q "WebUI.HostHeaderValidation" "$CONFIG_FILE"; then
+                  sed -i 's|WebUI\\HostHeaderValidation=true|WebUI\\HostHeaderValidation=false|' "$CONFIG_FILE"
+                else
+                  sed -i '/\[Preferences\]/a WebUI\\HostHeaderValidation=false' "$CONFIG_FILE"
+                fi
+                # Disable CSRF protection for API access
+                if grep -q "WebUI.CSRFProtection" "$CONFIG_FILE"; then
+                  sed -i 's|WebUI\\CSRFProtection=true|WebUI\\CSRFProtection=false|' "$CONFIG_FILE"
+                else
+                  sed -i '/\[Preferences\]/a WebUI\\CSRFProtection=false' "$CONFIG_FILE"
+                fi
+                # Disable AuthSubnetWhitelist
                 sed -i 's|WebUI\\AuthSubnetWhitelistEnabled=true|WebUI\\AuthSubnetWhitelistEnabled=false|' "$CONFIG_FILE"
-                echo "Config updated - disabled AuthSubnetWhitelist"
+                echo "Config updated for remote access"
+                grep -E "HostHeader|CSRF|AuthSubnet" "$CONFIG_FILE"
               else
                 echo "Config file not found, will be created on first run"
               fi
