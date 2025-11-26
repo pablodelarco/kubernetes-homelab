@@ -1,0 +1,19 @@
+# Note: Service is mainly for reference since we use hostNetwork
+# The WebSocket is available directly on the worker node at port 5580
+apiVersion: v1
+kind: Service
+metadata:
+  name: matter-server
+  namespace: home-assistant
+  labels:
+    app: matter-server
+spec:
+  type: ClusterIP
+  ports:
+  - name: websocket
+    port: 5580
+    targetPort: 5580
+    protocol: TCP
+  selector:
+    app: matter-server
+
