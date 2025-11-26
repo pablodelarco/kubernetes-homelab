@@ -158,9 +158,10 @@
       "labels": ["media"]
     },
     {
-      "description": "linuxserver/qbittorrent - use semver versioning",
+      "description": "linuxserver/qbittorrent - use semver versioning and ignore invalid v14+ versions",
       "matchPackageNames": ["linuxserver/qbittorrent"],
       "versioning": "semver",
+      "allowedVersions": "<10.0.0",
       "labels": ["media"]
     },
     {
