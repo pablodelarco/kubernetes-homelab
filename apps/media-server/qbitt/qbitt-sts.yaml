@@ -48,7 +48,7 @@ spec:
               mountPath: /config
       containers:
         - name: qbitt
-          image: linuxserver/qbittorrent
+          image: linuxserver/qbittorrent:5.1.4
           resources:
             limits:
               memory: "2Gi"
@@ -82,7 +82,7 @@ spec:
             failureThreshold: 5
 
         - name: gluetun
-          image: qmcgaw/gluetun
+          image: qmcgaw/gluetun:v3.40.0
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"

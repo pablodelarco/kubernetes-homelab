@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: jackett
-        image: linuxserver/jackett
+        image: linuxserver/jackett:0.24.360
         env:
         - name: PUID
           value: "65534"

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: jellyseerr
-          image: fallenbagel/jellyseerr:latest
+          image: fallenbagel/jellyseerr:2.7.3
           env:
             - name: LOG_LEVEL
               value: "info"

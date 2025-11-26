@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: bazarr
-          image: linuxserver/bazarr:latest
+          image: linuxserver/bazarr:1.5.3
           env:
             - name: PUID
               value: "65534"

@@ -26,7 +26,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: matter-server
-        image: ghcr.io/home-assistant-libs/python-matter-server:stable
+        image: ghcr.io/home-assistant-libs/python-matter-server:8.1.1
         args:
           - "--storage-path"
           - "/data"
