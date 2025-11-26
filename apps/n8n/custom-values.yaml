@@ -38,7 +38,7 @@ ingress:
   enabled: true
   className: tailscale
   annotations:
-    tailscale.com/funnel: "false"
+    tailscale.com/funnel: "true"
   hosts:
     - host: n8n   # public domain
       paths:

@@ -307,7 +307,7 @@ ingress:
   main:
     enabled: true
     annotations:
-      tailscale.com/funnel: "false"
+      tailscale.com/funnel: "true"
       gethomepage.dev/enabled: "true"
     ingressClassName: tailscale
     hosts:

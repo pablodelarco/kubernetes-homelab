@@ -4,7 +4,7 @@ metadata:
   name: jackett
   namespace: media
   annotations:
-    tailscale.com/funnel: "false"
+    tailscale.com/funnel: "true"
 spec:
   ingressClassName: tailscale
   rules:
