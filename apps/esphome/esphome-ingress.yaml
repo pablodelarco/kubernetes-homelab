@@ -4,7 +4,7 @@ metadata:
   name: esphome
   namespace: home-assistant
   annotations:
-    tailscale.com/funnel: "true"
+    tailscale.com/funnel: "false"
 spec:
   ingressClassName: tailscale
   defaultBackend:

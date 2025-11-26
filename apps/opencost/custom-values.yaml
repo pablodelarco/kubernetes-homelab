@@ -54,7 +54,7 @@ opencost:
       enabled: true
       ingressClassName: tailscale
       annotations:
-        tailscale.com/funnel: "true"
+        tailscale.com/funnel: "false"
       hosts:
         - host: opencost
           paths:

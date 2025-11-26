@@ -5,7 +5,7 @@ metadata:
   namespace: media
   annotations:
     # Enable Tailscale Funnel for public internet access
-    tailscale.com/funnel: "true"
+    tailscale.com/funnel: "false"
     # Ensure WebSocket support for Jellyfin
     nginx.ingress.kubernetes.io/websocket-services: "jellyfin"
     # Increase buffer sizes for large video streaming

@@ -19,7 +19,7 @@ ingress:
   enabled: true
   className: "tailscale"
   annotations:
-    tailscale.com/funnel: "true"
+    tailscale.com/funnel: "false"
   hosts:
     - host: home-assistant
       paths:
