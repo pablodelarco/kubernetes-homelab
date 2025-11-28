@@ -56,9 +56,9 @@ spec:
               memory: "512Mi"
           env:
             - name: PUID
-              value: "1057"
+              value: "1026"
             - name: PGID
-              value: "1056"
+              value: "100"
           volumeMounts:
             - name: config
               mountPath: /config
