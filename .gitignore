@@ -18,6 +18,10 @@ kubeconfig
 # Recyclarr secrets (never commit the actual secret file)
 apps/media-server/recyclarr/recyclarr-secret.yaml
 
+# Acestream (managed manually, not via GitOps)
+apps/acestream/
+argocd-apps/acestream.yaml
+
 # Local development
 .env
 .env.local
