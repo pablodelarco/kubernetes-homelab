@@ -1,0 +1,40 @@
+name: 🤖 Renovate
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no PRs created)'
+        required: false
+        default: 'false'
+        type: boolean
+  # Scheduled runs
+  schedule:
+    - cron: '0 4 * * *'  # Daily at 4 AM UTC
+  # Run on push to main (to pick up config changes)
+  push:
+    branches:
+      - main
+    paths:
+      - 'renovate.json'
+      - '.github/workflows/renovate.yaml'
+
+env:
+  LOG_LEVEL: info
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Renovate
+        uses: renovatebot/github-action@v42.0.3
+        with:
+          configurationFile: renovate.json
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          RENOVATE_DRY_RUN: ${{ inputs.dry_run == 'true' && 'full' || '' }}
+
