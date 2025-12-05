@@ -1,0 +1,40 @@
+# App of Apps - Root Application
+# This application manages all other ArgoCD applications in the argocd-apps/ directory
+# Any changes pushed to argocd-apps/*.yaml will be automatically synced by ArgoCD
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+  # This finalizer ensures child apps are deleted when app-of-apps is deleted
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: argocd-apps
+    # Only include Application manifests, exclude itself to avoid infinite loop
+    directory:
+      recurse: false
+      include: '*.yaml'
+      exclude: 'app-of-apps.yaml'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true      # Delete apps removed from Git
+      selfHeal: true   # Re-sync if someone manually changes apps
+      allowEmpty: false
+    syncOptions:
+      - CreateNamespace=false
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
