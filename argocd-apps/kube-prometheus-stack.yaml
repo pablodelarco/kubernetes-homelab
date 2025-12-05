@@ -6,6 +6,7 @@ metadata:
 spec:
   project: default
   sources:
+    # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
     - repoURL: 'https://prometheus-community.github.io/helm-charts'
       chart: kube-prometheus-stack
       targetRevision: 79.4.1
@@ -17,7 +18,16 @@ spec:
       ref: values
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: monitoring 
+    namespace: monitoring
+  # Ignore Grafana secret - it regenerates on each deploy
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: monitoring-grafana
+      jsonPointers:
+        - /data/admin-password
+        - /data/admin-user
+        - /data/ldap-toml
   syncPolicy:
     automated:
       prune: true
@@ -25,3 +35,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - RespectIgnoreDifferences=true
