@@ -19,7 +19,7 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
-  # Ignore Grafana secret - it regenerates on each deploy
+  # Ignore Grafana diffs - secret regenerates, deployment has dynamic annotations
   ignoreDifferences:
     - group: ""
       kind: Secret
@@ -28,6 +28,11 @@ spec:
         - /data/admin-password
         - /data/admin-user
         - /data/ldap-toml
+    - group: apps
+      kind: Deployment
+      name: monitoring-grafana
+      jsonPointers:
+        - /spec/template/metadata/annotations
   syncPolicy:
     automated:
       prune: true
