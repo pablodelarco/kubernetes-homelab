@@ -1,81 +1,74 @@
-name: 🏠 Home Assistant Update Notifier
+name: 🏠 Home Assistant Deployed Notifier
 
 on:
-  schedule:
-    # Check for updates every day at 9:00 AM (Europe/Madrid time)
-    - cron: '0 8 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - 'argocd-apps/home-assistant.yaml'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
-  check-home-assistant-update:
+  notify-deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit to detect version change
 
-      - name: Get current Home Assistant version
-        id: current
+      - name: Get deployed version
+        id: version
         run: |
-          CURRENT_VERSION=$(grep -A 2 "chart: home-assistant" argocd-apps/home-assistant.yaml | grep "targetRevision:" | awk '{print $2}')
-          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "Current chart version: $CURRENT_VERSION"
+          # Get current (new) version from the file
+          NEW_VERSION=$(grep -A 2 "chart: home-assistant" argocd-apps/home-assistant.yaml | grep "targetRevision:" | awk '{print $2}')
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Check latest Home Assistant version
-        id: latest
+          # Get previous version from the commit before
+          git show HEAD~1:argocd-apps/home-assistant.yaml > /tmp/old-ha.yaml 2>/dev/null || echo "targetRevision: unknown" > /tmp/old-ha.yaml
+          OLD_VERSION=$(grep -A 2 "chart: home-assistant" /tmp/old-ha.yaml | grep "targetRevision:" | awk '{print $2}' || echo "unknown")
+          echo "old_version=$OLD_VERSION" >> $GITHUB_OUTPUT
+
+          echo "Version change: $OLD_VERSION → $NEW_VERSION"
+
+      - name: Get Home Assistant app version
+        id: app_version
         run: |
-          # Add Helm repo
+          # Add Helm repo and get the app version for the deployed chart
           helm repo add pajikos http://pajikos.github.io/home-assistant-helm-chart/
           helm repo update pajikos
-          
-          # Get latest version
-          LATEST_VERSION=$(helm search repo pajikos/home-assistant --output json | jq -r '.[0].version')
-          LATEST_APP_VERSION=$(helm search repo pajikos/home-assistant --output json | jq -r '.[0].app_version')
-          
-          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          echo "app_version=$LATEST_APP_VERSION" >> $GITHUB_OUTPUT
-          echo "Latest chart version: $LATEST_VERSION (Home Assistant $LATEST_APP_VERSION)"
 
-      - name: Compare versions
-        id: compare
-        run: |
-          CURRENT="${{ steps.current.outputs.version }}"
-          LATEST="${{ steps.latest.outputs.version }}"
-          
-          if [ "$CURRENT" != "$LATEST" ]; then
-            echo "update_available=true" >> $GITHUB_OUTPUT
-            echo "🆕 Update available: $CURRENT → $LATEST"
-          else
-            echo "update_available=false" >> $GITHUB_OUTPUT
-            echo "✅ Already on latest version: $CURRENT"
-          fi
+          CHART_VERSION="${{ steps.version.outputs.new_version }}"
+          APP_VERSION=$(helm search repo pajikos/home-assistant --version "$CHART_VERSION" --output json | jq -r '.[0].app_version // "unknown"')
+
+          echo "app_version=$APP_VERSION" >> $GITHUB_OUTPUT
+          echo "Home Assistant version: $APP_VERSION"
 
       - name: Send Telegram Notification
-        if: steps.compare.outputs.update_available == 'true'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          CURRENT="${{ steps.current.outputs.version }}"
-          LATEST="${{ steps.latest.outputs.version }}"
-          APP_VERSION="${{ steps.latest.outputs.app_version }}"
+          OLD_VERSION="${{ steps.version.outputs.old_version }}"
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          APP_VERSION="${{ steps.app_version.outputs.app_version }}"
 
           # Create message
-          MESSAGE="🏠 *Home Assistant Update Available!*
+          MESSAGE="🏠 *Home Assistant Updated!* ✅
 
-          📊 *Version Information*
-          • Helm Chart: \`${CURRENT}\` → \`${LATEST}\` ✨
-          • Home Assistant: \`${APP_VERSION}\` ✨
+          📊 *Deployment Complete*
+          • Helm Chart: \`${OLD_VERSION}\` → \`${NEW_VERSION}\`
+          • Home Assistant: \`${APP_VERSION}\`
+
+          🔄 *Status*
+          ArgoCD is now deploying this version to your cluster.
 
           📝 *What's New?*
           [Release Notes](https://www.home-assistant.io/blog/)
 
-          🚀 *How to Update*
-          Renovate will auto-merge the update, or update manually via ArgoCD.
-
-          ✅ *Post-Update*
-          • Verify Home Assistant is accessible
-          • Check integrations (MQTT, Zigbee)
-          • Test automations"
+          ✅ *Verify*
+          • Check Home Assistant is accessible
+          • Test your automations"
 
           # Send to Telegram
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
@@ -84,12 +77,7 @@ jobs:
             -d parse_mode="Markdown" \
             -d disable_web_page_preview=true
 
-      - name: Send notification summary
-        if: always()
+      - name: Log deployment
         run: |
-          if [ "${{ steps.compare.outputs.update_available }}" == "true" ]; then
-            echo "::notice title=Home Assistant Update::New version available: ${{ steps.latest.outputs.app_version }}"
-          else
-            echo "::notice title=Home Assistant::Already on latest version"
-          fi
+          echo "::notice title=Home Assistant Deployed::Version ${{ steps.version.outputs.new_version }} (HA ${{ steps.app_version.outputs.app_version }}) deployed to cluster"
 
