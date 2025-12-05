@@ -32,12 +32,13 @@
   },
   "regexManagers": [
     {
-      "description": "Process ArgoCD Application manifests",
+      "description": "Process ArgoCD Application manifests (sources array format)",
       "fileMatch": ["argocd-apps/.+\\.ya?ml$"],
       "matchStrings": [
-        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *targetRevision: (?<currentValue>.*)",
-        "targetRevision: (?<currentValue>.*)\n.*chart: (?<depName>.*)",
-        "chart: (?<depName>.*)\n.*targetRevision: (?<currentValue>.*)"
+        "# renovate: registryUrl=(?<registryUrl>.*?)\\n\\s*- repoURL: .*?\\n\\s*chart: (?<depName>.*?)\\n\\s*targetRevision: (?<currentValue>.*)",
+        "registryUrl=(?<registryUrl>.*?)\\n\\s*- repoURL: .*?\\n\\s*chart: (?<depName>.*?)\\n\\s*targetRevision: (?<currentValue>.*)",
+        "registryUrl=(?<registryUrl>.*?)\\n *chart: (?<depName>.*?)\\n *targetRevision: (?<currentValue>.*)",
+        "chart: (?<depName>.*)\\n.*targetRevision: (?<currentValue>.*)"
       ],
       "datasourceTemplate": "helm"
     },
