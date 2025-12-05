@@ -68,15 +68,9 @@
       "automergeStrategy": "squash"
     },
     {
-      "description": "Auto-merge minor updates for stable apps (excluding Longhorn)",
+      "description": "Auto-merge minor updates for all packages (excluding Longhorn)",
       "matchUpdateTypes": ["minor"],
-      "matchPackagePatterns": [
-        "sealed-secrets",
-        "homepage",
-        "uptime-kuma",
-        "home-assistant",
-        "tailscale-operator"
-      ],
+      "excludePackagePatterns": ["longhorn"],
       "automerge": true,
       "automergeType": "pr",
       "automergeStrategy": "squash"
