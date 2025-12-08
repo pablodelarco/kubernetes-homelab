@@ -4,6 +4,12 @@ metadata:
   name: radarr
   namespace: argocd
 spec:
+  ignoreDifferences:
+  - group: ""
+    kind: PersistentVolumeClaim
+    name: radarr
+    jsonPointers:
+    - /spec/volumeName
   project: default
   source:
     repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
@@ -16,3 +22,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
