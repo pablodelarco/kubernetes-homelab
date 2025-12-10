@@ -1,0 +1,5 @@
+resources:
+  - flaresolverr-deploy.yaml
+  - flaresolverr-svc.yaml
+
+namespace: media
