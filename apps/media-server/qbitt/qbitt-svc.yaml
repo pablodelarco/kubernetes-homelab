@@ -16,3 +16,6 @@ spec:
     - name: http-proxy
       port: 8888        # HTTP proxy port for Jackett
       targetPort: 8888  # Port on the Gluetun container
+    - name: flaresolverr
+      port: 8191        # FlareSolverr port
+      targetPort: 8191  # Port on the FlareSolverr container
