@@ -25,6 +25,8 @@ spec:
           value: "http://qbitt.media.svc.cluster.local:8888"
         - name: HTTPS_PROXY
           value: "http://qbitt.media.svc.cluster.local:8888"
+        - name: NO_PROXY
+          value: "localhost,127.0.0.1,.cluster.local"
         volumeMounts:
         - name: config
           mountPath: /config
@@ -44,6 +46,29 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
+
+      - name: flaresolverr
+        image: ghcr.io/flaresolverr/flaresolverr:v3.3.21
+        env:
+        - name: LOG_LEVEL
+          value: "info"
+        - name: LOG_HTML
+          value: "false"
+        - name: TZ
+          value: "Europe/Madrid"
+        - name: CAPTCHA_SOLVER
+          value: "none"
+        ports:
+        - containerPort: 8191
+          name: flaresolverr
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+
       volumes:
       - name: config
         persistentVolumeClaim:
