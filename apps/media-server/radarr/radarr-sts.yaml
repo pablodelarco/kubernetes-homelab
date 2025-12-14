@@ -37,21 +37,27 @@ spec:
               mountPath: /downloads
           ports:
             - containerPort: 7878
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: 7878
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 5
-            failureThreshold: 3
-          readinessProbe:
+          startupProbe:
             httpGet:
               path: /ping
               port: 7878
             initialDelaySeconds: 30
             periodSeconds: 10
-            timeoutSeconds: 5
+            timeoutSeconds: 10
+            failureThreshold: 30  # Allow up to 5 minutes for VPN + Radarr startup
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 7878
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 5  # More tolerant of brief VPN reconnections
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 7878
+            periodSeconds: 30
+            timeoutSeconds: 10
             failureThreshold: 3
 
         - name: gluetun
