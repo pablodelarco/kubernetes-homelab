@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: radarr-iptables
+  namespace: media
+data:
+  post-rules.txt: |
+    iptables -A INPUT -i eth0 -p tcp --dport 7878 -j ACCEPT
+

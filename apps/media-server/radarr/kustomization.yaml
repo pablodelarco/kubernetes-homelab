@@ -3,6 +3,7 @@ resources:
   - radarr-sts.yaml
   - radarr-svc.yaml
   - radarr-ingress.yaml
+  - radarr-iptables-cm.yaml
 
 namespace: media
 
