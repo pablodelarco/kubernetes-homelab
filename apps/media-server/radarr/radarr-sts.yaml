@@ -105,6 +105,8 @@ spec:
           volumeMounts:
             - name: gluetun-config
               mountPath: /gluetun
+            - name: iptables-rules
+              mountPath: /iptables
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -117,3 +119,6 @@ spec:
             claimName: qbitt-temp
         - name: gluetun-config
           emptyDir: {}
+        - name: iptables-rules
+          configMap:
+            name: radarr-iptables
