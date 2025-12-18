@@ -5,6 +5,7 @@ metadata:
   namespace: media
   annotations:
     tailscale.com/hostname: "jellyfin"
+    tailscale.com/tags: "tag:k8s"
 spec:
   type: LoadBalancer
   loadBalancerClass: tailscale
