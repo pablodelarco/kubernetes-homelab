@@ -23,6 +23,17 @@ k8sServicePort: 6443
 # Kube-proxy replacement
 kubeProxyReplacement: true
 
+# ============================================
+# TAILSCALE LOADBALANCER COMPATIBILITY
+# ============================================
+# Required for Tailscale operator LoadBalancer services to work.
+# When Cilium runs in kube-proxy replacement mode, socket-level LB
+# intercepts connections before they reach Tailscale's netfilter hooks.
+# Setting hostNamespaceOnly=true bypasses socket LB in pod namespaces.
+# See: https://tailscale.com/kb/1236/kubernetes-operator#cilium-in-kube-proxy-replacement-mode
+socketLB:
+  hostNamespaceOnly: true
+
 # Node port configuration
 nodePort:
   enabled: true

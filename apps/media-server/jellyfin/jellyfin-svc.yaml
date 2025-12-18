@@ -1,15 +1,18 @@
-# ClusterIP service for internal access
-# External access is provided by the Tailscale sidecar in the pod
+# Tailscale LoadBalancer service for external access via Tailscale
 apiVersion: v1
 kind: Service
 metadata:
   name: jellyfin
   namespace: media
+  annotations:
+    tailscale.com/hostname: "jellyfin"
+    tailscale.com/tags: "tag:k8s"
 spec:
-  type: ClusterIP
+  type: LoadBalancer
+  loadBalancerClass: tailscale
   ports:
     - name: http
-      port: 8096
+      port: 80
       targetPort: 8096
   selector:
     app: jellyfin
