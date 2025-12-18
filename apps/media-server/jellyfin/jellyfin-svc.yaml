@@ -5,10 +5,12 @@ metadata:
   namespace: media
   annotations:
     tailscale.com/expose: "true"
+    tailscale.com/hostname: jellyfin
 spec:
   type: ClusterIP
   ports:
     - port: 8096
+      targetPort: 8096
   selector:
     app: jellyfin
 
