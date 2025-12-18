@@ -1,19 +1,15 @@
-# Tailscale LoadBalancer service for external access via Tailscale
+# NodePort service for Jellyfin - access via beelink Tailscale IP + NodePort
 apiVersion: v1
 kind: Service
 metadata:
   name: jellyfin
   namespace: media
-  annotations:
-    tailscale.com/hostname: "jellyfin"
-    tailscale.com/tags: "tag:k8s"
 spec:
-  type: LoadBalancer
-  loadBalancerClass: tailscale
+  type: NodePort
   ports:
     - name: http
-      port: 80
+      port: 8096
       targetPort: 8096
+      nodePort: 30096
   selector:
     app: jellyfin
-
