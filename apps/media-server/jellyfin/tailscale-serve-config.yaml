@@ -1,0 +1,26 @@
+# Tailscale serve configuration for Jellyfin sidecar
+# This configures the sidecar to forward traffic to Jellyfin on port 8096
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jellyfin-ts-serve-config
+  namespace: media
+data:
+  serve-config.json: |
+    {
+      "TCP": {
+        "443": {
+          "HTTPS": true
+        }
+      },
+      "Web": {
+        "jellyfin.tabby-carp.ts.net:443": {
+          "Handlers": {
+            "/": {
+              "Proxy": "http://127.0.0.1:8096"
+            }
+          }
+        }
+      }
+    }
+
