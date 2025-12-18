@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: jellyfin
   namespace: media
+  annotations:
+    tailscale.com/expose: "true"
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 8096
-      nodePort: 30096
+    - port: 8096
   selector:
     app: jellyfin
 
