@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: jellyfin
   namespace: media
+  labels:
+    app: jellyfin
 spec:
   type: NodePort
   ports:
