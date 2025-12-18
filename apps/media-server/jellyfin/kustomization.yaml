@@ -4,6 +4,7 @@ resources:
   - jellyfin-network-config.yaml
   - jellyfin-sts.yaml
   - jellyfin-svc.yaml
+  - jellyfin-ingress.yaml
 
 namespace: media
 
