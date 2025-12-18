@@ -10,7 +10,7 @@ spec:
   loadBalancerClass: tailscale
   ports:
     - name: http
-      port: 8096
+      port: 80
       targetPort: 8096
   selector:
     app: jellyfin
