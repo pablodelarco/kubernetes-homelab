@@ -16,7 +16,6 @@ spec:
       annotations:
         container.apparmor.security.beta.kubernetes.io/jellyfin: unconfined
     spec:
-      serviceAccountName: jellyfin-tailscale
       securityContext:
         supplementalGroups: [44, 993]
       # Init container to set up network configuration for Tailscale Funnel
@@ -46,34 +45,6 @@ spec:
                   - key: node-role.kubernetes.io/control-plane
                     operator: DoesNotExist
       containers:
-        # Tailscale sidecar for direct IP-based access
-        - name: ts-sidecar
-          image: tailscale/tailscale:v1.80.3
-          imagePullPolicy: Always
-          env:
-            - name: TS_AUTHKEY
-              valueFrom:
-                secretKeyRef:
-                  name: tailscale-auth
-                  key: TS_AUTHKEY
-            - name: TS_STATE_DIR
-              value: "/var/lib/tailscale"
-            - name: TS_KUBE_SECRET
-              value: ""
-            - name: TS_USERSPACE
-              value: "true"
-            - name: TS_HOSTNAME
-              value: "jellyfin"
-            - name: TS_EXTRA_ARGS
-              value: "--advertise-tags=tag:k8s"
-            - name: TS_SERVE_CONFIG
-              value: "/config/serve-config.json"
-          volumeMounts:
-            - name: ts-serve-config
-              mountPath: /config
-              readOnly: true
-            - name: ts-state
-              mountPath: /var/lib/tailscale
         - name: jellyfin
           image: jellyfin/jellyfin:10.11.3
           env:
@@ -137,8 +108,3 @@ spec:
         - name: network-config
           configMap:
             name: jellyfin-network-config
-        - name: ts-serve-config
-          configMap:
-            name: jellyfin-ts-serve-config
-        - name: ts-state
-          emptyDir: {}

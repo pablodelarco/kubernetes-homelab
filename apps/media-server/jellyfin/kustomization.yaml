@@ -2,8 +2,6 @@ resources:
   - nfs-media-pv-pvc.yaml
   - jellyfin-pvc.yaml
   - jellyfin-network-config.yaml
-  - tailscale-sidecar-rbac.yaml
-  - tailscale-serve-config.yaml
   - jellyfin-sts.yaml
   - jellyfin-svc.yaml
 
