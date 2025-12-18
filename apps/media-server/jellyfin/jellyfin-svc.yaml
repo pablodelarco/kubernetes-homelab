@@ -4,10 +4,10 @@ metadata:
   name: jellyfin
   namespace: media
   annotations:
-    tailscale.com/expose: "true"
     tailscale.com/hostname: jellyfin
 spec:
-  type: ClusterIP
+  type: LoadBalancer
+  loadBalancerClass: tailscale
   ports:
     - name: http
       port: 8096
