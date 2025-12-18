@@ -56,10 +56,10 @@ spec:
                 secretKeyRef:
                   name: tailscale-auth
                   key: TS_AUTHKEY
-            - name: TS_KUBE_SECRET
-              value: "jellyfin-tailscale-state"
+            - name: TS_STATE_DIR
+              value: "/var/lib/tailscale"
             - name: TS_USERSPACE
-              value: "false"
+              value: "true"
             - name: TS_HOSTNAME
               value: "jellyfin"
             - name: TS_EXTRA_ARGS
@@ -70,10 +70,8 @@ spec:
             - name: ts-serve-config
               mountPath: /config
               readOnly: true
-          securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
+            - name: ts-state
+              mountPath: /var/lib/tailscale
         - name: jellyfin
           image: jellyfin/jellyfin:10.11.3
           env:
@@ -140,3 +138,5 @@ spec:
         - name: ts-serve-config
           configMap:
             name: jellyfin-ts-serve-config
+        - name: ts-state
+          emptyDir: {}
