@@ -4,15 +4,12 @@ metadata:
   name: radarr
   namespace: media
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - name: web
       port: 80
       targetPort: 7878
       protocol: TCP
-    - name: http-proxy
-      port: 8888
-      targetPort: 8888
-      protocol: TCP
+      nodePort: 30078
   selector:
     app: radarr
