@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: radarr
   namespace: media
-  annotations:
-    tailscale.com/funnel: "true"
 spec:
   ingressClassName: tailscale
   rules:
