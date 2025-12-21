@@ -16,8 +16,8 @@ ipam:
 # IPv4 native routing CIDR (pod network)
 ipv4NativeRoutingCIDR: 10.42.0.0/16
 
-# Kubernetes API server (via Tailscale)
-k8sServiceHost: 100.113.23.108
+# Kubernetes API server (LAN IP)
+k8sServiceHost: 192.168.1.106
 k8sServicePort: 6443
 
 # Kube-proxy replacement
