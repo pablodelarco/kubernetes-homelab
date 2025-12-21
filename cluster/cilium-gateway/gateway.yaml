@@ -1,0 +1,19 @@
+# Cilium Gateway - Main ingress gateway for homelab
+# Exposed on host network (port 80 on all nodes)
+# TLS will be added in Phase 5 with cert-manager
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: homelab-gateway
+  namespace: kube-system
+spec:
+  gatewayClassName: cilium
+  listeners:
+    # HTTP listener for all homelab services
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
