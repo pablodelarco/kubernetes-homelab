@@ -3,7 +3,6 @@ resources:
   - qbitt-pvc.yaml
   - qbitt-sts.yaml
   - qbitt-svc.yaml
-  - qbitt-ingress.yaml
 
 namespace: media
 

@@ -2,7 +2,6 @@ resources:
   - jackett-pvc.yaml
   - jackett-deploy.yaml
   - jackett-svc.yaml
-  - jackett-ingress.yaml
 
 namespace: media
 
