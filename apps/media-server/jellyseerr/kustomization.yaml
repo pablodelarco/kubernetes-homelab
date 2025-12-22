@@ -4,5 +4,4 @@ resources:
   - jellyseerr-sts.yaml
   - jellyseerr-svc.yaml
   - jellyseerr-pvc.yaml
-  - jellyseerr-ingress.yaml
 

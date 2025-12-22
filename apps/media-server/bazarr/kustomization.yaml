@@ -4,5 +4,4 @@ resources:
   - bazarr-sts.yaml
   - bazarr-svc.yaml
   - bazarr-pvc.yaml
-  - bazarr-ingress.yaml
 
