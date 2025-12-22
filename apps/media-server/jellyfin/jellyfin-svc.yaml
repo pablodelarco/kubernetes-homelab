@@ -1,4 +1,4 @@
-# NodePort service for Jellyfin - access via beelink Tailscale IP + NodePort
+# ClusterIP service for Jellyfin - access via Cilium Gateway
 apiVersion: v1
 kind: Service
 metadata:
@@ -7,11 +7,10 @@ metadata:
   labels:
     app: jellyfin
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - name: http
       port: 8096
       targetPort: 8096
-      nodePort: 30096
   selector:
     app: jellyfin

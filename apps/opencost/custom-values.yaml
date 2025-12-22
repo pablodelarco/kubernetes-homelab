@@ -51,15 +51,6 @@ opencost:
   ui:
     enabled: true
     ingress:
-      enabled: true
-      ingressClassName: tailscale
-      annotations:
-        tailscale.com/funnel: "true"
-      hosts:
-        - host: opencost
-          paths:
-            - /
-      tls:
-        - hosts:
-            - opencost
+      # Disabled - using Cilium Gateway API instead
+      enabled: false
 

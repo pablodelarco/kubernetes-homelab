@@ -1,0 +1,3673 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acestream"},"name":"acestream","namespace":"acestream"},"spec":{"externalTrafficPolicy":"Cluster","ports":[{"name":"http","nodePort":30878,"port":6878,"protocol":"TCP","targetPort":6878}],"selector":{"app":"acestream"},"type":"NodePort"}}
+    creationTimestamp: "2025-12-01T23:45:20Z"
+    labels:
+      app: acestream
+    name: acestream
+    namespace: acestream
+    resourceVersion: "51427990"
+    uid: cc7f0308-64fd-4105-af9a-5ef9a97a1e23
+  spec:
+    clusterIP: 10.43.13.45
+    clusterIPs:
+    - 10.43.13.45
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30878
+      port: 6878
+      protocol: TCP
+      targetPort: 6878
+    selector:
+      app: acestream
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"acestream-playlist"},"name":"acestream-playlist","namespace":"acestream"},"spec":{"externalTrafficPolicy":"Cluster","ports":[{"name":"http","nodePort":30879,"port":80,"protocol":"TCP","targetPort":80}],"selector":{"app":"acestream-playlist"},"type":"NodePort"}}
+    creationTimestamp: "2025-12-01T23:45:20Z"
+    labels:
+      app: acestream-playlist
+    name: acestream-playlist
+    namespace: acestream
+    resourceVersion: "51427998"
+    uid: 67797c0c-61e8-4732-ba7d-54f9696f3257
+  spec:
+    clusterIP: 10.43.109.147
+    clusterIPs:
+    - 10.43.109.147
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30879
+      port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: acestream-playlist
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"applicationset-controller","app.kubernetes.io/name":"argocd-applicationset-controller","app.kubernetes.io/part-of":"argocd"},"name":"argocd-applicationset-controller","namespace":"argocd"},"spec":{"ports":[{"name":"webhook","port":7000,"protocol":"TCP","targetPort":"webhook"},{"name":"metrics","port":8080,"protocol":"TCP","targetPort":"metrics"}],"selector":{"app.kubernetes.io/name":"argocd-applicationset-controller"}}}
+    creationTimestamp: "2024-12-26T11:18:27Z"
+    labels:
+      app.kubernetes.io/component: applicationset-controller
+      app.kubernetes.io/name: argocd-applicationset-controller
+      app.kubernetes.io/part-of: argocd
+    name: argocd-applicationset-controller
+    namespace: argocd
+    resourceVersion: "590440"
+    uid: 901b7700-c613-4be8-90e7-8b79289907a8
+  spec:
+    clusterIP: 10.43.97.230
+    clusterIPs:
+    - 10.43.97.230
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: webhook
+      port: 7000
+      protocol: TCP
+      targetPort: webhook
+    - name: metrics
+      port: 8080
+      protocol: TCP
+      targetPort: metrics
+    selector:
+      app.kubernetes.io/name: argocd-applicationset-controller
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"dex-server","app.kubernetes.io/name":"argocd-dex-server","app.kubernetes.io/part-of":"argocd"},"name":"argocd-dex-server","namespace":"argocd"},"spec":{"ports":[{"appProtocol":"TCP","name":"http","port":5556,"protocol":"TCP","targetPort":5556},{"name":"grpc","port":5557,"protocol":"TCP","targetPort":5557},{"name":"metrics","port":5558,"protocol":"TCP","targetPort":5558}],"selector":{"app.kubernetes.io/name":"argocd-dex-server"}}}
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    labels:
+      app.kubernetes.io/component: dex-server
+      app.kubernetes.io/name: argocd-dex-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-dex-server
+    namespace: argocd
+    resourceVersion: "590445"
+    uid: ab23bfaf-fc46-4f72-a902-d8cbc9f73181
+  spec:
+    clusterIP: 10.43.205.202
+    clusterIPs:
+    - 10.43.205.202
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - appProtocol: TCP
+      name: http
+      port: 5556
+      protocol: TCP
+      targetPort: 5556
+    - name: grpc
+      port: 5557
+      protocol: TCP
+      targetPort: 5557
+    - name: metrics
+      port: 5558
+      protocol: TCP
+      targetPort: 5558
+    selector:
+      app.kubernetes.io/name: argocd-dex-server
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"argocd-image-updater","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"argocd-image-updater","app.kubernetes.io/version":"v1.0.1","control-plane":"argocd-image-updater-controller","helm.sh/chart":"argocd-image-updater-1.0.1"},"name":"argocd-image-updater-metrics","namespace":"argocd"},"spec":{"ports":[{"name":"https","port":8443,"protocol":"TCP","targetPort":"metrics"}],"selector":{"app.kubernetes.io/instance":"argocd-image-updater","app.kubernetes.io/name":"argocd-image-updater"}}}
+    creationTimestamp: "2025-10-31T10:53:29Z"
+    labels:
+      app.kubernetes.io/instance: argocd-image-updater
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: argocd-image-updater
+      app.kubernetes.io/version: v1.0.1
+      control-plane: argocd-image-updater-controller
+      helm.sh/chart: argocd-image-updater-1.0.1
+    name: argocd-image-updater-metrics
+    namespace: argocd
+    resourceVersion: "52390988"
+    uid: 43c00cf4-fb6c-4ebd-88ec-338388ac757c
+  spec:
+    clusterIP: 10.43.57.136
+    clusterIPs:
+    - 10.43.57.136
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 8443
+      protocol: TCP
+      targetPort: metrics
+    - name: metrics
+      port: 8081
+      protocol: TCP
+      targetPort: metrics
+    selector:
+      app.kubernetes.io/instance: argocd-image-updater
+      app.kubernetes.io/name: argocd-image-updater
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"metrics","app.kubernetes.io/name":"argocd-metrics","app.kubernetes.io/part-of":"argocd"},"name":"argocd-metrics","namespace":"argocd"},"spec":{"ports":[{"name":"metrics","port":8082,"protocol":"TCP","targetPort":8082}],"selector":{"app.kubernetes.io/name":"argocd-application-controller"}}}
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/name: argocd-metrics
+      app.kubernetes.io/part-of: argocd
+    name: argocd-metrics
+    namespace: argocd
+    resourceVersion: "590449"
+    uid: 01b815a5-22a7-4341-958c-de3cc26412b6
+  spec:
+    clusterIP: 10.43.161.252
+    clusterIPs:
+    - 10.43.161.252
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 8082
+      protocol: TCP
+      targetPort: 8082
+    selector:
+      app.kubernetes.io/name: argocd-application-controller
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"notifications-controller","app.kubernetes.io/name":"argocd-notifications-controller-metrics","app.kubernetes.io/part-of":"argocd"},"name":"argocd-notifications-controller-metrics","namespace":"argocd"},"spec":{"ports":[{"name":"metrics","port":9001,"protocol":"TCP","targetPort":9001}],"selector":{"app.kubernetes.io/name":"argocd-notifications-controller"}}}
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    labels:
+      app.kubernetes.io/component: notifications-controller
+      app.kubernetes.io/name: argocd-notifications-controller-metrics
+      app.kubernetes.io/part-of: argocd
+    name: argocd-notifications-controller-metrics
+    namespace: argocd
+    resourceVersion: "590453"
+    uid: 8b9bba93-3775-49bb-a702-4531831b4a50
+  spec:
+    clusterIP: 10.43.39.140
+    clusterIPs:
+    - 10.43.39.140
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+    selector:
+      app.kubernetes.io/name: argocd-notifications-controller
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"redis","app.kubernetes.io/name":"argocd-redis","app.kubernetes.io/part-of":"argocd"},"name":"argocd-redis","namespace":"argocd"},"spec":{"ports":[{"name":"tcp-redis","port":6379,"targetPort":6379}],"selector":{"app.kubernetes.io/name":"argocd-redis"}}}
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    labels:
+      app.kubernetes.io/component: redis
+      app.kubernetes.io/name: argocd-redis
+      app.kubernetes.io/part-of: argocd
+    name: argocd-redis
+    namespace: argocd
+    resourceVersion: "590457"
+    uid: 84cc3350-4059-4716-bda0-665f30f714de
+  spec:
+    clusterIP: 10.43.163.88
+    clusterIPs:
+    - 10.43.163.88
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-redis
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+    selector:
+      app.kubernetes.io/name: argocd-redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"repo-server","app.kubernetes.io/name":"argocd-repo-server","app.kubernetes.io/part-of":"argocd"},"name":"argocd-repo-server","namespace":"argocd"},"spec":{"ports":[{"name":"server","port":8081,"protocol":"TCP","targetPort":8081},{"name":"metrics","port":8084,"protocol":"TCP","targetPort":8084}],"selector":{"app.kubernetes.io/name":"argocd-repo-server"}}}
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    labels:
+      app.kubernetes.io/component: repo-server
+      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-repo-server
+    namespace: argocd
+    resourceVersion: "590461"
+    uid: 8e53f48e-cf6f-4e50-a2ab-d4c294aa9de9
+  spec:
+    clusterIP: 10.43.152.226
+    clusterIPs:
+    - 10.43.152.226
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: server
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+    - name: metrics
+      port: 8084
+      protocol: TCP
+      targetPort: 8084
+    selector:
+      app.kubernetes.io/name: argocd-repo-server
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"server","app.kubernetes.io/name":"argocd-server","app.kubernetes.io/part-of":"argocd"},"name":"argocd-server","namespace":"argocd"},"spec":{"ports":[{"name":"http","port":80,"protocol":"TCP","targetPort":8080},{"name":"https","port":443,"protocol":"TCP","targetPort":8080}],"selector":{"app.kubernetes.io/name":"argocd-server"}}}
+      metallb.io/ip-allocated-from-pool: homelab-ip-pool
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: argocd-server
+      app.kubernetes.io/part-of: argocd
+    name: argocd-server
+    namespace: argocd
+    resourceVersion: "47471446"
+    uid: ec58a358-60d2-4b5b-821a-4dc77823b52e
+  spec:
+    clusterIP: 10.43.21.15
+    clusterIPs:
+    - 10.43.21.15
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 31938
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      nodePort: 30355
+      port: 443
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app.kubernetes.io/name: argocd-server
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"server","app.kubernetes.io/name":"argocd-server-metrics","app.kubernetes.io/part-of":"argocd"},"name":"argocd-server-metrics","namespace":"argocd"},"spec":{"ports":[{"name":"metrics","port":8083,"protocol":"TCP","targetPort":8083}],"selector":{"app.kubernetes.io/name":"argocd-server"}}}
+    creationTimestamp: "2024-12-26T11:18:28Z"
+    labels:
+      app.kubernetes.io/component: server
+      app.kubernetes.io/name: argocd-server-metrics
+      app.kubernetes.io/part-of: argocd
+    name: argocd-server-metrics
+    namespace: argocd
+    resourceVersion: "590469"
+    uid: 2f792535-cfae-4956-b942-25adf9fa42e9
+  spec:
+    clusterIP: 10.43.96.242
+    clusterIPs:
+    - 10.43.96.242
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 8083
+      protocol: TCP
+      targetPort: 8083
+    selector:
+      app.kubernetes.io/name: argocd-server
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cert-manager.clusterctl.cluster.x-k8s.io/version: v1.16.2
+    creationTimestamp: "2025-02-06T16:55:54Z"
+    labels:
+      app: cert-manager
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: cert-manager
+      app.kubernetes.io/version: v1.16.2
+      clusterctl.cluster.x-k8s.io: ""
+      clusterctl.cluster.x-k8s.io/core: cert-manager
+    name: cert-manager
+    namespace: cert-manager
+    resourceVersion: "7461083"
+    uid: 399fff8b-1d70-4e15-8f9f-e94c0b1397fb
+  spec:
+    clusterIP: 10.43.183.61
+    clusterIPs:
+    - 10.43.183.61
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-prometheus-servicemonitor
+      port: 9402
+      protocol: TCP
+      targetPort: 9402
+    selector:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: cert-manager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cert-manager.clusterctl.cluster.x-k8s.io/version: v1.16.2
+    creationTimestamp: "2025-02-06T16:55:54Z"
+    labels:
+      app: cainjector
+      app.kubernetes.io/component: cainjector
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: cainjector
+      app.kubernetes.io/version: v1.16.2
+      clusterctl.cluster.x-k8s.io: ""
+      clusterctl.cluster.x-k8s.io/core: cert-manager
+    name: cert-manager-cainjector
+    namespace: cert-manager
+    resourceVersion: "7461081"
+    uid: fbf3af40-0b22-4ef1-a44f-9776573d1afe
+  spec:
+    clusterIP: 10.43.53.7
+    clusterIPs:
+    - 10.43.53.7
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9402
+      protocol: TCP
+      targetPort: 9402
+    selector:
+      app.kubernetes.io/component: cainjector
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: cainjector
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      cert-manager.clusterctl.cluster.x-k8s.io/version: v1.16.2
+    creationTimestamp: "2025-02-06T16:55:54Z"
+    labels:
+      app: webhook
+      app.kubernetes.io/component: webhook
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: webhook
+      app.kubernetes.io/version: v1.16.2
+      clusterctl.cluster.x-k8s.io: ""
+      clusterctl.cluster.x-k8s.io/core: cert-manager
+    name: cert-manager-webhook
+    namespace: cert-manager
+    resourceVersion: "7461089"
+    uid: 6dfbe5c2-0ba8-44e1-baee-06a9e0114d4d
+  spec:
+    clusterIP: 10.43.9.36
+    clusterIPs:
+    - 10.43.9.36
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+    - name: metrics
+      port: 9402
+      protocol: TCP
+      targetPort: http-metrics
+    selector:
+      app.kubernetes.io/component: webhook
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: webhook
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-13T09:56:08Z"
+    labels:
+      kind: echo
+    name: echo-same-node
+    namespace: cilium-test-1
+    resourceVersion: "29536763"
+    uid: 95f6269b-11d8-4ad9-aaad-17bf325def2d
+  spec:
+    clusterIP: 10.43.225.110
+    clusterIPs:
+    - 10.43.225.110
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    ports:
+    - name: http
+      nodePort: 30353
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      name: echo-same-node
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2024-12-21T11:29:43Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "37101"
+    uid: ce785899-6bc8-424c-a406-ca581de076fd
+  spec:
+    clusterIP: 10.43.0.1
+    clusterIPs:
+    - 10.43.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 6443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-07-30T09:42:35Z"
+    labels:
+      app.kubernetes.io/component: my-nginx-pod
+      app.kubernetes.io/managed-by: kubernetes-mcp-server
+      app.kubernetes.io/name: my-nginx-pod
+      app.kubernetes.io/part-of: kubernetes-mcp-server-run-sandbox
+    name: my-nginx-pod
+    namespace: default
+    resourceVersion: "28818966"
+    uid: 23a24fa8-7e4f-432d-93da-012b5df8c124
+  spec:
+    clusterIP: 10.43.213.237
+    clusterIPs:
+    - 10.43.213.237
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app.kubernetes.io/component: my-nginx-pod
+      app.kubernetes.io/managed-by: kubernetes-mcp-server
+      app.kubernetes.io/name: my-nginx-pod
+      app.kubernetes.io/part-of: kubernetes-mcp-server-run-sandbox
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-24T15:53:15Z"
+    labels:
+      app: esphome
+      app.kubernetes.io/instance: esphome
+    name: esphome
+    namespace: home-assistant
+    resourceVersion: "52385899"
+    uid: 9fb4e2d0-6e48-4b00-a526-47bb1b9fd3cf
+  spec:
+    clusterIP: 10.43.191.252
+    clusterIPs:
+    - 10.43.191.252
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30652
+      port: 6052
+      protocol: TCP
+      targetPort: 6052
+    selector:
+      app: esphome
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"home-assistant","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"home-assistant","app.kubernetes.io/version":"2025.12.0","helm.sh/chart":"home-assistant-0.3.33"},"name":"home-assistant","namespace":"home-assistant"},"spec":{"ports":[{"name":"http","port":80,"protocol":"TCP","targetPort":"http"}],"selector":{"app.kubernetes.io/instance":"home-assistant","app.kubernetes.io/name":"home-assistant"},"type":"NodePort"}}
+    creationTimestamp: "2025-11-17T11:12:45Z"
+    labels:
+      app.kubernetes.io/instance: home-assistant
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: home-assistant
+      app.kubernetes.io/version: 2025.12.0
+      helm.sh/chart: home-assistant-0.3.33
+    name: home-assistant
+    namespace: home-assistant
+    resourceVersion: "52388788"
+    uid: 154abfb1-c6cb-4084-8465-ae9dd7ceae55
+  spec:
+    clusterIP: 10.43.208.211
+    clusterIPs:
+    - 10.43.208.211
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30400
+      port: 80
+      protocol: TCP
+      targetPort: http
+    selector:
+      app.kubernetes.io/instance: home-assistant
+      app.kubernetes.io/name: home-assistant
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"home-assistant","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"home-assistant","app.kubernetes.io/version":"2025.12.0","helm.sh/chart":"home-assistant-0.3.33"},"name":"home-assistant-codeserver","namespace":"home-assistant"},"spec":{"ports":[{"name":"codeserver","port":30030,"protocol":"TCP","targetPort":"codeserver"}],"selector":{"app.kubernetes.io/instance":"home-assistant","app.kubernetes.io/name":"home-assistant"},"type":"NodePort"}}
+    creationTimestamp: "2025-01-17T20:54:06Z"
+    labels:
+      app.kubernetes.io/instance: home-assistant
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: home-assistant
+      app.kubernetes.io/version: 2025.12.0
+      helm.sh/chart: home-assistant-0.3.33
+    name: home-assistant-codeserver
+    namespace: home-assistant
+    resourceVersion: "52388787"
+    uid: 746c21ad-5739-4408-9324-db2b6a8469fe
+  spec:
+    clusterIP: 10.43.178.24
+    clusterIPs:
+    - 10.43.178.24
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: codeserver
+      nodePort: 30212
+      port: 30030
+      protocol: TCP
+      targetPort: codeserver
+    selector:
+      app.kubernetes.io/instance: home-assistant
+      app.kubernetes.io/name: home-assistant
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-21T17:58:17Z"
+    labels:
+      app.kubernetes.io/instance: homepage
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: homepage
+      app.kubernetes.io/service: homepage
+      app.kubernetes.io/version: v0.9.6
+      helm.sh/chart: homepage-2.0.1
+    name: homepage
+    namespace: homepage
+    resourceVersion: "52386039"
+    uid: 0699951f-e62e-4528-a477-521c9cc1a595
+  spec:
+    clusterIP: 10.43.181.48
+    clusterIPs:
+    - 10.43.181.48
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 3000
+      protocol: TCP
+      targetPort: http
+    selector:
+      app.kubernetes.io/instance: homepage
+      app.kubernetes.io/name: homepage
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: cilium
+      meta.helm.sh/release-namespace: kube-system
+      prometheus.io/port: "9964"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-08-13T09:53:54Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: cilium-envoy
+      app.kubernetes.io/part-of: cilium
+      io.cilium/app: proxy
+      k8s-app: cilium-envoy
+    name: cilium-envoy
+    namespace: kube-system
+    resourceVersion: "29534994"
+    uid: e37373b9-a3e9-4727-bac2-ecf6a05fe622
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: envoy-metrics
+      port: 9964
+      protocol: TCP
+      targetPort: envoy-metrics
+    selector:
+      k8s-app: cilium-envoy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-03T19:51:49Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
+    name: grafana-kube-prometheus-st-kubelet
+    namespace: kube-system
+    resourceVersion: "1671173"
+    uid: be0b832a-aeee-43fe-b218-cb2a7ef4c68a
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    - IPv6
+    ipFamilyPolicy: RequireDualStack
+    ports:
+    - name: https-metrics
+      port: 10250
+      protocol: TCP
+      targetPort: 10250
+    - name: http-metrics
+      port: 10255
+      protocol: TCP
+      targetPort: 10255
+    - name: cadvisor
+      port: 4194
+      protocol: TCP
+      targetPort: 4194
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: cilium
+      meta.helm.sh/release-namespace: kube-system
+    creationTimestamp: "2025-08-13T09:53:54Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hubble-peer
+      app.kubernetes.io/part-of: cilium
+      k8s-app: cilium
+    name: hubble-peer
+    namespace: kube-system
+    resourceVersion: "29534998"
+    uid: d6b3528d-2803-4ccb-8ae3-969f69423602
+  spec:
+    clusterIP: 10.43.22.29
+    clusterIPs:
+    - 10.43.22.29
+    internalTrafficPolicy: Local
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: peer-service
+      port: 443
+      protocol: TCP
+      targetPort: 4244
+    selector:
+      k8s-app: cilium
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: cilium
+      meta.helm.sh/release-namespace: kube-system
+    creationTimestamp: "2025-08-13T10:40:37Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hubble-relay
+      app.kubernetes.io/part-of: cilium
+      k8s-app: hubble-relay
+    name: hubble-relay
+    namespace: kube-system
+    resourceVersion: "29549173"
+    uid: 564f1129-b7fd-4b3c-820d-48b5e1fd7476
+  spec:
+    clusterIP: 10.43.90.170
+    clusterIPs:
+    - 10.43.90.170
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: grpc
+    selector:
+      k8s-app: hubble-relay
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: cilium
+      meta.helm.sh/release-namespace: kube-system
+    creationTimestamp: "2025-08-13T10:40:37Z"
+    labels:
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: hubble-ui
+      app.kubernetes.io/part-of: cilium
+      k8s-app: hubble-ui
+    name: hubble-ui
+    namespace: kube-system
+    resourceVersion: "29549179"
+    uid: 70da8593-1dcd-4281-a643-5e1639082039
+  spec:
+    clusterIP: 10.43.82.231
+    clusterIPs:
+    - 10.43.82.231
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8081
+    selector:
+      k8s-app: hubble-ui
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      objectset.rio.cattle.io/applied: H4sIAAAAAAAA/4ySQYvbMBCF/0p5Z9m142TjFfRQdimUQgmk7aXsQZYnG9W2JKRJSgj+70WJl00b0vZm8958vHmjI5Q33yhE4ywk9iUEOmNbSKwp7I0mCAzEqlWsII9Q1jpWbJyN6dc1P0hzJM6DcblWzD3lxr01iQBxU3c/LYXsed9BoqvihbIvxZtPxrbv3rets/9EWDUQJLQL1Nr4X/bolU4z3a6hLB4i0wABH9xAvKVdTG7vAkPivlxUV1rUQfkE4LAjjAK9aqg/1dHVMVPev8DPidJnsMR0mtb9LjKFLE71Tpg/bdNeDy7Q4+f1X/baqriFRKNpVlez+7ouy+W8UkVV36lmURab2eZuSZvlfDYv9GKZ8k7si4i3ahkFoiedVptyf1xBoizyeZUXeVlAvAoR8vul9CRg/Ac1mP6wcr3Rh/SojH3uac1Kd6lXFzhNHV8indOcy19Up+LZaddD4uvjCqO4dGas/S33l4ff3ANxMPqVne567X8SiNSTZhduHHMcx18BAAD//5X9LCMyAwAA
+      objectset.rio.cattle.io/id: ""
+      objectset.rio.cattle.io/owner-gvk: k3s.cattle.io/v1, Kind=Addon
+      objectset.rio.cattle.io/owner-name: coredns
+      objectset.rio.cattle.io/owner-namespace: kube-system
+      prometheus.io/port: "9153"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2024-12-21T11:29:46Z"
+    labels:
+      k8s-app: kube-dns
+      kubernetes.io/cluster-service: "true"
+      kubernetes.io/name: CoreDNS
+      objectset.rio.cattle.io/hash: bce283298811743a0386ab510f2f67ef74240c57
+    name: kube-dns
+    namespace: kube-system
+    resourceVersion: "270"
+    uid: 90fa5e94-2e13-44e8-8604-53257d548061
+  spec:
+    clusterIP: 10.43.0.10
+    clusterIPs:
+    - 10.43.0.10
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: dns
+      port: 53
+      protocol: UDP
+      targetPort: 53
+    - name: dns-tcp
+      port: 53
+      protocol: TCP
+      targetPort: 53
+    - name: metrics
+      port: 9153
+      protocol: TCP
+      targetPort: 9153
+    selector:
+      k8s-app: kube-dns
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-03T21:49:35Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
+    name: kube-prometheus-stack-kubelet
+    namespace: kube-system
+    resourceVersion: "1686476"
+    uid: 3b4ffcd9-18b7-4820-b87b-f8ce34b7ca09
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    - IPv6
+    ipFamilyPolicy: RequireDualStack
+    ports:
+    - name: https-metrics
+      port: 10250
+      protocol: TCP
+      targetPort: 10250
+    - name: http-metrics
+      port: 10255
+      protocol: TCP
+      targetPort: 10255
+    - name: cadvisor
+      port: 4194
+      protocol: TCP
+      targetPort: 4194
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      objectset.rio.cattle.io/applied: H4sIAAAAAAAA/4SQQWsbMRCF/0p5Z9nNep04FfRQWnopBUNKL6WHWe04VleWhGa8xZj970UbFxLaJCchvZn3vqczKPvvXMSnCIuxgcHgYw+LOy6jdwyDAyv1pAR7BsWYlNSnKPWaul/sVFiXxaelI9XAS5/e+uoA86yefkcui/txgMXQyiNlbMybLz727z/0fYqvWkQ6MGxFLN7JQriMXObjgf31bcnkqsVw7HghJ1E+YDII1HGYO1ahRFaWuujCUfRRhIWWY016Onbh+vqE6wWePckeFnTdt527uWrc7abhZtXuqF11q83uev2uu2HabK46t1tTJfxvdTy8P1NKMrtayefPdPDhtE3BuxMstoV3XD4dKdwpuQEGORUV2B/nvzl71SwXAXa9bg1ySZpcCrD49nELA6Vyz7qdJy4L008D4cBOU5l/81YWlPO/4NM0/QkAAP//sKxN444CAAA
+      objectset.rio.cattle.io/id: ""
+      objectset.rio.cattle.io/owner-gvk: k3s.cattle.io/v1, Kind=Addon
+      objectset.rio.cattle.io/owner-name: metrics-server-service
+      objectset.rio.cattle.io/owner-namespace: kube-system
+    creationTimestamp: "2024-12-21T11:29:47Z"
+    labels:
+      kubernetes.io/cluster-service: "true"
+      kubernetes.io/name: Metrics-server
+      objectset.rio.cattle.io/hash: a5d3bc601c871e123fa32b27f549b6ea770bcf4a
+    name: metrics-server
+    namespace: kube-system
+    resourceVersion: "319"
+    uid: 7c24e5a9-895b-4a8a-9bef-17ade203021d
+  spec:
+    clusterIP: 10.43.131.220
+    clusterIPs:
+    - 10.43.131.220
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+    selector:
+      k8s-app: metrics-server
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-17T13:13:41Z"
+    labels:
+      app: kube-prometheus-stack-coredns
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      jobLabel: coredns
+      release: monitoring
+    name: monitoring-kube-prometheus-coredns
+    namespace: kube-system
+    resourceVersion: "49120255"
+    uid: 210072bc-823f-41dc-8a36-7c6e15d62ee8
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9153
+      protocol: TCP
+      targetPort: 9153
+    selector:
+      k8s-app: kube-dns
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-17T13:13:41Z"
+    labels:
+      app: kube-prometheus-stack-kube-controller-manager
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      jobLabel: kube-controller-manager
+      release: monitoring
+    name: monitoring-kube-prometheus-kube-controller-manager
+    namespace: kube-system
+    resourceVersion: "49120249"
+    uid: a08ae380-fd7f-40c1-882c-ade021883ab9
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10257
+      protocol: TCP
+      targetPort: 10257
+    selector:
+      component: kube-controller-manager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-17T13:13:41Z"
+    labels:
+      app: kube-prometheus-stack-kube-etcd
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      jobLabel: kube-etcd
+      release: monitoring
+    name: monitoring-kube-prometheus-kube-etcd
+    namespace: kube-system
+    resourceVersion: "49120268"
+    uid: bb680d62-05b5-4462-a8db-1e80cb7d53e6
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 2381
+      protocol: TCP
+      targetPort: 2381
+    selector:
+      component: etcd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-17T13:13:40Z"
+    labels:
+      app: kube-prometheus-stack-kube-proxy
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      jobLabel: kube-proxy
+      release: monitoring
+    name: monitoring-kube-prometheus-kube-proxy
+    namespace: kube-system
+    resourceVersion: "49120269"
+    uid: bee15bbe-c925-40ef-963c-4997b16b656d
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10249
+      protocol: TCP
+      targetPort: 10249
+    selector:
+      k8s-app: kube-proxy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-17T13:13:41Z"
+    labels:
+      app: kube-prometheus-stack-kube-scheduler
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      jobLabel: kube-scheduler
+      release: monitoring
+    name: monitoring-kube-prometheus-kube-scheduler
+    namespace: kube-system
+    resourceVersion: "49120275"
+    uid: 95eba567-aa24-44d8-9bea-0f31af82be88
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10259
+      protocol: TCP
+      targetPort: 10259
+    selector:
+      component: kube-scheduler
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-04T13:33:40Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
+    name: monitoring-kube-prometheus-kubelet
+    namespace: kube-system
+    resourceVersion: "1774574"
+    uid: 999ac679-9e5a-4700-af3b-e128d2098294
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    - IPv6
+    ipFamilyPolicy: RequireDualStack
+    ports:
+    - name: https-metrics
+      port: 10250
+      protocol: TCP
+      targetPort: 10250
+    - name: http-metrics
+      port: 10255
+      protocol: TCP
+      targetPort: 10255
+    - name: cadvisor
+      port: 4194
+      protocol: TCP
+      targetPort: 4194
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"kube-prometheus-stack-coredns","app.kubernetes.io/instance":"monitoring-stack","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/part-of":"kube-prometheus-stack","app.kubernetes.io/version":"67.7.0","chart":"kube-prometheus-stack-67.7.0","heritage":"Helm","jobLabel":"coredns","release":"monitoring-stack"},"name":"monitoring-stack-kube-prom-coredns","namespace":"kube-system"},"spec":{"clusterIP":"None","ports":[{"name":"http-metrics","port":9153,"protocol":"TCP","targetPort":9153}],"selector":{"k8s-app":"kube-dns"}}}
+    creationTimestamp: "2025-01-03T20:18:28Z"
+    labels:
+      app: kube-prometheus-stack-coredns
+      app.kubernetes.io/instance: monitoring-stack
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: coredns
+      release: monitoring-stack
+    name: monitoring-stack-kube-prom-coredns
+    namespace: kube-system
+    resourceVersion: "1674390"
+    uid: 7336b5c1-2537-4ccd-91b2-f59defc23cd3
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9153
+      protocol: TCP
+      targetPort: 9153
+    selector:
+      k8s-app: kube-dns
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"kube-prometheus-stack-kube-controller-manager","app.kubernetes.io/instance":"monitoring-stack","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/part-of":"kube-prometheus-stack","app.kubernetes.io/version":"67.7.0","chart":"kube-prometheus-stack-67.7.0","heritage":"Helm","jobLabel":"kube-controller-manager","release":"monitoring-stack"},"name":"monitoring-stack-kube-prom-kube-controller-manager","namespace":"kube-system"},"spec":{"clusterIP":"None","ports":[{"name":"http-metrics","port":10257,"protocol":"TCP","targetPort":10257}],"selector":{"component":"kube-controller-manager"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-01-03T20:18:28Z"
+    labels:
+      app: kube-prometheus-stack-kube-controller-manager
+      app.kubernetes.io/instance: monitoring-stack
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-controller-manager
+      release: monitoring-stack
+    name: monitoring-stack-kube-prom-kube-controller-manager
+    namespace: kube-system
+    resourceVersion: "1674394"
+    uid: a2c0ebf7-b119-4bd4-a5cd-36d38254bf86
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10257
+      protocol: TCP
+      targetPort: 10257
+    selector:
+      component: kube-controller-manager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"kube-prometheus-stack-kube-etcd","app.kubernetes.io/instance":"monitoring-stack","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/part-of":"kube-prometheus-stack","app.kubernetes.io/version":"67.7.0","chart":"kube-prometheus-stack-67.7.0","heritage":"Helm","jobLabel":"kube-etcd","release":"monitoring-stack"},"name":"monitoring-stack-kube-prom-kube-etcd","namespace":"kube-system"},"spec":{"clusterIP":"None","ports":[{"name":"http-metrics","port":2381,"protocol":"TCP","targetPort":2381}],"selector":{"component":"etcd"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-01-03T20:18:28Z"
+    labels:
+      app: kube-prometheus-stack-kube-etcd
+      app.kubernetes.io/instance: monitoring-stack
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-etcd
+      release: monitoring-stack
+    name: monitoring-stack-kube-prom-kube-etcd
+    namespace: kube-system
+    resourceVersion: "1674404"
+    uid: fb8dd55e-d21b-4292-bdf4-e45315f957c6
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 2381
+      protocol: TCP
+      targetPort: 2381
+    selector:
+      component: etcd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"kube-prometheus-stack-kube-proxy","app.kubernetes.io/instance":"monitoring-stack","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/part-of":"kube-prometheus-stack","app.kubernetes.io/version":"67.7.0","chart":"kube-prometheus-stack-67.7.0","heritage":"Helm","jobLabel":"kube-proxy","release":"monitoring-stack"},"name":"monitoring-stack-kube-prom-kube-proxy","namespace":"kube-system"},"spec":{"clusterIP":"None","ports":[{"name":"http-metrics","port":10249,"protocol":"TCP","targetPort":10249}],"selector":{"k8s-app":"kube-proxy"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-01-03T20:18:28Z"
+    labels:
+      app: kube-prometheus-stack-kube-proxy
+      app.kubernetes.io/instance: monitoring-stack
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-proxy
+      release: monitoring-stack
+    name: monitoring-stack-kube-prom-kube-proxy
+    namespace: kube-system
+    resourceVersion: "1674383"
+    uid: 05e24234-9b7c-4631-8b4a-91f1cf793c60
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10249
+      protocol: TCP
+      targetPort: 10249
+    selector:
+      k8s-app: kube-proxy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"kube-prometheus-stack-kube-scheduler","app.kubernetes.io/instance":"monitoring-stack","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/part-of":"kube-prometheus-stack","app.kubernetes.io/version":"67.7.0","chart":"kube-prometheus-stack-67.7.0","heritage":"Helm","jobLabel":"kube-scheduler","release":"monitoring-stack"},"name":"monitoring-stack-kube-prom-kube-scheduler","namespace":"kube-system"},"spec":{"clusterIP":"None","ports":[{"name":"http-metrics","port":10259,"protocol":"TCP","targetPort":10259}],"selector":{"component":"kube-scheduler"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-01-03T20:18:28Z"
+    labels:
+      app: kube-prometheus-stack-kube-scheduler
+      app.kubernetes.io/instance: monitoring-stack
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-scheduler
+      release: monitoring-stack
+    name: monitoring-stack-kube-prom-kube-scheduler
+    namespace: kube-system
+    resourceVersion: "1674386"
+    uid: 990eaa5f-c0f9-423f-a053-b539fb171418
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10259
+      protocol: TCP
+      targetPort: 10259
+    selector:
+      component: kube-scheduler
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-03T20:18:31Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
+    name: monitoring-stack-kube-prom-kubelet
+    namespace: kube-system
+    resourceVersion: "1674566"
+    uid: 337fe256-83c0-498c-aa21-1db495860b3c
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    - IPv6
+    ipFamilyPolicy: RequireDualStack
+    ports:
+    - name: https-metrics
+      port: 10250
+      protocol: TCP
+      targetPort: 10250
+    - name: http-metrics
+      port: 10255
+      protocol: TCP
+      targetPort: 10255
+    - name: cadvisor
+      port: 4194
+      protocol: TCP
+      targetPort: 4194
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: prometheus
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-04T13:47:29Z"
+    labels:
+      app: kube-prometheus-stack-coredns
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.11.0
+      chart: kube-prometheus-stack-67.11.0
+      heritage: Helm
+      jobLabel: coredns
+      release: prometheus
+    name: prometheus-kube-prometheus-coredns
+    namespace: kube-system
+    resourceVersion: "3077264"
+    uid: 5088a421-9fd7-418b-850f-ba7967bf7560
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9153
+      protocol: TCP
+      targetPort: 9153
+    selector:
+      k8s-app: kube-dns
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: prometheus
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-04T13:47:29Z"
+    labels:
+      app: kube-prometheus-stack-kube-controller-manager
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.11.0
+      chart: kube-prometheus-stack-67.11.0
+      heritage: Helm
+      jobLabel: kube-controller-manager
+      release: prometheus
+    name: prometheus-kube-prometheus-kube-controller-manager
+    namespace: kube-system
+    resourceVersion: "3077267"
+    uid: e87f86e5-f22a-4cfe-9876-2885d4d4f702
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10257
+      protocol: TCP
+      targetPort: 10257
+    selector:
+      component: kube-controller-manager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: prometheus
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-04T13:47:29Z"
+    labels:
+      app: kube-prometheus-stack-kube-etcd
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.11.0
+      chart: kube-prometheus-stack-67.11.0
+      heritage: Helm
+      jobLabel: kube-etcd
+      release: prometheus
+    name: prometheus-kube-prometheus-kube-etcd
+    namespace: kube-system
+    resourceVersion: "3077270"
+    uid: 8b4f7c31-2512-410d-80ca-c4b0a58e46f0
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 2381
+      protocol: TCP
+      targetPort: 2381
+    selector:
+      component: etcd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: prometheus
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-04T13:47:29Z"
+    labels:
+      app: kube-prometheus-stack-kube-proxy
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.11.0
+      chart: kube-prometheus-stack-67.11.0
+      heritage: Helm
+      jobLabel: kube-proxy
+      release: prometheus
+    name: prometheus-kube-prometheus-kube-proxy
+    namespace: kube-system
+    resourceVersion: "3077273"
+    uid: 6b49692c-52d0-442c-99d5-eab290514193
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10249
+      protocol: TCP
+      targetPort: 10249
+    selector:
+      k8s-app: kube-proxy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: prometheus
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-04T13:47:29Z"
+    labels:
+      app: kube-prometheus-stack-kube-scheduler
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.11.0
+      chart: kube-prometheus-stack-67.11.0
+      heritage: Helm
+      jobLabel: kube-scheduler
+      release: prometheus
+    name: prometheus-kube-prometheus-kube-scheduler
+    namespace: kube-system
+    resourceVersion: "3077276"
+    uid: 6446b10f-e6e6-4519-88ba-db673077e744
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10259
+      protocol: TCP
+      targetPort: 10259
+    selector:
+      component: kube-scheduler
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2024-12-21T17:58:00Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
+    name: prometheus-kube-prometheus-kubelet
+    namespace: kube-system
+    resourceVersion: "30066"
+    uid: c97959ef-0919-441f-b828-0ceffa9029fe
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    - IPv6
+    ipFamilyPolicy: RequireDualStack
+    ports:
+    - name: https-metrics
+      port: 10250
+      protocol: TCP
+      targetPort: 10250
+    - name: http-metrics
+      port: 10255
+      protocol: TCP
+      targetPort: 10255
+    - name: cadvisor
+      port: 4194
+      protocol: TCP
+      targetPort: 4194
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-23T17:23:16Z"
+    labels:
+      app.kubernetes.io/instance: sealed-secrets
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: sealed-secrets
+      app.kubernetes.io/part-of: sealed-secrets
+      app.kubernetes.io/version: 0.27.2
+      helm.sh/chart: sealed-secrets-2.16.2
+    name: sealed-secrets-controller
+    namespace: kube-system
+    resourceVersion: "49185889"
+    uid: d1e56343-c93c-4bd3-b6b0-a11feeffe33f
+  spec:
+    clusterIP: 10.43.22.240
+    clusterIPs:
+    - 10.43.22.240
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+    selector:
+      app.kubernetes.io/instance: sealed-secrets
+      app.kubernetes.io/name: sealed-secrets
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-23T17:23:16Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: sealed-secrets
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: sealed-secrets
+      app.kubernetes.io/part-of: sealed-secrets
+      app.kubernetes.io/version: 0.27.2
+      helm.sh/chart: sealed-secrets-2.16.2
+    name: sealed-secrets-controller-metrics
+    namespace: kube-system
+    resourceVersion: "49185890"
+    uid: 9dcb5e24-5af3-4c75-bf63-a1b6d3dbc79f
+  spec:
+    clusterIP: 10.43.170.85
+    clusterIPs:
+    - 10.43.170.85
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics
+      port: 8081
+      protocol: TCP
+      targetPort: metrics
+    selector:
+      app.kubernetes.io/instance: sealed-secrets
+      app.kubernetes.io/name: sealed-secrets
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: test-prom
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-03T20:53:53Z"
+    labels:
+      app: kube-prometheus-stack-coredns
+      app.kubernetes.io/instance: test-prom
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: coredns
+      release: test-prom
+    name: test-prom-kube-prometheus-coredns
+    namespace: kube-system
+    resourceVersion: "1680229"
+    uid: 9dc5e546-91ae-4757-adfa-1ec853d49860
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9153
+      protocol: TCP
+      targetPort: 9153
+    selector:
+      k8s-app: kube-dns
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: test-prom
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-03T20:53:53Z"
+    labels:
+      app: kube-prometheus-stack-kube-controller-manager
+      app.kubernetes.io/instance: test-prom
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-controller-manager
+      release: test-prom
+    name: test-prom-kube-prometheus-kube-controller-manager
+    namespace: kube-system
+    resourceVersion: "1680231"
+    uid: 071d99d3-7420-4780-93d5-6ba75c197fc5
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10257
+      protocol: TCP
+      targetPort: 10257
+    selector:
+      component: kube-controller-manager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: test-prom
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-03T20:53:53Z"
+    labels:
+      app: kube-prometheus-stack-kube-etcd
+      app.kubernetes.io/instance: test-prom
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-etcd
+      release: test-prom
+    name: test-prom-kube-prometheus-kube-etcd
+    namespace: kube-system
+    resourceVersion: "1680230"
+    uid: 6642c7cd-9f27-4c32-a50c-c75f10efe91f
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 2381
+      protocol: TCP
+      targetPort: 2381
+    selector:
+      component: etcd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: test-prom
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-03T20:53:53Z"
+    labels:
+      app: kube-prometheus-stack-kube-proxy
+      app.kubernetes.io/instance: test-prom
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-proxy
+      release: test-prom
+    name: test-prom-kube-prometheus-kube-proxy
+    namespace: kube-system
+    resourceVersion: "1680233"
+    uid: 1287f462-42d8-4722-812c-d34d1d5899a0
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10249
+      protocol: TCP
+      targetPort: 10249
+    selector:
+      k8s-app: kube-proxy
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: test-prom
+      meta.helm.sh/release-namespace: monitoring
+    creationTimestamp: "2025-01-03T20:53:53Z"
+    labels:
+      app: kube-prometheus-stack-kube-scheduler
+      app.kubernetes.io/instance: test-prom
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 67.7.0
+      chart: kube-prometheus-stack-67.7.0
+      heritage: Helm
+      jobLabel: kube-scheduler
+      release: test-prom
+    name: test-prom-kube-prometheus-kube-scheduler
+    namespace: kube-system
+    resourceVersion: "1680234"
+    uid: 4466d2a6-a913-4032-a9e5-b0edd0b84d7f
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 10259
+      protocol: TCP
+      targetPort: 10259
+    selector:
+      component: kube-scheduler
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-03T20:53:55Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
+    name: test-prom-kube-prometheus-kubelet
+    namespace: kube-system
+    resourceVersion: "1680411"
+    uid: 7e1bbd18-7d60-451c-946c-e11203a0740e
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    - IPv6
+    ipFamilyPolicy: RequireDualStack
+    ports:
+    - name: https-metrics
+      port: 10250
+      protocol: TCP
+      targetPort: 10250
+    - name: http-metrics
+      port: 10255
+      protocol: TCP
+      targetPort: 10255
+    - name: cadvisor
+      port: 4194
+      protocol: TCP
+      targetPort: 4194
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: traefik
+      meta.helm.sh/release-namespace: kube-system
+      metallb.io/ip-allocated-from-pool: homelab-ip-pool
+    creationTimestamp: "2024-12-21T11:30:01Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app.kubernetes.io/instance: traefik-kube-system
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: traefik
+      helm.sh/chart: traefik-34.2.1_up34.2.0
+    name: traefik
+    namespace: kube-system
+    resourceVersion: "47471460"
+    uid: 252dc9e3-bf9c-474e-bcc7-1ff30aae226a
+  spec:
+    clusterIP: 10.43.229.18
+    clusterIPs:
+    - 10.43.229.18
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    loadBalancerIP: 192.168.1.233
+    ports:
+    - name: web
+      nodePort: 30209
+      port: 80
+      protocol: TCP
+      targetPort: web
+    - name: websecure
+      nodePort: 31044
+      port: 443
+      protocol: TCP
+      targetPort: websecure
+    selector:
+      app.kubernetes.io/instance: traefik-kube-system
+      app.kubernetes.io/name: traefik
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: longhorn
+      meta.helm.sh/release-namespace: longhorn-system
+    creationTimestamp: "2025-11-23T11:36:00Z"
+    labels:
+      app: longhorn-admission-webhook
+      app.kubernetes.io/instance: longhorn
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: longhorn
+      app.kubernetes.io/version: v1.10.1
+      helm.sh/chart: longhorn-1.10.1
+    name: longhorn-admission-webhook
+    namespace: longhorn-system
+    resourceVersion: "52386391"
+    uid: 5b24da58-d8e1-4c40-af3c-67893e3810b9
+  spec:
+    clusterIP: 10.43.87.191
+    clusterIPs:
+    - 10.43.87.191
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: admission-webhook
+      port: 9502
+      protocol: TCP
+      targetPort: admission-wh
+    selector:
+      longhorn.io/admission-webhook: longhorn-admission-webhook
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: longhorn
+      meta.helm.sh/release-namespace: longhorn-system
+    creationTimestamp: "2025-11-23T11:36:00Z"
+    labels:
+      app: longhorn-manager
+      app.kubernetes.io/instance: longhorn
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: longhorn
+      app.kubernetes.io/version: v1.10.1
+      helm.sh/chart: longhorn-1.10.1
+    name: longhorn-backend
+    namespace: longhorn-system
+    resourceVersion: "52386389"
+    uid: e7d16cc1-90f2-469e-b684-d70352decfd0
+  spec:
+    clusterIP: 10.43.228.51
+    clusterIPs:
+    - 10.43.228.51
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: manager
+      port: 9500
+      protocol: TCP
+      targetPort: manager
+    selector:
+      app: longhorn-manager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: longhorn
+      meta.helm.sh/release-namespace: longhorn-system
+    creationTimestamp: "2025-11-23T11:36:00Z"
+    labels:
+      app: longhorn-ui
+      app.kubernetes.io/instance: longhorn
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: longhorn
+      app.kubernetes.io/version: v1.10.1
+      helm.sh/chart: longhorn-1.10.1
+    name: longhorn-frontend
+    namespace: longhorn-system
+    resourceVersion: "52386383"
+    uid: a3571507-cf86-4615-8ad5-3a0e397897cb
+  spec:
+    clusterIP: 10.43.66.183
+    clusterIPs:
+    - 10.43.66.183
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30300
+      port: 80
+      protocol: TCP
+      targetPort: http
+    selector:
+      app: longhorn-ui
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: longhorn
+      meta.helm.sh/release-namespace: longhorn-system
+    creationTimestamp: "2025-11-23T11:36:00Z"
+    labels:
+      app: longhorn-recovery-backend
+      app.kubernetes.io/instance: longhorn
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: longhorn
+      app.kubernetes.io/version: v1.10.1
+      helm.sh/chart: longhorn-1.10.1
+    name: longhorn-recovery-backend
+    namespace: longhorn-system
+    resourceVersion: "52386390"
+    uid: 6d7760d9-b9dc-4430-990c-144afca76843
+  spec:
+    clusterIP: 10.43.181.220
+    clusterIPs:
+    - 10.43.181.220
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: recovery-backend
+      port: 9503
+      protocol: TCP
+      targetPort: recov-backend
+    selector:
+      longhorn.io/recovery-backend: longhorn-recovery-backend
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-07-28T15:21:27Z"
+    labels:
+      app.kubernetes.io/component: kubernetes-mcp-server-run-7rc42
+      app.kubernetes.io/managed-by: kubernetes-mcp-server
+      app.kubernetes.io/name: kubernetes-mcp-server-run-7rc42
+      app.kubernetes.io/part-of: kubernetes-mcp-server-run-sandbox
+    name: kubernetes-mcp-server-run-7rc42
+    namespace: mcpk8s
+    resourceVersion: "28727791"
+    uid: 8778354f-bc33-4d36-b3f8-aae5eb8cc459
+  spec:
+    clusterIP: 10.43.141.180
+    clusterIPs:
+    - 10.43.141.180
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app.kubernetes.io/component: kubernetes-mcp-server-run-7rc42
+      app.kubernetes.io/managed-by: kubernetes-mcp-server
+      app.kubernetes.io/name: kubernetes-mcp-server-run-7rc42
+      app.kubernetes.io/part-of: kubernetes-mcp-server-run-sandbox
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-07-28T15:21:27Z"
+    labels:
+      app.kubernetes.io/component: kubernetes-mcp-server-run-shkm6
+      app.kubernetes.io/managed-by: kubernetes-mcp-server
+      app.kubernetes.io/name: kubernetes-mcp-server-run-shkm6
+      app.kubernetes.io/part-of: kubernetes-mcp-server-run-sandbox
+    name: kubernetes-mcp-server-run-shkm6
+    namespace: mcpk8s
+    resourceVersion: "28727799"
+    uid: 60d2cce8-c65b-49c8-aabe-57c921a5f47f
+  spec:
+    clusterIP: 10.43.189.254
+    clusterIPs:
+    - 10.43.189.254
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app.kubernetes.io/component: kubernetes-mcp-server-run-shkm6
+      app.kubernetes.io/managed-by: kubernetes-mcp-server
+      app.kubernetes.io/name: kubernetes-mcp-server-run-shkm6
+      app.kubernetes.io/part-of: kubernetes-mcp-server-run-sandbox
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-02T09:07:01Z"
+    labels:
+      app.kubernetes.io/instance: bazarr
+    name: bazarr
+    namespace: media
+    resourceVersion: "52385880"
+    uid: 3a7e3955-8403-4f4a-97e6-97e82a723a2c
+  spec:
+    clusterIP: 10.43.69.98
+    clusterIPs:
+    - 10.43.69.98
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30102
+      port: 6767
+      protocol: TCP
+      targetPort: 6767
+    selector:
+      app: bazarr
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"flaresolverr"},"name":"flaresolverr","namespace":"media"},"spec":{"ports":[{"port":8191,"targetPort":8191}],"selector":{"app":"flaresolverr"},"type":"ClusterIP"}}
+    creationTimestamp: "2025-12-10T08:31:52Z"
+    labels:
+      app.kubernetes.io/instance: flaresolverr
+    name: flaresolverr
+    namespace: media
+    resourceVersion: "53879851"
+    uid: 71beca42-f76b-429e-a653-52c7672fedb3
+  spec:
+    clusterIP: 10.43.193.57
+    clusterIPs:
+    - 10.43.193.57
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8191
+      protocol: TCP
+      targetPort: 8191
+    selector:
+      app: flaresolverr
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"jackett"},"name":"jackett","namespace":"media"},"spec":{"ports":[{"nodePort":30103,"port":80,"targetPort":9117}],"selector":{"app":"jackett"},"type":"NodePort"}}
+      metallb.io/ip-allocated-from-pool: homelab-ip-pool
+    creationTimestamp: "2025-01-19T17:35:20Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app.kubernetes.io/instance: jackett
+    name: jackett
+    namespace: media
+    resourceVersion: "54196511"
+    uid: c1167408-c81a-451a-8a31-8f33f66c6af0
+  spec:
+    clusterIP: 10.43.123.219
+    clusterIPs:
+    - 10.43.123.219
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30103
+      port: 80
+      protocol: TCP
+      targetPort: 9117
+    selector:
+      app: jackett
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-12-18T18:57:13Z"
+    labels:
+      app: jellyfin
+      app.kubernetes.io/instance: jellyfin
+    name: jellyfin
+    namespace: media
+    resourceVersion: "56272745"
+    uid: 38832423-fdac-4047-89bf-45f6db9d1b74
+  spec:
+    clusterIP: 10.43.21.214
+    clusterIPs:
+    - 10.43.21.214
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30096
+      port: 8096
+      protocol: TCP
+      targetPort: 8096
+    selector:
+      app: jellyfin
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-02T09:07:01Z"
+    labels:
+      app.kubernetes.io/instance: jellyseerr
+    name: jellyseerr
+    namespace: media
+    resourceVersion: "52385986"
+    uid: c7bb5727-417f-45db-b146-f144b1eec494
+  spec:
+    clusterIP: 10.43.5.102
+    clusterIPs:
+    - 10.43.5.102
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30104
+      port: 5055
+      protocol: TCP
+      targetPort: 5055
+    selector:
+      app: jellyseerr
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"qbitt"},"name":"qbitt","namespace":"media"},"spec":{"externalTrafficPolicy":"Cluster","ports":[{"name":"web","nodePort":30105,"port":80,"targetPort":8080},{"name":"http-proxy","port":8888,"targetPort":8888}],"selector":{"app":"qbitt"},"type":"NodePort"}}
+      metallb.io/ip-allocated-from-pool: homelab-ip-pool
+    creationTimestamp: "2025-01-19T16:27:59Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app.kubernetes.io/instance: qbitt
+    name: qbitt
+    namespace: media
+    resourceVersion: "54196540"
+    uid: 7412af15-ebd9-4067-8d4b-a904ff1b04a3
+  spec:
+    clusterIP: 10.43.204.85
+    clusterIPs:
+    - 10.43.204.85
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: web
+      nodePort: 30105
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: http-proxy
+      nodePort: 32514
+      port: 8888
+      protocol: TCP
+      targetPort: 8888
+    selector:
+      app: qbitt
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"radarr"},"name":"radarr","namespace":"media"},"spec":{"ports":[{"name":"web","nodePort":30078,"port":80,"protocol":"TCP","targetPort":7878}],"selector":{"app":"radarr"},"type":"NodePort"}}
+    creationTimestamp: "2025-12-19T07:33:42Z"
+    labels:
+      app.kubernetes.io/instance: radarr
+    name: radarr
+    namespace: media
+    resourceVersion: "56605683"
+    uid: 650f45d6-37b4-4de6-b9a3-835e59a6fc54
+  spec:
+    clusterIP: 10.43.195.140
+    clusterIPs:
+    - 10.43.195.140
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: web
+      nodePort: 30078
+      port: 80
+      protocol: TCP
+      targetPort: 7878
+    selector:
+      app: radarr
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"metallb-webhook-service","namespace":"metallb-system"},"spec":{"ports":[{"port":443,"targetPort":9443}],"selector":{"component":"controller"}}}
+    creationTimestamp: "2024-12-21T11:37:33Z"
+    name: metallb-webhook-service
+    namespace: metallb-system
+    resourceVersion: "875"
+    uid: e2db4d4e-5232-4d19-8741-68acfe64ebb5
+  spec:
+    clusterIP: 10.43.20.188
+    clusterIPs:
+    - 10.43.20.188
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 9443
+    selector:
+      component: controller
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      metallb.io/ip-allocated-from-pool: homelab-ip-pool
+    creationTimestamp: "2025-01-13T17:08:49Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app: minio
+      app.kubernetes.io/instance: minio
+      chart: minio-5.4.0
+      heritage: Helm
+      monitoring: "true"
+      release: minio
+    name: minio
+    namespace: minio
+    resourceVersion: "52386126"
+    uid: 7659b649-0dac-4aa9-b4ee-ebf87557cc0e
+  spec:
+    clusterIP: 10.43.34.156
+    clusterIPs:
+    - 10.43.34.156
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+    selector:
+      app: minio
+      release: minio
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      metallb.io/ip-allocated-from-pool: homelab-ip-pool
+    creationTimestamp: "2025-01-13T17:08:50Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    labels:
+      app: minio
+      app.kubernetes.io/instance: minio
+      chart: minio-5.4.0
+      heritage: Helm
+      release: minio
+    name: minio-console
+    namespace: minio
+    resourceVersion: "52386122"
+    uid: 85181159-1176-43cc-8bd1-7fa139338a27
+  spec:
+    clusterIP: 10.43.34.187
+    clusterIPs:
+    - 10.43.34.187
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+    selector:
+      app: minio
+      release: minio
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:57:59Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      managed-by: prometheus-operator
+      operated-alertmanager: "true"
+    name: alertmanager-operated
+    namespace: monitoring
+    ownerReferences:
+    - apiVersion: monitoring.coreos.com/v1
+      kind: Alertmanager
+      name: monitoring-kube-prometheus-alertmanager
+      uid: 7e775b9c-a8c1-4149-b745-5e220c274cfb
+    resourceVersion: "49174711"
+    uid: 2eda3fba-d507-464f-969e-c08171609676
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9093
+      protocol: TCP
+      targetPort: http-web
+    - name: tcp-mesh
+      port: 9094
+      protocol: TCP
+      targetPort: mesh-tcp
+    - name: udp-mesh
+      port: 9094
+      protocol: UDP
+      targetPort: mesh-udp
+    publishNotReadyAddresses: true
+    selector:
+      app.kubernetes.io/name: alertmanager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    labels:
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/version: 12.2.1
+      helm.sh/chart: grafana-10.1.4
+    name: monitoring-grafana
+    namespace: monitoring
+    resourceVersion: "49173183"
+    uid: 2d2b909c-1fd7-415a-95a8-2da2ca258f1f
+  spec:
+    clusterIP: 10.43.242.116
+    clusterIPs:
+    - 10.43.242.116
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      nodePort: 30200
+      port: 80
+      protocol: TCP
+      targetPort: grafana
+    selector:
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/name: grafana
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    labels:
+      app: kube-prometheus-stack-alertmanager
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      release: monitoring
+      self-monitor: "true"
+    name: monitoring-kube-prometheus-alertmanager
+    namespace: monitoring
+    resourceVersion: "49173200"
+    uid: 64c1dcb2-e11a-4de7-a734-4c31c744149f
+  spec:
+    clusterIP: 10.43.79.27
+    clusterIPs:
+    - 10.43.79.27
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9093
+      protocol: TCP
+      targetPort: 9093
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+      targetPort: reloader-web
+    selector:
+      alertmanager: monitoring-kube-prometheus-alertmanager
+      app.kubernetes.io/name: alertmanager
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    labels:
+      app: kube-prometheus-stack-operator
+      app.kubernetes.io/component: prometheus-operator
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: kube-prometheus-stack-prometheus-operator
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      release: monitoring
+    name: monitoring-kube-prometheus-operator
+    namespace: monitoring
+    resourceVersion: "49173191"
+    uid: 94fd03ff-ea5c-4f11-8f9d-ceae321a25c2
+  spec:
+    clusterIP: 10.43.130.76
+    clusterIPs:
+    - 10.43.130.76
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+    selector:
+      app: kube-prometheus-stack-operator
+      release: monitoring
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    labels:
+      app: kube-prometheus-stack-prometheus
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/part-of: kube-prometheus-stack
+      app.kubernetes.io/version: 79.4.1
+      chart: kube-prometheus-stack-79.4.1
+      heritage: Helm
+      release: monitoring
+      self-monitor: "true"
+    name: monitoring-kube-prometheus-prometheus
+    namespace: monitoring
+    resourceVersion: "49173188"
+    uid: 37c1add1-97be-4077-b28d-76ffe0f6dfc4
+  spec:
+    clusterIP: 10.43.144.131
+    clusterIPs:
+    - 10.43.144.131
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+    - appProtocol: http
+      name: reloader-web
+      port: 8080
+      protocol: TCP
+      targetPort: reloader-web
+    selector:
+      app.kubernetes.io/name: prometheus
+      operator.prometheus.io/name: monitoring-kube-prometheus-prometheus
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/part-of: kube-state-metrics
+      app.kubernetes.io/version: 2.17.0
+      helm.sh/chart: kube-state-metrics-6.4.1
+      release: monitoring
+    name: monitoring-kube-state-metrics
+    namespace: monitoring
+    resourceVersion: "49173196"
+    uid: 1d9faa93-fb45-42bb-a1cd-8641cb575524
+  spec:
+    clusterIP: 10.43.208.31
+    clusterIPs:
+    - 10.43.208.31
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+    selector:
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/name: kube-state-metrics
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    labels:
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: prometheus-node-exporter
+      app.kubernetes.io/part-of: prometheus-node-exporter
+      app.kubernetes.io/version: 1.10.2
+      helm.sh/chart: prometheus-node-exporter-4.49.1
+      jobLabel: node-exporter
+      release: monitoring
+    name: monitoring-prometheus-node-exporter
+    namespace: monitoring
+    resourceVersion: "49173206"
+    uid: 77de9336-5853-4250-ac56-593afb242884
+  spec:
+    clusterIP: 10.43.120.112
+    clusterIPs:
+    - 10.43.120.112
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-metrics
+      port: 9100
+      protocol: TCP
+      targetPort: 9100
+    selector:
+      app.kubernetes.io/instance: monitoring
+      app.kubernetes.io/name: prometheus-node-exporter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:58:00Z"
+    labels:
+      app.kubernetes.io/managed-by: prometheus-operator
+      managed-by: prometheus-operator
+      operated-prometheus: "true"
+    name: prometheus-operated
+    namespace: monitoring
+    ownerReferences:
+    - apiVersion: monitoring.coreos.com/v1
+      kind: Prometheus
+      name: monitoring-kube-prometheus-prometheus
+      uid: 616b25ac-5b46-4336-9338-bf816edc6bb6
+    resourceVersion: "49174745"
+    uid: a02aea95-fb0f-4732-9f6f-cc66e927ecca
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-web
+      port: 9090
+      protocol: TCP
+      targetPort: http-web
+    selector:
+      app.kubernetes.io/name: prometheus
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"mosquitto"},"name":"mosquitto","namespace":"mosquitto"},"spec":{"ports":[{"name":"mqtt","nodePort":30883,"port":1883,"protocol":"TCP","targetPort":1883}],"selector":{"app":"mosquitto"},"type":"NodePort"}}
+    creationTimestamp: "2025-11-18T17:41:17Z"
+    labels:
+      app: mosquitto
+    name: mosquitto
+    namespace: mosquitto
+    resourceVersion: "47966076"
+    uid: beca722e-8c58-47f3-ac55-63f78f1d40ab
+  spec:
+    clusterIP: 10.43.105.218
+    clusterIPs:
+    - 10.43.105.218
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: mqtt
+      nodePort: 30883
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+    selector:
+      app: mosquitto
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-23T11:53:01Z"
+    labels:
+      app.kubernetes.io/instance: opencost
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: opencost
+      app.kubernetes.io/part-of: opencost
+      app.kubernetes.io/version: 1.117.6
+      helm.sh/chart: opencost-2.3.2
+    name: opencost
+    namespace: opencost
+    resourceVersion: "52386203"
+    uid: e3f11efe-888c-487a-82e8-8a46f57a7285
+  spec:
+    clusterIP: 10.43.124.20
+    clusterIPs:
+    - 10.43.124.20
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 9003
+      protocol: TCP
+      targetPort: 9003
+    - name: http-ui
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+    selector:
+      app.kubernetes.io/instance: opencost
+      app.kubernetes.io/name: opencost
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-08T16:01:55Z"
+    labels:
+      app: roomio-frontend
+      app.kubernetes.io/instance: roomio-dev
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/name: roomio-frontend-service
+      app.kubernetes.io/part-of: roomio
+      environment: development
+    name: dev-roomio-frontend-service
+    namespace: roomio-dev
+    resourceVersion: "49185770"
+    uid: f8c80df2-5703-4399-9049-3e20be694bb6
+  spec:
+    clusterIP: 10.43.145.194
+    clusterIPs:
+    - 10.43.145.194
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: roomio-frontend
+      app.kubernetes.io/instance: roomio-dev
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/part-of: roomio
+      environment: development
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-08T15:32:48Z"
+    labels:
+      app: roomio-frontend
+      app.kubernetes.io/instance: roomio-prod
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/name: roomio-frontend-service
+      app.kubernetes.io/part-of: roomio
+      environment: production
+    name: prod-roomio-frontend-service
+    namespace: roomio-prod
+    resourceVersion: "49185816"
+    uid: 7c1cd641-edaf-4e56-b3a2-7ecde0580ba7
+  spec:
+    clusterIP: 10.43.250.92
+    clusterIPs:
+    - 10.43.250.92
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: roomio-frontend
+      app.kubernetes.io/instance: roomio-prod
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/part-of: roomio
+      environment: production
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-08T16:02:04Z"
+    labels:
+      app: roomio-frontend
+      app.kubernetes.io/instance: roomio-staging
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/name: roomio-frontend-service
+      app.kubernetes.io/part-of: roomio
+      environment: staging
+    name: staging-roomio-frontend-service
+    namespace: roomio-staging
+    resourceVersion: "49185841"
+    uid: c3ce61e4-5a5a-428b-a243-e5f7791374a9
+  spec:
+    clusterIP: 10.43.164.59
+    clusterIPs:
+    - 10.43.164.59
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: roomio-frontend
+      app.kubernetes.io/instance: roomio-staging
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/part-of: roomio
+      environment: staging
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-12-01T23:45:20Z"
+    generateName: ts-acestream-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: acestream
+      tailscale.com/parent-resource-ns: acestream
+      tailscale.com/parent-resource-type: ingress
+    name: ts-acestream-mgm4w
+    namespace: tailscale
+    resourceVersion: "51427993"
+    uid: da4ee04d-930f-4008-83bc-357e4de8e341
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 1810f3b3-f080-46ee-af8a-e91698f55e3f
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-02T09:07:05Z"
+    generateName: ts-bazarr-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: bazarr
+      tailscale.com/parent-resource-ns: media
+      tailscale.com/parent-resource-type: ingress
+    name: ts-bazarr-99cst
+    namespace: tailscale
+    resourceVersion: "43357782"
+    uid: 796655ab-7a0b-4631-bc31-6e311a6b313b
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 4ba656d4-8d51-41e0-b428-f0f03ecc93e3
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-24T15:53:15Z"
+    generateName: ts-esphome-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: esphome
+      tailscale.com/parent-resource-ns: home-assistant
+      tailscale.com/parent-resource-type: ingress
+    name: ts-esphome-xvzs9
+    namespace: tailscale
+    resourceVersion: "49414423"
+    uid: ead55459-f0cc-4885-adda-ab854bf5f427
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: e01c98ee-40df-4a94-aa80-6aa1d1af3651
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-17T20:54:06Z"
+    generateName: ts-home-assistant-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: home-assistant
+      tailscale.com/parent-resource-ns: home-assistant
+      tailscale.com/parent-resource-type: ingress
+    name: ts-home-assistant-cgwhl
+    namespace: tailscale
+    resourceVersion: "3796541"
+    uid: c9995e99-a974-48ab-a67a-19ef52ed8c9a
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: e4ad183d-6a96-4170-a59e-d05b4f082b72
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-21T17:58:17Z"
+    generateName: ts-homepage-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: homepage
+      tailscale.com/parent-resource-ns: homepage
+      tailscale.com/parent-resource-type: ingress
+    name: ts-homepage-wzq9j
+    namespace: tailscale
+    resourceVersion: "4496601"
+    uid: b264c011-b557-422f-a3a1-e64f186913e4
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 325eceba-7ca3-4a7f-8cbd-71ff020a6769
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2024-12-26T15:05:39Z"
+    generateName: ts-ingress-argocd-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: ingress-argocd
+      tailscale.com/parent-resource-ns: argocd
+      tailscale.com/parent-resource-type: ingress
+    name: ts-ingress-argocd-hgshs
+    namespace: tailscale
+    resourceVersion: "610396"
+    uid: 4fbe2f4b-f746-495a-817e-97c6db35bc25
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: c2bea345-878a-41ab-962a-1b315cd381c2
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2024-12-26T21:10:58Z"
+    generateName: ts-ingress-kuma-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: ingress-kuma
+      tailscale.com/parent-resource-ns: uptime-kuma
+      tailscale.com/parent-resource-type: ingress
+    name: ts-ingress-kuma-949ph
+    namespace: tailscale
+    resourceVersion: "644603"
+    uid: f8b6e20e-56e0-4303-944f-822710c16087
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 28a5f219-30f8-4e73-a03e-8bad6784ad42
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-26T07:19:54Z"
+    generateName: ts-jackett-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: jackett
+      tailscale.com/parent-resource-ns: media
+      tailscale.com/parent-resource-type: ingress
+    name: ts-jackett-gm5sv
+    namespace: tailscale
+    resourceVersion: "41592648"
+    uid: e121776e-afb9-4e41-ae5e-ea766c993b65
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 515dbb16-b75b-4d74-839f-ecc4a7a1f747
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-02T09:07:04Z"
+    generateName: ts-jellyseerr-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: jellyseerr
+      tailscale.com/parent-resource-ns: media
+      tailscale.com/parent-resource-type: ingress
+    name: ts-jellyseerr-24r6k
+    namespace: tailscale
+    resourceVersion: "43357690"
+    uid: 4219769f-795c-4d8d-9d3d-fe2dadb13a30
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: bc9de893-b3f0-4b27-8f64-a7e63ad6f169
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-20T14:59:45Z"
+    generateName: ts-longhorn-ingress-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: longhorn-ingress
+      tailscale.com/parent-resource-ns: longhorn-system
+      tailscale.com/parent-resource-type: ingress
+    name: ts-longhorn-ingress-vw42z
+    namespace: tailscale
+    resourceVersion: "40297218"
+    uid: 74870e45-f4fe-4ce1-b33a-617b98397aec
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 67a15ab0-ccc9-4520-ac3a-7f87776b188f
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-23T22:16:17Z"
+    generateName: ts-minio-console-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: minio-console
+      tailscale.com/parent-resource-ns: minio
+      tailscale.com/parent-resource-type: ingress
+    name: ts-minio-console-mbxrm
+    namespace: tailscale
+    resourceVersion: "41067033"
+    uid: 2b68e665-5a23-444a-94a5-ccfd8e1cca4f
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 5498a13c-6eca-4ff0-999c-2497f91f0031
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-23T22:16:17Z"
+    generateName: ts-minio-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: minio
+      tailscale.com/parent-resource-ns: minio
+      tailscale.com/parent-resource-type: ingress
+    name: ts-minio-rg62d
+    namespace: tailscale
+    resourceVersion: "41067018"
+    uid: 3804dd50-79d7-446b-8a59-9c2f4029250c
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 4b963512-2c11-4402-abf3-7afcabdf9962
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-23T20:52:08Z"
+    generateName: ts-monitoring-grafana-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: monitoring-grafana
+      tailscale.com/parent-resource-ns: monitoring
+      tailscale.com/parent-resource-type: ingress
+    name: ts-monitoring-grafana-47b2g
+    namespace: tailscale
+    resourceVersion: "49173187"
+    uid: 3a9b18a2-6df3-4cac-9ac7-47213d22a94f
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 00386f4d-4525-4422-b481-108f04ada1f1
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-10-23T11:40:10Z"
+    generateName: ts-opencost-ingress-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: opencost-ingress
+      tailscale.com/parent-resource-ns: opencost
+      tailscale.com/parent-resource-type: ingress
+    name: ts-opencost-ingress-4jzgz
+    namespace: tailscale
+    resourceVersion: "40948516"
+    uid: 3193fa6c-9d09-438c-b6e2-e447aa4f4045
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 7637d3bc-2786-4fdd-bd3a-70e716e2eadc
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-01-19T16:27:59Z"
+    generateName: ts-qbitt-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: qbitt
+      tailscale.com/parent-resource-ns: media
+      tailscale.com/parent-resource-type: ingress
+    name: ts-qbitt-vnjwc
+    namespace: tailscale
+    resourceVersion: "4104755"
+    uid: 5d09ca58-007f-4005-ba8d-2e81fe7e9da2
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: 8185a726-b1a2-4802-b67b-4cad94d7f38d
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-12-19T07:23:02Z"
+    generateName: ts-radarr-
+    labels:
+      tailscale.com/managed: "true"
+      tailscale.com/parent-resource: radarr
+      tailscale.com/parent-resource-ns: media
+      tailscale.com/parent-resource-type: ingress
+    name: ts-radarr-r8ndv
+    namespace: tailscale
+    resourceVersion: "56428122"
+    uid: 749ff24f-0c3a-40a6-83e0-7fdb194098c7
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: PreferDualStack
+    selector:
+      app: e82ca696-1932-41d0-9403-735d91373911
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-11-17T11:12:47Z"
+    labels:
+      app.kubernetes.io/instance: uptime-kuma
+    name: uptime-kuma
+    namespace: uptime-kuma
+    resourceVersion: "49971274"
+    uid: 152a81f8-5f87-41fa-839a-125df197d0b6
+  spec:
+    clusterIP: 10.43.80.6
+    clusterIPs:
+    - 10.43.80.6
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - nodePort: 30500
+      port: 80
+      protocol: TCP
+      targetPort: 3001
+    selector:
+      app: uptime-kuma
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""

@@ -3,9 +3,8 @@ crds:
 
 grafana:
   service:
-    type: NodePort
+    type: ClusterIP
     port: 80
-    nodePort: 30200
   ingress:
     enabled: false  # Disabled - using separate grafana-ingress.yaml instead
     # ingressClassName: tailscale

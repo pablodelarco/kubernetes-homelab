@@ -7,8 +7,7 @@ spec:
   selector:
     app: uptime-kuma  # Match the app label of your Uptime Kuma Deployment
   ports:
-    - port: 80      # Port to expose
+    - port: 3001    # Port to expose (match HTTPRoute)
       targetPort: 3001
-      nodePort: 30500  # NodePort for external access
       protocol: TCP
-  type: NodePort
+  type: ClusterIP

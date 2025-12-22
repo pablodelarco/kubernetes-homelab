@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: adguard-home
+  labels:
+    app.kubernetes.io/name: adguard-home
+
