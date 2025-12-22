@@ -305,19 +305,8 @@ enableRbac: true
 
 ingress:
   main:
-    enabled: true
-    annotations:
-      tailscale.com/funnel: "true"
-      gethomepage.dev/enabled: "true"
-    ingressClassName: tailscale
-    hosts:
-      - host: homepage
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - hosts:
-          - homepage
+    # Disabled - using Cilium Gateway API instead
+    enabled: false
 
 persistence:
   logs:

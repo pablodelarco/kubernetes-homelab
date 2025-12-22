@@ -43,31 +43,12 @@ consoleService:
   port: "9001"                      # Console port
   annotations: {}                   # Optional annotations
 
-## Ingress configuration for MinIO API via Tailscale Funnel
+## Ingress - Disabled, using Cilium Gateway API instead
 ingress:
-  enabled: true
-  ingressClassName: tailscale
-  annotations:
-    tailscale.com/funnel: "true"
-  path: /
-  hosts:
-    - minio
-  tls:
-    - hosts:
-        - minio
+  enabled: false
 
-## Ingress configuration for MinIO Console via Tailscale Funnel
 consoleIngress:
-  enabled: true
-  ingressClassName: tailscale
-  annotations:
-    tailscale.com/funnel: "true"
-  path: /
-  hosts:
-    - minio-console
-  tls:
-    - hosts:
-        - minio-console
+  enabled: false
 
 ## Security context
 securityContext:

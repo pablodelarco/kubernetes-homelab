@@ -4,12 +4,11 @@ metadata:
   name: bazarr
   namespace: media
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: bazarr
   ports:
     - protocol: TCP
       port: 6767
       targetPort: 6767
-      nodePort: 30102
 

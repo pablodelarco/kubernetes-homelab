@@ -1,10 +1,8 @@
 service:
-  # Service type (ClusterIP, NodePort, LoadBalancer, or ExternalName)
-  type: NodePort
+  # Service type - ClusterIP since we use Cilium Gateway for external access
+  type: ClusterIP
   # Service port
   port: 80
-  # NodePort for external access (30000-32767)
-  nodePort: 30400
 
 # Persistence configuration
 persistence:
@@ -15,19 +13,8 @@ persistence:
 
 
 ingress:
-  # Enable ingress for home assistant
-  enabled: true
-  className: "tailscale"
-  annotations:
-    tailscale.com/funnel: "true"
-  hosts:
-    - host: home-assistant
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - hosts:
-      - home-assistant
+  # Disabled - using Cilium Gateway API instead
+  enabled: false
 
 
 # Addons configuration
@@ -35,8 +22,8 @@ addons:
   codeserver:
     enabled: true
     service:
-      type: NodePort
-      port: 30030
+      type: ClusterIP
+      port: 12321
 
 
 # Node affinity - Pin to worker node (going to Valencia)

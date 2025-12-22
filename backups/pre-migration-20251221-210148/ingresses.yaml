@@ -1,0 +1,734 @@
+apiVersion: v1
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"tailscale.com/funnel":"true"},"name":"acestream","namespace":"acestream"},"spec":{"defaultBackend":{"service":{"name":"acestream","port":{"number":6878}}},"ingressClassName":"tailscale","tls":[{"hosts":["acestream"]}]}}
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-12-01T23:44:52Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    name: acestream
+    namespace: acestream
+    resourceVersion: "56234830"
+    uid: 1810f3b3-f080-46ee-af8a-e91698f55e3f
+  spec:
+    defaultBackend:
+      service:
+        name: acestream
+        port:
+          number: 6878
+    ingressClassName: tailscale
+    tls:
+    - hosts:
+      - acestream
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: acestream-1.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"tailscale.com/funnel":"true"},"name":"ingress-argocd","namespace":"argocd"},"spec":{"defaultBackend":{"service":{"name":"argocd-server","port":{"number":443}}},"ingressClassName":"tailscale","tls":[{"hosts":["argocd"]}]}}
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2024-12-26T15:05:39Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    name: ingress-argocd
+    namespace: argocd
+    resourceVersion: "56235052"
+    uid: c2bea345-878a-41ab-962a-1b315cd381c2
+  spec:
+    defaultBackend:
+      service:
+        name: argocd-server
+        port:
+          number: 443
+    ingressClassName: tailscale
+    tls:
+    - hosts:
+      - argocd
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: argocd.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-11-24T15:53:15Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 2
+    labels:
+      app.kubernetes.io/instance: esphome
+    name: esphome
+    namespace: home-assistant
+    resourceVersion: "56234856"
+    uid: e01c98ee-40df-4a94-aa80-6aa1d1af3651
+  spec:
+    defaultBackend:
+      service:
+        name: esphome
+        port:
+          number: 6052
+    ingressClassName: tailscale
+    tls:
+    - hosts:
+      - esphome
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: esphome.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"tailscale.com/funnel":"true"},"labels":{"app.kubernetes.io/instance":"home-assistant","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"home-assistant","app.kubernetes.io/version":"2025.12.0","helm.sh/chart":"home-assistant-0.3.33"},"name":"home-assistant","namespace":"home-assistant"},"spec":{"ingressClassName":"tailscale","rules":[{"host":"home-assistant","http":{"paths":[{"backend":{"service":{"name":"home-assistant","port":{"number":80}}},"path":"/","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["home-assistant"],"secretName":null}]}}
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-01-17T20:54:06Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 4
+    labels:
+      app.kubernetes.io/instance: home-assistant
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: home-assistant
+      app.kubernetes.io/version: 2025.12.0
+      helm.sh/chart: home-assistant-0.3.33
+    name: home-assistant
+    namespace: home-assistant
+    resourceVersion: "56235019"
+    uid: e4ad183d-6a96-4170-a59e-d05b4f082b72
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: home-assistant
+      http:
+        paths:
+        - backend:
+            service:
+              name: home-assistant
+              port:
+                number: 80
+          path: /
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - home-assistant
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: home-assistant.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      gethomepage.dev/enabled: "true"
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-01-21T17:58:17Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: homepage
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: homepage
+      app.kubernetes.io/version: v0.9.6
+      helm.sh/chart: homepage-2.0.1
+    name: homepage
+    namespace: homepage
+    resourceVersion: "56235094"
+    uid: 325eceba-7ca3-4a7f-8cbd-71ff020a6769
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: homepage
+      http:
+        paths:
+        - backend:
+            service:
+              name: homepage
+              port:
+                number: 3000
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - homepage
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: homepage.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-10-20T14:59:45Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: longhorn-ingress
+    name: longhorn-ingress
+    namespace: longhorn-system
+    resourceVersion: "52386024"
+    uid: 67a15ab0-ccc9-4520-ac3a-7f87776b188f
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: longhorn
+      http:
+        paths:
+        - backend:
+            service:
+              name: longhorn-frontend
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - longhorn
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: longhorn.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-11-02T09:07:02Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: bazarr
+    name: bazarr
+    namespace: media
+    resourceVersion: "56234776"
+    uid: 4ba656d4-8d51-41e0-b428-f0f03ecc93e3
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: bazarr
+      http:
+        paths:
+        - backend:
+            service:
+              name: bazarr
+              port:
+                number: 6767
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - bazarr
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: bazarr.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"tailscale.com/funnel":"true"},"labels":{"app.kubernetes.io/instance":"jackett"},"name":"jackett","namespace":"media"},"spec":{"ingressClassName":"tailscale","rules":[{"host":"jackett","http":{"paths":[{"backend":{"service":{"name":"jackett","port":{"number":80}}},"path":"/","pathType":"Prefix"}]}}],"tls":[{"hosts":["jackett"]}]}}
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-10-26T07:19:54Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: jackett
+    name: jackett
+    namespace: media
+    resourceVersion: "54196519"
+    uid: 515dbb16-b75b-4d74-839f-ecc4a7a1f747
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: jackett
+      http:
+        paths:
+        - backend:
+            service:
+              name: jackett
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - jackett
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: jackett.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-11-02T09:07:02Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: jellyseerr
+    name: jellyseerr
+    namespace: media
+    resourceVersion: "56235100"
+    uid: bc9de893-b3f0-4b27-8f64-a7e63ad6f169
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: jellyseerr
+      http:
+        paths:
+        - backend:
+            service:
+              name: jellyseerr
+              port:
+                number: 5055
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - jellyseerr
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: jellyseerr.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"tailscale.com/funnel":"true"},"labels":{"app.kubernetes.io/instance":"qbitt"},"name":"qbitt","namespace":"media"},"spec":{"ingressClassName":"tailscale","rules":[{"host":"qbitt","http":{"paths":[{"backend":{"service":{"name":"qbitt","port":{"number":80}}},"path":"/","pathType":"Prefix"}]}}],"tls":[{"hosts":["qbitt"]}]}}
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-01-19T16:27:59Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: qbitt
+    name: qbitt
+    namespace: media
+    resourceVersion: "53984792"
+    uid: 8185a726-b1a2-4802-b67b-4cad94d7f38d
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: qbitt
+      http:
+        paths:
+        - backend:
+            service:
+              name: qbitt
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - qbitt
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: qbitt.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{},"labels":{"app.kubernetes.io/instance":"radarr"},"name":"radarr","namespace":"media"},"spec":{"ingressClassName":"tailscale","rules":[{"host":"radarr","http":{"paths":[{"backend":{"service":{"name":"radarr","port":{"number":80}}},"path":"/","pathType":"Prefix"}]}}],"tls":[{"hosts":["radarr"]}]}}
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-12-19T07:23:02Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: radarr
+    name: radarr
+    namespace: media
+    resourceVersion: "56605651"
+    uid: e82ca696-1932-41d0-9403-735d91373911
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: radarr
+      http:
+        paths:
+        - backend:
+            service:
+              name: radarr
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - radarr
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: radarr-1.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-10-23T22:16:16Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app: minio
+      app.kubernetes.io/instance: minio
+      chart: minio-5.4.0
+      heritage: Helm
+      release: minio
+    name: minio
+    namespace: minio
+    resourceVersion: "52386142"
+    uid: 4b963512-2c11-4402-abf3-7afcabdf9962
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: minio
+      http:
+        paths:
+        - backend:
+            service:
+              name: minio
+              port:
+                number: 9000
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - minio
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: minio.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-10-23T22:16:16Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app: minio
+      app.kubernetes.io/instance: minio
+      chart: minio-5.4.0
+      heritage: Helm
+      release: minio
+    name: minio-console
+    namespace: minio
+    resourceVersion: "56235098"
+    uid: 5498a13c-6eca-4ff0-999c-2497f91f0031
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: minio-console
+      http:
+        paths:
+        - backend:
+            service:
+              name: minio-console
+              port:
+                number: 9001
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - minio-console
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: minio-console.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-11-23T20:52:03Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: grafana-ingress
+      app.kubernetes.io/name: grafana
+    name: monitoring-grafana
+    namespace: monitoring
+    resourceVersion: "52385930"
+    uid: 00386f4d-4525-4422-b481-108f04ada1f1
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: grafana
+      http:
+        paths:
+        - backend:
+            service:
+              name: monitoring-grafana
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - grafana
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: grafana.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2025-10-23T11:40:10Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: opencost
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: opencost
+      app.kubernetes.io/part-of: opencost
+      app.kubernetes.io/version: 1.117.6
+      helm.sh/chart: opencost-2.3.2
+    name: opencost-ingress
+    namespace: opencost
+    resourceVersion: "52386214"
+    uid: 7637d3bc-2786-4fdd-bd3a-70e716e2eadc
+  spec:
+    ingressClassName: tailscale
+    rules:
+    - host: opencost
+      http:
+        paths:
+        - backend:
+            service:
+              name: opencost
+              port:
+                name: http-ui
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - opencost
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: opencost.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    creationTimestamp: "2025-10-08T20:54:22Z"
+    generation: 4
+    labels:
+      app.kubernetes.io/instance: roomio-dev
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/name: roomio-ingress
+      app.kubernetes.io/part-of: roomio
+      environment: development
+    name: dev-roomio-ingress
+    namespace: roomio-dev
+    resourceVersion: "49185777"
+    uid: 7253bb3b-7a47-4a76-a4bd-6a22d366b2a0
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: dev.roomiorentals.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: dev-roomio-frontend-service
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - dev.roomiorentals.com
+      secretName: dev-roomio-tls-letsencrypt
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 192.168.1.233
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    creationTimestamp: "2025-10-08T20:32:26Z"
+    generation: 8
+    labels:
+      app.kubernetes.io/instance: roomio-prod
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/name: roomio-ingress
+      app.kubernetes.io/part-of: roomio
+      environment: production
+    name: prod-roomio-ingress
+    namespace: roomio-prod
+    resourceVersion: "49185824"
+    uid: 0a8f4840-d291-44b4-9c12-e681c04ac621
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: roomiorentals.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: prod-roomio-frontend-service
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - roomiorentals.com
+      secretName: roomio-tls-letsencrypt
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 192.168.1.233
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    creationTimestamp: "2025-10-08T20:52:58Z"
+    generation: 3
+    labels:
+      app.kubernetes.io/instance: roomio-staging
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/name: roomio-ingress
+      app.kubernetes.io/part-of: roomio
+      environment: staging
+    name: staging-roomio-ingress
+    namespace: roomio-staging
+    resourceVersion: "49185847"
+    uid: 7eade849-0f31-4c37-92a8-5984bdb932a4
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: staging.roomiorentals.com
+      http:
+        paths:
+        - backend:
+            service:
+              name: staging-roomio-frontend-service
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - staging.roomiorentals.com
+      secretName: staging-roomio-tls-letsencrypt
+  status:
+    loadBalancer:
+      ingress:
+      - ip: 192.168.1.233
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      tailscale.com/funnel: "true"
+    creationTimestamp: "2024-12-26T21:10:58Z"
+    finalizers:
+    - tailscale.com/finalizer
+    generation: 1
+    labels:
+      app.kubernetes.io/instance: uptime-kuma
+    name: ingress-kuma
+    namespace: uptime-kuma
+    resourceVersion: "49971281"
+    uid: 28a5f219-30f8-4e73-a03e-8bad6784ad42
+  spec:
+    defaultBackend:
+      service:
+        name: uptime-kuma
+        port:
+          number: 80
+    ingressClassName: tailscale
+    tls:
+    - hosts:
+      - uptime-kuma
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: uptime-kuma.tabby-carp.ts.net
+        ports:
+        - port: 443
+          protocol: TCP
+kind: List
+metadata:
+  resourceVersion: ""

@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard-home
+  namespace: adguard-home
+  labels:
+    app: adguard-home
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: adguard-home
+  template:
+    metadata:
+      labels:
+        app: adguard-home
+    spec:
+      # Pin to worker (beelink has too many pods)
+      nodeSelector:
+        kubernetes.io/hostname: worker
+      # Use host network so DNS is accessible on node IP
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      initContainers:
+        # Copy initial config if not exists
+        - name: init-config
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /opt/adguardhome/conf/AdGuardHome.yaml ]; then
+                echo "Copying initial configuration..."
+                cp /config/AdGuardHome.yaml /opt/adguardhome/conf/
+              else
+                echo "Configuration already exists, skipping..."
+              fi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: conf
+              mountPath: /opt/adguardhome/conf
+      containers:
+        - name: adguard-home
+          image: adguard/adguardhome:v0.107.54
+          ports:
+            - name: dns-tcp
+              containerPort: 53
+              protocol: TCP
+            - name: dns-udp
+              containerPort: 53
+              protocol: UDP
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - name: work
+              mountPath: /opt/adguardhome/work
+            - name: conf
+              mountPath: /opt/adguardhome/conf
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: config-volume
+          configMap:
+            name: adguard-home-config
+        # Using emptyDir for now (Longhorn volume attachment issues)
+        # TODO: Switch to PVC once Longhorn is stable
+        - name: work
+          emptyDir: {}
+        - name: conf
+          emptyDir: {}
+

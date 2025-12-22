@@ -6,15 +6,12 @@ metadata:
   labels:
     app: esphome
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: http
     port: 6052
     targetPort: 6052
-    nodePort: 30652
     protocol: TCP
   selector:
     app: esphome
-  # Allow access from any node (routes to worker where pod is running)
-  externalTrafficPolicy: Cluster
 

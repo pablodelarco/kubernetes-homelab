@@ -1,0 +1,27 @@
+# Service for internal cluster access
+# Note: AdGuard runs with hostNetwork, so DNS is directly on node IP
+apiVersion: v1
+kind: Service
+metadata:
+  name: adguard-home
+  namespace: adguard-home
+  labels:
+    app: adguard-home
+spec:
+  type: ClusterIP
+  selector:
+    app: adguard-home
+  ports:
+    - name: dns-tcp
+      port: 53
+      targetPort: 53
+      protocol: TCP
+    - name: dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+
