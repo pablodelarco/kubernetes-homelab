@@ -6,22 +6,23 @@ grafana:
     type: ClusterIP
     port: 80
   ingress:
-    enabled: false  # Disabled - using separate grafana-ingress.yaml instead
-    # ingressClassName: tailscale
-    # annotations:
-    #   tailscale.com/funnel: "true"
-    # hosts:
-    #   - grafana
-    # tls:
-    #   - hosts:
-    #       - grafana
+    enabled: false  # Disabled - using Cilium Gateway API instead
   persistence:
     enabled: true
     accessModes:
       - ReadWriteOnce
     size: 8Gi
-  # Removed affinity to beelink because Longhorn CSI driver is not available on control-plane node
-  # Grafana will run on worker node where Longhorn volumes can be attached
+  # Prefer scheduling on worker node to balance cluster load
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - worker
 
 prometheus:
   prometheusSpec:

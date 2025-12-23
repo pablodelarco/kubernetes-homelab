@@ -14,6 +14,16 @@ spec:
       labels:
         app: jellyseerr
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
       containers:
         - name: jellyseerr
           image: fallenbagel/jellyseerr:2.7.3

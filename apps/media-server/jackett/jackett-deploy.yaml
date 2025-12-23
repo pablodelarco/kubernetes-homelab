@@ -13,6 +13,16 @@ spec:
       labels:
         app: jackett
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
       containers:
       - name: jackett
         image: linuxserver/jackett:0.24.360
