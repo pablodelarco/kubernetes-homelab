@@ -14,6 +14,16 @@ spec:
       labels:
         app: bazarr
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
       containers:
         - name: bazarr
           image: linuxserver/bazarr:1.5.3

@@ -18,6 +18,16 @@ spec:
       labels:
         app: uptime-kuma
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
       serviceAccountName: uptime-kuma-sa
       # DNS override for local access to avoid hairpin NAT issues
       # Note: hostAliases only supports IPv4, so we use dnsConfig to force IPv4

@@ -320,6 +320,18 @@ controller:
   annotations:
     configmap-checksum: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
 
+# Prefer scheduling on worker node to balance cluster load
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - worker
+
 
 
 
