@@ -1,0 +1,16 @@
+# Custom CoreDNS configuration for K3s
+# Forward .homelab domain queries to AdGuard Home
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  # Forward .homelab queries to AdGuard Home (running on beelink with hostNetwork)
+  homelab.server: |
+    homelab:53 {
+      errors
+      cache 30
+      forward . 192.168.1.106
+    }
+
