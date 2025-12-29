@@ -14,8 +14,8 @@ data:
       address: 0.0.0.0:3000
       session_ttl: 720h
     users:
-      - name: admin
-        password: $2b$12$4YcmaDtTRGRUbW2YEmB9s.kZubvnkDxYi17OLt8D7gwhENd3iMiLi
+      - name: pablo
+        password: $2b$10$An1MQ7NcgUKSRwBueJALceH1DzpWvxKTIPhbjY2hhrQcvDHDFXDou
     auth_attempts: 5
     block_auth_min: 15
     http_proxy: ""
@@ -23,8 +23,7 @@ data:
     theme: auto
     dns:
       bind_hosts:
-        - 192.168.1.57  # Worker LAN IP
-        - 100.96.103.31  # Worker Tailscale IP
+        - 0.0.0.0  # Bind to all interfaces (works on any node)
       port: 53
       anonymize_client_ip: false
       ratelimit: 0
@@ -121,12 +120,9 @@ data:
       safebrowsing_enabled: false
       protection_enabled: true
       rewrites:
-        # All *.homelab domains resolve to beelink (Gateway runs on both nodes)
+        # All *.homelab domains resolve to beelink's Tailscale IP (works from any network)
         - domain: "*.homelab"
-          answer: "192.168.1.106"
-        # Fallback to worker if needed
-        - domain: "*.homelab"
-          answer: "192.168.1.57"
+          answer: "100.113.23.108"
     clients:
       runtime_sources:
         whois: true
