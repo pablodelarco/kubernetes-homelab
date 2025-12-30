@@ -64,23 +64,7 @@ spec:
               mountPath: /config
             - name: temp
               mountPath: /downloads
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 120
-            periodSeconds: 30
-            timeoutSeconds: 30
-            failureThreshold: 5
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 30
-            failureThreshold: 5
-
+          # Note: No probes on qbitt - gluetun owns the network namespace
 
         - name: gluetun
           image: qmcgaw/gluetun:v3.40.3
@@ -135,6 +119,23 @@ spec:
               mountPath: /gluetun
             - name: temp
               mountPath: /downloads
+          # Probes on gluetun since it owns port 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 30
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 30
+            failureThreshold: 5
       volumes:
         - name: config
           persistentVolumeClaim:
