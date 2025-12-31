@@ -10,6 +10,9 @@ metadata:
     adguard-role: primary
 spec:
   replicas: 1
+  # Recreate strategy required for hostNetwork (port 53 conflict)
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: adguard-home
