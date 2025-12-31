@@ -1,5 +1,9 @@
 persistence:
   defaultClass: true
+  # Automatically enable default backup group for all new volumes
+  recurringJobSelector:
+    enable: true
+    jobList: '[{"name":"default-backup","isGroup":true}]'
 
 defaultSettings:
   backupTarget: "s3://k8s-backups@us-east-1/"
