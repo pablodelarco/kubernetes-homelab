@@ -86,9 +86,10 @@ spec:
         - name: config-volume
           configMap:
             name: adguard-home-config
-        # Using emptyDir (same as primary)
         - name: work
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: adguard-home-secondary-work
         - name: conf
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: adguard-home-secondary-conf
 

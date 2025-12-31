@@ -86,10 +86,10 @@ spec:
         - name: config-volume
           configMap:
             name: adguard-home-config
-        # Using emptyDir for now (Longhorn volume attachment issues)
-        # TODO: Switch to PVC once Longhorn is stable
         - name: work
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: adguard-home-primary-work
         - name: conf
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: adguard-home-primary-conf
 
