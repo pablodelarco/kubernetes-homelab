@@ -1,10 +1,10 @@
+# Primary instance PVCs (beelink)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: adguard-home-work
+  name: adguard-home-primary-work
   namespace: adguard-home
   labels:
-    # Include in Longhorn recurring backup group
     recurring-job-group.longhorn.io/default: enabled
 spec:
   accessModes:
@@ -17,10 +17,42 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: adguard-home-conf
+  name: adguard-home-primary-conf
   namespace: adguard-home
   labels:
-    # Include in Longhorn recurring backup group (contains DNS config)
+    # Contains DNS rewrites and settings - important to backup
+    recurring-job-group.longhorn.io/default: enabled
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 100Mi
+---
+# Secondary instance PVCs (worker)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: adguard-home-secondary-work
+  namespace: adguard-home
+  labels:
+    recurring-job-group.longhorn.io/default: enabled
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: adguard-home-secondary-conf
+  namespace: adguard-home
+  labels:
+    # Contains DNS rewrites for worker node (different from primary)
     recurring-job-group.longhorn.io/default: enabled
 spec:
   accessModes:
