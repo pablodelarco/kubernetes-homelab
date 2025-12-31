@@ -18,6 +18,9 @@ kubeconfig
 # Recyclarr secrets (never commit the actual secret file)
 apps/media-server/recyclarr/recyclarr-secret.yaml
 
+# AdGuard Home sync credentials (plaintext password)
+apps/adguard-home/sync-secret.yaml
+
 # Acestream (managed manually, not via GitOps)
 apps/acestream/
 argocd-apps/acestream.yaml
@@ -38,3 +41,4 @@ Thumbs.db
 *.log
 nohup.out
 
+apps/adguard-home/sync-secret.yaml

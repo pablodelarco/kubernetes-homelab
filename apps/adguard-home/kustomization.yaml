@@ -10,6 +10,6 @@ resources:
   - deployment.yaml           # Primary instance (beelink)
   - deployment-secondary.yaml # Secondary instance (worker)
   - service.yaml
-  - sync-secret.yaml          # Credentials for sync
+  - sync-secret-sealed.yaml   # Sealed credentials for sync (encrypted)
   - sync-deployment.yaml      # Sync daemon
 
