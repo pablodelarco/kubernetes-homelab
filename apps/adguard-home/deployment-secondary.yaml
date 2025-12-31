@@ -1,31 +1,31 @@
-# AdGuard Home - Primary instance (beelink)
-# This is the "UI authority" - HTTPRoute points only to this instance
+# AdGuard Home - Secondary instance (worker)
+# Provides DNS redundancy, config is synced from primary
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: adguard-home-primary
+  name: adguard-home-secondary
   namespace: adguard-home
   labels:
     app: adguard-home
-    adguard-role: primary
+    adguard-role: secondary
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: adguard-home
-      adguard-role: primary
+      adguard-role: secondary
   template:
     metadata:
       labels:
         app: adguard-home
-        adguard-role: primary
+        adguard-role: secondary
     spec:
       # Use host network so DNS is accessible on node IP
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
-      # Pin to beelink node
+      # Pin to worker node
       nodeSelector:
-        kubernetes.io/hostname: beelink
+        kubernetes.io/hostname: worker
       initContainers:
         # Copy initial config if not exists
         - name: init-config
@@ -86,8 +86,7 @@ spec:
         - name: config-volume
           configMap:
             name: adguard-home-config
-        # Using emptyDir for now (Longhorn volume attachment issues)
-        # TODO: Switch to PVC once Longhorn is stable
+        # Using emptyDir (same as primary)
         - name: work
           emptyDir: {}
         - name: conf

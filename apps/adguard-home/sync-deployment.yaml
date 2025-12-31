@@ -1,0 +1,77 @@
+# AdGuardHome Sync - Syncs config from primary to secondary
+# Runs as a daemon with cron schedule
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguardhome-sync
+  namespace: adguard-home
+  labels:
+    app: adguardhome-sync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adguardhome-sync
+  template:
+    metadata:
+      labels:
+        app: adguardhome-sync
+    spec:
+      containers:
+        - name: adguardhome-sync
+          image: ghcr.io/bakito/adguardhome-sync:latest
+          args:
+            - run
+          env:
+            # Run sync every 5 minutes
+            - name: CRON
+              value: "*/5 * * * *"
+            # Also run on startup
+            - name: RUN_ON_START
+              value: "true"
+            # Log level
+            - name: LOG_LEVEL
+              value: "info"
+            # Origin (primary) - beelink
+            - name: ORIGIN_URL
+              value: "http://192.168.1.106:3000"
+            - name: ORIGIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: adguard-sync-credentials
+                  key: username
+            - name: ORIGIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: adguard-sync-credentials
+                  key: password
+            # Replica (secondary) - worker
+            - name: REPLICA1_URL
+              value: "http://192.168.1.57:3000"
+            - name: REPLICA1_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: adguard-sync-credentials
+                  key: username
+            - name: REPLICA1_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: adguard-sync-credentials
+                  key: password
+            # Disable DHCP sync (not used)
+            - name: FEATURES_DHCP_SERVER_CONFIG
+              value: "false"
+            - name: FEATURES_DHCP_STATIC_LEASES
+              value: "false"
+            # Disable DNS rewrites sync - each instance has its own *.homelab rewrite
+            # pointing to its local node for HA failover
+            - name: FEATURES_DNS_REWRITES
+              value: "false"
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+

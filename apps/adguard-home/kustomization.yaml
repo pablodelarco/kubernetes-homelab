@@ -7,6 +7,9 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - configmap.yaml
-  - deployment.yaml
+  - deployment.yaml           # Primary instance (beelink)
+  - deployment-secondary.yaml # Secondary instance (worker)
   - service.yaml
+  - sync-secret.yaml          # Credentials for sync
+  - sync-deployment.yaml      # Sync daemon
 
