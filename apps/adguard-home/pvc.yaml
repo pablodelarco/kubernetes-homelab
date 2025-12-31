@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: adguard-home-work
   namespace: adguard-home
+  labels:
+    # Include in Longhorn recurring backup group
+    recurring-job-group.longhorn.io/default: enabled
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,6 +19,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: adguard-home-conf
   namespace: adguard-home
+  labels:
+    # Include in Longhorn recurring backup group (contains DNS config)
+    recurring-job-group.longhorn.io/default: enabled
 spec:
   accessModes:
     - ReadWriteOnce

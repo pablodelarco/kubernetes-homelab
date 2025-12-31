@@ -1,5 +1,5 @@
-# Service for internal cluster access
-# Note: AdGuard runs with hostNetwork, so DNS is directly on node IP
+# Service for AdGuard Home Primary (UI access via Gateway)
+# Only selects primary instance to avoid session issues
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,15 +11,27 @@ spec:
   type: ClusterIP
   selector:
     app: adguard-home
+    adguard-role: primary  # Only route to primary for UI
   ports:
-    - name: dns-tcp
-      port: 53
-      targetPort: 53
+    - name: http
+      port: 3000
+      targetPort: 3000
       protocol: TCP
-    - name: dns-udp
-      port: 53
-      targetPort: 53
-      protocol: UDP
+---
+# Service for AdGuard Home Secondary (for sync target)
+apiVersion: v1
+kind: Service
+metadata:
+  name: adguard-home-secondary
+  namespace: adguard-home
+  labels:
+    app: adguard-home
+spec:
+  type: ClusterIP
+  selector:
+    app: adguard-home
+    adguard-role: secondary
+  ports:
     - name: http
       port: 3000
       targetPort: 3000
