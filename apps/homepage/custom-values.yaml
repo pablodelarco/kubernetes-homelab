@@ -69,6 +69,10 @@ config:
             href: http://jackett.homelab/
             description: Indexer proxy
             siteMonitor: http://jackett.media.svc.cluster.local:9117
+            widget:
+              type: jackett
+              url: http://jackett.media.svc.cluster.local:9117
+              key: "{{HOMEPAGE_VAR_JACKETT_API_KEY}}"
 
     - Media Management:
         - Jellyfin:
@@ -120,75 +124,32 @@ config:
               url: http://monitoring-grafana.monitoring.svc.cluster.local
               username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
               password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
-        - ArgoCD:
-            icon: argocd.png
-            href: http://argocd.homelab/
-            description: GitOps CD
-            siteMonitor: http://argocd-server.argocd.svc.cluster.local
-        - OpenCost:
-            icon: opencost.png
-            href: http://opencost.homelab/
-            description: Cost monitoring
-            siteMonitor: http://opencost.opencost.svc.cluster.local:9090
-        - Cert-Manager:
-            icon: cert-manager.png
-            description: TLS certificates
-            widget:
-              type: customapi
-              url: http://cert-manager-webhook.cert-manager.svc.cluster.local:443/healthz
-              mappings:
-                - field: status
-                  label: Status
-                  format: text
 
     # Column 4: Other Apps
     - Other Apps:
-        - Minio Console:
+        - ArgoCD:
+            icon: si-argo
+            href: http://argocd.homelab/
+            description: GitOps CD
+            siteMonitor: http://argocd-server.argocd.svc.cluster.local
+        - Minio:
             icon: minio.png
             href: http://minio-console.homelab/
             description: Object storage
             siteMonitor: http://minio-console.minio.svc.cluster.local:9001
-        - Minio S3 API:
-            icon: minio.png
-            href: http://s3.homelab/
-            description: S3-compatible API
-            siteMonitor: http://minio.minio.svc.cluster.local:9000
         - ESPHome:
             icon: esphome.png
             href: http://esphome.homelab/
             description: IoT device management
             siteMonitor: http://esphome.home-assistant.svc.cluster.local:6052
-        - Acestream:
-            icon: acestream.png
-            href: http://acestream.homelab/
-            description: P2P streaming
-            siteMonitor: http://acestream.acestream.svc.cluster.local:6878
-        - Mosquitto:
-            icon: mqtt.png
-            description: MQTT broker
-            siteMonitor: http://mosquitto.mosquitto.svc.cluster.local:1883
-        - FlareSolverr:
-            icon: flaresolverr.png
-            description: Cloudflare bypass
-            siteMonitor: http://flaresolverr.media.svc.cluster.local:8191
-
-    # Column 5: Roomio
-    - Roomio:
-        - Production:
-            icon: https://roomiorentals.com/favicon.ico
-            href: https://roomiorentals.com/
-            description: Live site
-            siteMonitor: https://roomiorentals.com/
-        - Staging:
-            icon: https://roomiorentals.com/favicon.ico
-            href: https://staging.roomiorentals.com/
-            description: Staging environment
-            siteMonitor: https://staging.roomiorentals.com/
-        - Development:
-            icon: https://roomiorentals.com/favicon.ico
-            href: https://dev.roomiorentals.com/
-            description: Dev environment
-            siteMonitor: https://dev.roomiorentals.com/
+        - GitHub Repo:
+            icon: si-github
+            href: https://github.com/pablodelarco/kubernetes-homelab
+            description: Homelab repository
+        - Tailscale:
+            icon: si-tailscale
+            href: https://login.tailscale.com/admin/machines
+            description: VPN management
 
   widgets:
     - logo:
@@ -223,7 +184,9 @@ config:
           cpu: true
           memory: true
           showLabel: true
-
+    - speedtest:
+        provider: speedtest
+        bitratePrecision: 2
 
   # Kubernetes integration settings
   kubernetes:
@@ -239,24 +202,27 @@ config:
     hideVersion: true
     cardBlur: md
     statusStyle: dot
+    disableCollapse: true
     layout:
       Home:
-        style: column
+        style: row
+        columns: 1
         header: true
       Media Processing:
-        style: column
+        style: row
+        columns: 1
         header: true
       Media Management:
-        style: column
+        style: row
+        columns: 1
         header: true
       Infrastructure:
-        style: column
+        style: row
+        columns: 1
         header: true
       Other Apps:
-        style: column
-        header: true
-      Roomio:
-        style: column
+        style: row
+        columns: 1
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
