@@ -26,6 +26,11 @@ config:
   services:
     # Column 1: Home
     - Infrastructure:
+        - Home Assistant:
+            icon: home-assistant.png
+            href: http://ha.homelab/
+            description: Home automation
+            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
         - AdGuard Home:
             icon: adguard-home.png
             href: http://adguard.homelab/
@@ -46,14 +51,14 @@ config:
               url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
               slug: homelab
               key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
-        - Home Assistant:
-            icon: home-assistant.png
-            href: http://ha.homelab/
-            description: Home automation
-            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
 
     # Column 2: Media
     - Media Processing:
+        - Jellyfin:
+            icon: jellyfin.png
+            href: http://jellyfin.homelab/
+            description: Media streaming
+            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
         - qBittorrent:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
@@ -73,11 +78,6 @@ config:
               type: radarr
               url: http://radarr.media.svc.cluster.local
               key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-        - Jellyfin:
-            icon: jellyfin.png
-            href: http://jellyfin.homelab/
-            description: Media streaming
-            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
@@ -101,7 +101,7 @@ config:
             siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
 
     # Column 4: Storage
-    - Storage:
+    - NAS Storage:
         - Synology NAS:
             icon: synology-dsm.png
             href: http://192.168.1.42:5000/
