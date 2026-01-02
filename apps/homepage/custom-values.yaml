@@ -2,37 +2,8 @@ config:
   bookmarks: []
 
   services:
-    # Row 1: Infra (full width)
-    - Infra:
-        - Home Assistant:
-            icon: home-assistant.png
-            href: http://ha.homelab/
-            description: Home automation
-            widget:
-              type: homeassistant
-              url: http://home-assistant.home-assistant.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
-        - ESPHome:
-            icon: esphome.png
-            href: http://esphome.homelab/
-            description: IoT devices
-        - n8n:
-            icon: n8n.png
-            href: http://n8n.homelab/
-            description: Workflow automation
-
-    # Row 2: CI/CD | Storage | Networking | Monitoring (4 columns)
-    - CI/CD:
-        - GitHub:
-            icon: github.png
-            href: https://github.com/pablodelarco/kubernetes-homelab
-            description: Git repository
-        - ArgoCD:
-            icon: argocd.png
-            href: http://argocd.homelab/
-            description: GitOps CD
-
-    - Storage:
+    # Column 1: Files & Storage
+    - Files Management:
         - Synology:
             icon: synology.png
             href: http://192.168.1.106:5000/
@@ -48,23 +19,66 @@ config:
             widget:
               type: longhorn
               url: http://longhorn-frontend.longhorn-system.svc.cluster.local
-
-    - Networking:
-        - AdGuard Home:
-            icon: adguard-home.png
-            href: http://adguard.homelab/
-            description: DNS & ad blocking
+        - Jellyfin:
+            icon: jellyfin.png
+            href: http://jellyfin.homelab/
+            description: Media streaming
             widget:
-              type: adguard
-              url: http://adguard-home.adguard-home.svc.cluster.local:3000
-              username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
-              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
+              type: jellyfin
+              url: http://jellyfin.media.svc.cluster.local:8096
+              key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
+              enableBlocks: true
+              enableNowPlaying: false
 
-    - Monitoring:
+    # Column 2: Media Processing (requests & downloads)
+    - Media Processing:
+        - Jellyseerr:
+            icon: jellyseerr.png
+            href: http://jellyseerr.homelab/
+            description: Request new media
+            widget:
+              type: jellyseerr
+              url: http://jellyseerr.media.svc.cluster.local:5055
+              key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
+        - qBittorrent:
+            icon: qbittorrent.png
+            href: http://qbitt.homelab/
+            description: Torrent client
+            widget:
+              type: qbittorrent
+              url: http://qbitt.media.svc.cluster.local
+              username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
+              password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
+        - Jackett:
+            icon: jackett.png
+            href: http://jackett.homelab/
+            description: Indexer proxy
+
+    # Column 3: Media Management (automation)
+    - Media Management:
+        - Radarr:
+            icon: radarr.png
+            href: http://radarr.homelab/
+            description: Movies automation
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local
+              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+        - Bazarr:
+            icon: bazarr.png
+            href: http://bazarr.homelab/
+            description: Subtitles management
+            widget:
+              type: bazarr
+              url: http://bazarr.media.svc.cluster.local:6767
+              key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
+
+    # Column 4: System Monitoring & Infrastructure
+    - System Monitoring:
         - Uptime Kuma:
             icon: uptime-kuma.png
             href: http://uptime.homelab/
-            description: Uptime monitoring
+            description: Service uptime
         - Grafana:
             icon: grafana.png
             href: http://grafana.homelab/
@@ -81,56 +95,38 @@ config:
             widget:
               type: prometheus
               url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+        - ArgoCD:
+            icon: argocd.png
+            href: http://argocd.homelab/
+            description: GitOps CD
+        - AdGuard Home:
+            icon: adguard-home.png
+            href: http://adguard.homelab/
+            description: DNS & ad blocking
+            widget:
+              type: adguard
+              url: http://adguard-home.adguard-home.svc.cluster.local:3000
+              username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
+              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
 
-    # Row 3: Media (full width, 6 columns)
-    - Media:
-        - Jellyfin:
-            icon: jellyfin.png
-            href: http://jellyfin.homelab/
-            description: Media server
+    # Row 5: Home Automation (full width)
+    - Home Automation:
+        - Home Assistant:
+            icon: home-assistant.png
+            href: http://ha.homelab/
+            description: Home automation
             widget:
-              type: jellyfin
-              url: http://jellyfin.media.svc.cluster.local:8096
-              key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
-              enableBlocks: true
-              enableNowPlaying: true
-        - Jellyseerr:
-            icon: jellyseerr.png
-            href: http://jellyseerr.homelab/
-            description: Media requests
-            widget:
-              type: jellyseerr
-              url: http://jellyseerr.media.svc.cluster.local:5055
-              key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
-        - Radarr:
-            icon: radarr.png
-            href: http://radarr.homelab/
-            description: Movies
-            widget:
-              type: radarr
-              url: http://radarr.media.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-        - Bazarr:
-            icon: bazarr.png
-            href: http://bazarr.homelab/
-            description: Subtitles
-            widget:
-              type: bazarr
-              url: http://bazarr.media.svc.cluster.local:6767
-              key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
-        - qBittorrent:
-            icon: qbittorrent.png
-            href: http://qbitt.homelab/
-            description: Torrent client
-            widget:
-              type: qbittorrent
-              url: http://qbitt.media.svc.cluster.local
-              username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
-              password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
-        - Jackett:
-            icon: jackett.png
-            href: http://jackett.homelab/
-            description: Indexer proxy
+              type: homeassistant
+              url: http://home-assistant.home-assistant.svc.cluster.local
+              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
+        - ESPHome:
+            icon: esphome.png
+            href: http://esphome.homelab/
+            description: IoT devices
+        - n8n:
+            icon: n8n.png
+            href: http://n8n.homelab/
+            description: Workflow automation
 
   widgets:
     - kubernetes:
@@ -159,27 +155,22 @@ config:
     headerStyle: boxed
     hideVersion: true
     cardBlur: md
-    fiveColumns: true
     layout:
-      Infra:
+      Files Management:
+        style: column
+        header: true
+      Media Processing:
+        style: column
+        header: true
+      Media Management:
+        style: column
+        header: true
+      System Monitoring:
+        style: column
+        header: true
+      Home Automation:
         style: row
         columns: 4
-        header: true
-      CI/CD:
-        style: column
-        header: true
-      Storage:
-        style: column
-        header: true
-      Networking:
-        style: column
-        header: true
-      Monitoring:
-        style: column
-        header: true
-      Media:
-        style: row
-        columns: 6
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
