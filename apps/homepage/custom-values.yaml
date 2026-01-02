@@ -169,9 +169,6 @@ config:
         longitude: -0.3763
         units: metric
         cache: 5
-    - search:
-        provider: google
-        target: _blank
     - kubernetes:
         cluster:
           show: true
@@ -184,9 +181,6 @@ config:
           cpu: true
           memory: true
           showLabel: true
-    - speedtest:
-        provider: speedtest
-        bitratePrecision: 2
 
   # Kubernetes integration settings
   kubernetes:
@@ -205,24 +199,19 @@ config:
     disableCollapse: true
     layout:
       Home:
-        style: row
-        columns: 1
+        style: column
         header: true
       Media Processing:
-        style: row
-        columns: 1
+        style: column
         header: true
       Media Management:
-        style: row
-        columns: 1
+        style: column
         header: true
       Infrastructure:
-        style: row
-        columns: 1
+        style: column
         header: true
       Other Apps:
-        style: row
-        columns: 1
+        style: column
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
