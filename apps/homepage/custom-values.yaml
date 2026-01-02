@@ -26,11 +26,6 @@ config:
   services:
     # Column 1: Home
     - Infrastructure:
-        - Home Assistant:
-            icon: home-assistant.png
-            href: http://ha.homelab/
-            description: Home automation
-            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
         - AdGuard Home:
             icon: adguard-home.png
             href: http://adguard.homelab/
@@ -54,11 +49,6 @@ config:
 
     # Column 2: Media
     - Media Processing:
-        - Jellyfin:
-            icon: jellyfin.png
-            href: http://jellyfin.homelab/
-            description: Media streaming
-            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
         - qBittorrent:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
@@ -112,6 +102,16 @@ config:
               url: http://192.168.1.42:5000
               username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
               password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
+        - Home Assistant:
+            icon: home-assistant.png
+            href: http://ha.homelab/
+            description: Home automation
+            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
+        - Jellyfin:
+            icon: jellyfin.png
+            href: http://jellyfin.homelab/
+            description: Media streaming
+            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
