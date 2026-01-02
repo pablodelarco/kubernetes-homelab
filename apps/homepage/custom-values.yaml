@@ -53,6 +53,11 @@ config:
             href: http://radarr.homelab/
             description: Movies automation
             siteMonitor: http://radarr.media.svc.cluster.local
+        - Bazarr:
+            icon: bazarr.png
+            href: http://bazarr.homelab/
+            description: Subtitles automation
+            siteMonitor: http://bazarr.media.svc.cluster.local
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
@@ -66,6 +71,11 @@ config:
             href: http://grafana.homelab/
             description: Dashboards
             siteMonitor: http://monitoring-grafana.monitoring.svc.cluster.local
+        - ArgoCD:
+            icon: argocd.png
+            href: http://argocd.homelab/
+            description: GitOps CD
+            siteMonitor: http://argocd-server.argocd.svc.cluster.local
         - Home Assistant:
             icon: home-assistant.png
             href: http://ha.homelab/
