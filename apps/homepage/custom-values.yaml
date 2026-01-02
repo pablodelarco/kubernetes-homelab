@@ -26,7 +26,7 @@ config:
             icon: esphome.png
             href: http://esphome.homelab/
             description: IoT firmware
-            siteMonitor: http://esphome.esphome.svc.cluster.local:6052
+            siteMonitor: http://esphome.home-assistant.svc.cluster.local:6052
         - AdGuard Home:
             icon: adguard-home.png
             href: http://adguard.homelab/
