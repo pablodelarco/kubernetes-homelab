@@ -204,26 +204,26 @@ config:
     statusStyle: dot
     disableCollapse: true
     layout:
-      Infrastructure:
-        style: column
-        header: true
-      Media Processing:
-        style: column
-        header: true
-      Monitoring:
-        style: column
-        header: true
-      NAS Storage:
-        style: column
-        header: true
-      Beelink (Control Plane):
-        style: row
-        columns: 3
-        header: true
-      Worker Node:
-        style: row
-        columns: 3
-        header: true
+      - Infrastructure:
+          style: column
+          header: true
+      - Media Processing:
+          style: column
+          header: true
+      - Monitoring:
+          style: column
+          header: true
+      - NAS Storage:
+          style: column
+          header: true
+      - Beelink (Control Plane):
+          style: row
+          columns: 3
+          header: true
+      - Worker Node:
+          style: row
+          columns: 3
+          header: true
 
 # Environment variables
 env:
