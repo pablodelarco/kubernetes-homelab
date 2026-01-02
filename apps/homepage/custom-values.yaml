@@ -171,6 +171,14 @@ config:
     statusStyle: dot
     disableCollapse: true
     layout:
+      Development:
+        style: row
+        columns: 2
+        header: true
+      Management:
+        style: row
+        columns: 3
+        header: true
       Home:
         style: column
         header: true
