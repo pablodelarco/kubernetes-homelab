@@ -26,12 +26,13 @@ config:
         - Uptime Kuma:
             icon: uptime-kuma.png
             href: http://uptime.homelab/
-            description: Service uptime
+            description: Systems monitoring
             ping: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
             widget:
               type: uptimekuma
               url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
               slug: homelab
+              key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
 
     # Column 2: Media
     - Media:
