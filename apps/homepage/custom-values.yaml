@@ -186,7 +186,7 @@ config:
       - Monitoring:
           style: column
           header: true
-      - NAS Storage:
+      - Storage:
           style: column
           header: true
       - Development:
