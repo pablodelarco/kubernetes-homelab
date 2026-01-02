@@ -113,6 +113,86 @@ config:
               username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
               password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
 
+    # Horizontal row: Beelink (Control Plane)
+    - Beelink (Control Plane):
+        - System Overview:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              version: 4
+              metric: info
+              chart: false
+        - CPU Monitor:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              version: 4
+              metric: cpu
+        - Memory Status:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              version: 4
+              metric: memory
+        - Network Traffic:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              version: 4
+              metric: network:enp1s0
+        - Disk Performance:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              version: 4
+              metric: disk:sda
+        - Process List:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              version: 4
+              metric: process
+
+    # Horizontal row: Worker Node
+    - Worker Node:
+        - System Overview:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              version: 4
+              metric: info
+              chart: false
+        - CPU Monitor:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              version: 4
+              metric: cpu
+        - Memory Status:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              version: 4
+              metric: memory
+        - Network Traffic:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              version: 4
+              metric: network:enp1s0
+        - Disk Performance:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              version: 4
+              metric: disk:sda
+        - Process List:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              version: 4
+              metric: process
+
   widgets:
     - logo:
         icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
@@ -143,20 +223,6 @@ config:
           cpu: true
           memory: true
           showLabel: true
-    # Glances for Beelink (Control Plane)
-    - glances:
-        url: http://192.168.1.106:61208
-        version: 4
-        cpu: true
-        mem: true
-        label: "Beelink"
-    # Glances for Worker Node
-    - glances:
-        url: http://192.168.1.57:61208
-        version: 4
-        cpu: true
-        mem: true
-        label: "Worker"
 
   # Kubernetes integration settings
   kubernetes:
@@ -185,6 +251,14 @@ config:
         header: false
       NAS Storage:
         style: column
+        header: true
+      Beelink (Control Plane):
+        style: row
+        columns: 6
+        header: true
+      Worker Node:
+        style: row
+        columns: 6
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
