@@ -45,15 +45,6 @@ config:
               type: radarr
               url: http://radarr.media.svc.cluster.local
               key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-        - Bazarr:
-            icon: bazarr.png
-            href: http://bazarr.homelab/
-            description: Subtitles management
-            siteMonitor: http://bazarr.media.svc.cluster.local:6767
-            widget:
-              type: bazarr
-              url: http://bazarr.media.svc.cluster.local:6767
-              key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
         - qBittorrent:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
@@ -64,17 +55,6 @@ config:
               url: http://qbitt.media.svc.cluster.local
               username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
               password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
-        - Jackett:
-            icon: jackett.png
-            href: http://jackett.homelab/
-            description: Indexer proxy
-            siteMonitor: http://jackett.media.svc.cluster.local:9117
-            widget:
-              type: jackett
-              url: http://jackett.media.svc.cluster.local:9117
-              key: "{{HOMEPAGE_VAR_JACKETT_API_KEY}}"
-
-    - Media Management:
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
@@ -86,15 +66,6 @@ config:
               key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
               enableBlocks: true
               enableNowPlaying: false
-        - Jellyseerr:
-            icon: jellyseerr.png
-            href: http://jellyseerr.homelab/
-            description: Request new media
-            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
-            widget:
-              type: jellyseerr
-              url: http://jellyseerr.media.svc.cluster.local:5055
-              key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
 
     # Column 3: Infrastructure
     - Infrastructure:
