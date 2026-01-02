@@ -1,6 +1,6 @@
 config:
   bookmarks:
-    - Development:
+    - Links:
         - GitHub Repo:
             - abbr: GH
               icon: si-github
@@ -208,7 +208,7 @@ config:
           style: row
           columns: 2
           header: true
-      - Development:
+      - Links:
           style: column
           header: true
 
