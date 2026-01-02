@@ -81,10 +81,6 @@ config:
             href: http://radarr.homelab/
             description: Movies automation
             siteMonitor: http://radarr.media.svc.cluster.local
-            widget:
-              type: radarr
-              url: http://radarr.media.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
