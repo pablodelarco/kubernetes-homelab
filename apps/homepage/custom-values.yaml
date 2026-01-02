@@ -190,7 +190,7 @@ config:
     disableCollapse: true
     layout:
       - Infrastructure:
-          style: column
+          style: row
           header: true
       - Media Processing:
           style: column
