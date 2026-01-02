@@ -36,16 +36,6 @@ config:
             href: http://uptime.homelab/
             description: Systems monitoring
             siteMonitor: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
-        - Synology NAS:
-            icon: synology-dsm.png
-            href: http://192.168.1.42:5000/
-            description: NAS storage
-            siteMonitor: http://192.168.1.42:5000
-            widget:
-              type: diskstation
-              url: http://192.168.1.42:5000
-              username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
-              password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
         - Speedtest Tracker:
             icon: speedtest-tracker.png
             href: http://speedtest.homelab/
@@ -76,19 +66,29 @@ config:
             href: http://grafana.homelab/
             description: Dashboards
             siteMonitor: http://monitoring-grafana.monitoring.svc.cluster.local
-        - Longhorn:
-            icon: longhorn.png
-            href: http://longhorn.homelab/
-            description: Block storage
-            siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
-
-    # Column 4: Storage
-    - NAS Storage:
         - Home Assistant:
             icon: home-assistant.png
             href: http://ha.homelab/
             description: Home automation
             siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
+
+    # Column 4: Storage
+    - NAS Storage:
+        - Longhorn:
+            icon: longhorn.png
+            href: http://longhorn.homelab/
+            description: Block storage
+            siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
+        - Synology NAS:
+            icon: synology-dsm.png
+            href: http://192.168.1.42:5000/
+            description: NAS storage
+            siteMonitor: http://192.168.1.42:5000
+            widget:
+              type: diskstation
+              url: http://192.168.1.42:5000
+              username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
+              password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
