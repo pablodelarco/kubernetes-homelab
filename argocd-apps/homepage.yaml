@@ -6,21 +6,21 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: 'http://jameswynn.github.io/helm-charts'
+    - repoURL: "http://jameswynn.github.io/helm-charts"
       chart: homepage
-      targetRevision: 2.0.1
+      targetRevision: 2.1.0
       helm:
         valueFiles:
           - $values/apps/homepage/custom-values.yaml
-    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    - repoURL: "https://github.com/pablodelarco/kubernetes-homelab"
       targetRevision: main
       ref: values
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: homepage
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions: 
+    syncOptions:
       - CreateNamespace=true
