@@ -198,10 +198,10 @@ config:
           style: column
           header: true
       - Development:
-          style: row
+          style: column
           header: true
       - Management:
-          style: row
+          style: column
           header: true
       - Beelink (Control Plane):
           style: row
