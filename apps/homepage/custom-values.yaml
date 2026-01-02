@@ -30,11 +30,6 @@ config:
             siteMonitor: http://esphome.esphome.svc.cluster.local:6052
     # Column 2: Media
     - Media Server:
-        - qBittorrent:
-            icon: qbittorrent.png
-            href: http://qbitt.homelab/
-            description: Torrent client
-            siteMonitor: http://qbitt.media.svc.cluster.local
         - Radarr:
             icon: radarr.png
             href: http://radarr.homelab/
@@ -50,6 +45,16 @@ config:
             href: http://jellyfin.homelab/
             description: Media streaming
             siteMonitor: http://jellyfin.media.svc.cluster.local:8096
+        - qBittorrent:
+            icon: qbittorrent.png
+            href: http://qbitt.homelab/
+            description: Torrent client
+            siteMonitor: http://qbitt.media.svc.cluster.local
+            widget:
+              type: qbittorrent
+              url: http://qbitt.media.svc.cluster.local
+              username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
+              password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
