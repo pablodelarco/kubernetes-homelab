@@ -1,25 +1,8 @@
 config:
-  bookmarks:
-    - Developer:
-        - GitHub:
-            - abbr: GH
-              href: https://github.com/pablodelarco/kubernetes-homelab
-        - Kubernetes:
-            - abbr: K8s
-              href: https://kubernetes.io/docs/
-    - Media:
-        - Jellyfin Docs:
-            - abbr: JF
-              href: https://jellyfin.org/docs/
-        - Servarr Wiki:
-            - abbr: ARR
-              href: https://wiki.servarr.com/
-    - Monitoring:
-        - Grafana:
-            - abbr: GR
-              href: https://grafana.com/grafana/dashboards/
+  bookmarks: []
 
   services:
+    # Row 1: Infra (full width)
     - Infra:
         - Home Assistant:
             icon: home-assistant.png
@@ -33,7 +16,12 @@ config:
             icon: esphome.png
             href: http://esphome.homelab/
             description: IoT devices
+        - n8n:
+            icon: n8n.png
+            href: http://n8n.homelab/
+            description: Workflow automation
 
+    # Row 2: CI/CD | Storage | Networking | Monitoring (4 columns)
     - CI/CD:
         - GitHub:
             icon: github.png
@@ -96,6 +84,7 @@ config:
               type: prometheus
               url: http://prometheus-operated.monitoring.svc.cluster.local:9090
 
+    # Row 3: Media (full width, 6 columns)
     - Media:
         - Jellyfin:
             icon: jellyfin.png
@@ -169,22 +158,23 @@ config:
     color: slate
     headerStyle: boxed
     hideVersion: true
+    cardBlur: md
     layout:
       Infra:
         style: row
-        columns: 2
-      CI/CD:
-        style: row
-        columns: 2
-      Storage:
-        style: row
         columns: 3
+      CI/CD:
+        style: column
+        columns: 1
+      Storage:
+        style: column
+        columns: 1
       Networking:
-        style: row
+        style: column
         columns: 1
       Monitoring:
-        style: row
-        columns: 3
+        style: column
+        columns: 1
       Media:
         style: row
         columns: 6
