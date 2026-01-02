@@ -121,7 +121,7 @@ config:
               url: http://192.168.1.106:61208
               version: 4
               metric: info
-              chart: true
+              chart: false
         - CPU Monitor:
             widget:
               type: glances
@@ -143,7 +143,7 @@ config:
               url: http://192.168.1.57:61208
               version: 4
               metric: info
-              chart: true
+              chart: false
         - CPU Monitor:
             widget:
               type: glances
@@ -218,11 +218,11 @@ config:
         header: true
       Beelink (Control Plane):
         style: row
-        columns: 6
+        columns: 3
         header: true
       Worker Node:
         style: row
-        columns: 6
+        columns: 3
         header: true
 
 # Environment variables
