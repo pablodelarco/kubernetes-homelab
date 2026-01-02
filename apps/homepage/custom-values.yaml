@@ -13,6 +13,10 @@ config:
             - abbr: UG
               icon: ugreen.png
               href: http://100.96.235.59:9999/
+        - Jellyseerr:
+            - abbr: JS
+              icon: jellyseerr.png
+              href: http://jellyseerr.homelab/
 
   services:
     # Column 1: Home
