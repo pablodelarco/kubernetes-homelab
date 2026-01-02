@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: speedtest-tracker
+  namespace: speedtest-tracker
+spec:
+  hostnames:
+    - speedtest.homelab
+  parentRefs:
+    - name: homelab-gateway
+      namespace: kube-system
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: speedtest-tracker
+          port: 80
+
