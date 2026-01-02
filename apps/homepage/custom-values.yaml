@@ -13,11 +13,6 @@ config:
   services:
     # Column 1: Home
     - Infrastructure:
-        - AdGuard Home:
-            icon: adguard-home.png
-            href: http://adguard.homelab/
-            description: DNS & ad blocking
-            siteMonitor: http://adguard-home.adguard-home.svc.cluster.local:3000
         - Home Assistant:
             icon: home-assistant.png
             href: http://ha.homelab/
@@ -28,6 +23,16 @@ config:
             href: http://esphome.homelab/
             description: IoT firmware
             siteMonitor: http://esphome.esphome.svc.cluster.local:6052
+        - AdGuard Home:
+            icon: adguard-home.png
+            href: http://adguard.homelab/
+            description: DNS & ad blocking
+            siteMonitor: http://adguard-home.adguard-home.svc.cluster.local:3000
+            widget:
+              type: adguard
+              url: http://adguard-home.adguard-home.svc.cluster.local:3000
+              username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
+              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
     # Column 2: Media
     - Media Server:
         - Radarr:
