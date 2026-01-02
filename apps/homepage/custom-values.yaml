@@ -25,7 +25,7 @@ config:
 
   services:
     # Column 1: Home
-    - Home:
+    - Infrastructure:
         - AdGuard Home:
             icon: adguard-home.png
             href: http://adguard.homelab/
@@ -86,8 +86,7 @@ config:
               enableNowPlaying: false
 
     # Column 3: Infrastructure
-    - Infrastructure:
-        - Speedtest Tracker:
+    - : - Speedtest Tracker:
             icon: speedtest-tracker.png
             href: http://speedtest.homelab/
             description: Internet speed monitoring
