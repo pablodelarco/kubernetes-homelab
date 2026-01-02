@@ -180,18 +180,6 @@ config:
               url: http://192.168.1.57:61208
               version: 4
               metric: network:enp1s0
-        - Disk Performance:
-            widget:
-              type: glances
-              url: http://192.168.1.57:61208
-              version: 4
-              metric: disk:sda
-        - Process List:
-            widget:
-              type: glances
-              url: http://192.168.1.57:61208
-              version: 4
-              metric: process
 
   widgets:
     - logo:
@@ -241,16 +229,16 @@ config:
     disableCollapse: true
     layout:
       Infrastructure:
-        style: column
+        style: row
         header: true
       Media Processing:
-        style: column
+        style: row
         header: true
       Monitoring:
-        style: column
+        style: row
         header: false
       NAS Storage:
-        style: column
+        style: row
         header: true
       Beelink (Control Plane):
         style: row
@@ -260,6 +248,11 @@ config:
         style: row
         columns: 6
         header: true
+
+# Environment variables
+env:
+  # Required for v1.2.0+ - allow requests from these hosts
+  HOMEPAGE_ALLOWED_HOSTS: "homepage.homelab,home.homelab,localhost,127.0.0.1"
 
 # Environment variables loaded from Secret (created manually, not in Git)
 # Create the secret with: kubectl apply -f homepage-secrets.yaml (keep this file local only!)
