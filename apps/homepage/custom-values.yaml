@@ -242,7 +242,7 @@ config:
         header: true
       Monitoring:
         style: column
-        header: false
+        header: true
       Storage:
         style: column
         header: true
