@@ -9,19 +9,6 @@ config:
             - abbr: TS
               icon: si-tailscale
               href: https://login.tailscale.com/admin/machines
-    - Management:
-        - ArgoCD:
-            - abbr: AR
-              icon: si-argo
-              href: http://argocd.homelab/
-        - Minio Console:
-            - abbr: MC
-              icon: minio.png
-              href: http://minio-console.homelab/
-        - ESPHome:
-            - abbr: ES
-              icon: esphome.png
-              href: http://esphome.homelab/
 
   services:
     # Column 1: Home
@@ -42,7 +29,7 @@ config:
             description: IoT firmware
             siteMonitor: http://esphome.esphome.svc.cluster.local:6052
     # Column 2: Media
-    - Media Processing:
+    - Media Server:
         - qBittorrent:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
@@ -53,11 +40,11 @@ config:
             href: http://radarr.homelab/
             description: Movies automation
             siteMonitor: http://radarr.media.svc.cluster.local
-        - Bazarr:
-            icon: bazarr.png
-            href: http://bazarr.homelab/
-            description: Subtitles automation
-            siteMonitor: http://bazarr.media.svc.cluster.local
+        - Jellyseerr:
+            icon: jellyseerr.png
+            href: http://jellyseerr.homelab/
+            description: Media requests
+            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
@@ -72,7 +59,7 @@ config:
             description: Dashboards
             siteMonitor: http://monitoring-grafana.monitoring.svc.cluster.local
         - ArgoCD:
-            icon: argocd.png
+            icon: argo-cd.png
             href: http://argocd.homelab/
             description: GitOps CD
             siteMonitor: http://argocd-server.argocd.svc.cluster.local
@@ -81,11 +68,11 @@ config:
             href: http://uptime.homelab/
             description: Systems monitoring
             siteMonitor: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
-        - Speedtest Tracker:
-            icon: speedtest-tracker.png
-            href: http://speedtest.homelab/
-            description: Internet speed monitoring
-            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
+            widget:
+              type: uptimekuma
+              url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
+              slug: homelab
+              key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
 
     # Column 4: Storage
     - Storage:
@@ -190,7 +177,7 @@ config:
       - Infrastructure:
           style: column
           header: true
-      - Media Processing:
+      - Media Server:
           style: column
           header: true
       - Monitoring:
