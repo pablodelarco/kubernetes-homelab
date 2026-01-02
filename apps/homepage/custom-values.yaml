@@ -85,8 +85,9 @@ config:
               enableBlocks: true
               enableNowPlaying: false
 
-    # Column 3: Infrastructure
-    - : - Speedtest Tracker:
+    # Column 3: Monitoring & Infra (no header)
+    - Monitoring:
+        - Speedtest Tracker:
             icon: speedtest-tracker.png
             href: http://speedtest.homelab/
             description: Internet speed monitoring
@@ -233,15 +234,15 @@ config:
     statusStyle: dot
     disableCollapse: true
     layout:
-      Home:
+      Infrastructure:
         style: column
         header: true
       Media Processing:
         style: column
         header: true
-      Infrastructure:
+      Monitoring:
         style: column
-        header: true
+        header: false
       Storage:
         style: column
         header: true
