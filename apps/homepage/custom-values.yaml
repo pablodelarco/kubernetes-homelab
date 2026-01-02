@@ -36,11 +36,6 @@ config:
             href: http://uptime.homelab/
             description: Systems monitoring
             siteMonitor: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
-            widget:
-              type: uptimekuma
-              url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
-              slug: homelab
-              key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
         - Synology NAS:
             icon: synology-dsm.png
             href: http://192.168.1.42:5000/
@@ -63,11 +58,6 @@ config:
             href: http://qbitt.homelab/
             description: Torrent client
             siteMonitor: http://qbitt.media.svc.cluster.local
-            widget:
-              type: qbittorrent
-              url: http://qbitt.media.svc.cluster.local
-              username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
-              password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
         - Radarr:
             icon: radarr.png
             href: http://radarr.homelab/
