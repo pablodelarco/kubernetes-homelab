@@ -46,7 +46,24 @@ config:
               url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
               slug: homelab
               key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
-
+        - Synology NAS:
+            icon: synology-dsm.png
+            href: http://192.168.1.42:5000/
+            description: NAS storage
+            siteMonitor: http://192.168.1.42:5000
+            widget:
+              type: diskstation
+              url: http://192.168.1.42:5000
+              username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
+              password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
+        - Speedtest Tracker:
+            icon: speedtest-tracker.png
+            href: http://speedtest.homelab/
+            description: Internet speed monitoring
+            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
+            widget:
+              type: speedtest
+              url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
     # Column 2: Media
     - Media Processing:
         - qBittorrent:
@@ -71,14 +88,6 @@ config:
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
-        - Speedtest Tracker:
-            icon: speedtest-tracker.png
-            href: http://speedtest.homelab/
-            description: Internet speed monitoring
-            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
-            widget:
-              type: speedtest
-              url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
         - Grafana:
             icon: grafana.png
             href: http://grafana.homelab/
@@ -92,16 +101,6 @@ config:
 
     # Column 4: Storage
     - NAS Storage:
-        - Synology NAS:
-            icon: synology-dsm.png
-            href: http://192.168.1.42:5000/
-            description: NAS storage
-            siteMonitor: http://192.168.1.42:5000
-            widget:
-              type: diskstation
-              url: http://192.168.1.42:5000
-              username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
-              password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
         - Home Assistant:
             icon: home-assistant.png
             href: http://ha.homelab/
