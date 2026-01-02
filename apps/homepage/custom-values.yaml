@@ -115,13 +115,6 @@ config:
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
-        - System Overview:
-            widget:
-              type: glances
-              url: http://192.168.1.106:61208
-              version: 4
-              metric: info
-              chart: false
         - CPU Monitor:
             widget:
               type: glances
@@ -137,13 +130,6 @@ config:
 
     # Horizontal row: Worker Node
     - Worker Node:
-        - System Overview:
-            widget:
-              type: glances
-              url: http://192.168.1.57:61208
-              version: 4
-              metric: info
-              chart: false
         - CPU Monitor:
             widget:
               type: glances
