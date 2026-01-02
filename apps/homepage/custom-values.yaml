@@ -31,11 +31,6 @@ config:
             href: http://adguard.homelab/
             description: DNS & ad blocking
             siteMonitor: http://adguard-home.adguard-home.svc.cluster.local:3000
-            widget:
-              type: adguard
-              url: http://adguard-home.adguard-home.svc.cluster.local:3000
-              username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
-              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
         - Uptime Kuma:
             icon: uptime-kuma.png
             href: http://uptime.homelab/
@@ -61,9 +56,6 @@ config:
             href: http://speedtest.homelab/
             description: Internet speed monitoring
             siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
-            widget:
-              type: speedtest
-              url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
     # Column 2: Media
     - Media Processing:
         - qBittorrent:
