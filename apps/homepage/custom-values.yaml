@@ -202,12 +202,6 @@ config:
       - NAS Storage:
           style: column
           header: true
-      - Development:
-          style: row
-          header: true
-      - Management:
-          style: row
-          header: true
       - Beelink (Control Plane):
           style: row
           columns: 2
@@ -215,6 +209,12 @@ config:
       - Worker Node:
           style: row
           columns: 2
+          header: true
+      - Development:
+          style: row
+          header: true
+      - Management:
+          style: row
           header: true
 
 # Environment variables
