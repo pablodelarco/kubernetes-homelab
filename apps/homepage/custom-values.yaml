@@ -210,11 +210,11 @@ config:
           header: true
       - Beelink (Control Plane):
           style: row
-          columns: 3
+          columns: 2
           header: true
       - Worker Node:
           style: row
-          columns: 3
+          columns: 2
           header: true
 
 # Environment variables
