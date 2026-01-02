@@ -8,7 +8,7 @@ config:
             icon: adguard-home.png
             href: http://adguard.homelab/
             description: DNS & ad blocking
-            ping: http://adguard-home.adguard-home.svc.cluster.local:3000/login.html
+            siteMonitor: http://adguard-home.adguard-home.svc.cluster.local:3000
             widget:
               type: adguard
               url: http://adguard-home.adguard-home.svc.cluster.local:3000
@@ -18,7 +18,7 @@ config:
             icon: home-assistant.png
             href: http://ha.homelab/
             description: Home automation
-            ping: http://home-assistant.home-assistant.svc.cluster.local
+            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
             widget:
               type: homeassistant
               url: http://home-assistant.home-assistant.svc.cluster.local
@@ -27,7 +27,7 @@ config:
             icon: uptime-kuma.png
             href: http://uptime.homelab/
             description: Systems monitoring
-            ping: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001/api/status-page/homelab
+            siteMonitor: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
             widget:
               type: uptimekuma
               url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
@@ -40,7 +40,7 @@ config:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
             description: Media streaming
-            ping: http://jellyfin.media.svc.cluster.local:8096/health
+            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
             widget:
               type: jellyfin
               url: http://jellyfin.media.svc.cluster.local:8096
@@ -51,7 +51,7 @@ config:
             icon: radarr.png
             href: http://radarr.homelab/
             description: Movies automation
-            ping: http://radarr.media.svc.cluster.local/api/v3/system/status?apikey={{HOMEPAGE_VAR_RADARR_API_KEY}}
+            siteMonitor: http://radarr.media.svc.cluster.local
             widget:
               type: radarr
               url: http://radarr.media.svc.cluster.local
@@ -60,7 +60,7 @@ config:
             icon: bazarr.png
             href: http://bazarr.homelab/
             description: Subtitles management
-            ping: http://bazarr.media.svc.cluster.local:6767
+            siteMonitor: http://bazarr.media.svc.cluster.local:6767
             widget:
               type: bazarr
               url: http://bazarr.media.svc.cluster.local:6767
@@ -69,7 +69,7 @@ config:
             icon: jellyseerr.png
             href: http://jellyseerr.homelab/
             description: Request new media
-            ping: http://jellyseerr.media.svc.cluster.local:5055/api/v1/status
+            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
             widget:
               type: jellyseerr
               url: http://jellyseerr.media.svc.cluster.local:5055
@@ -78,7 +78,7 @@ config:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
             description: Torrent client
-            ping: http://qbitt.media.svc.cluster.local
+            siteMonitor: http://qbitt.media.svc.cluster.local
             widget:
               type: qbittorrent
               url: http://qbitt.media.svc.cluster.local
@@ -88,7 +88,7 @@ config:
             icon: jackett.png
             href: http://jackett.homelab/
             description: Indexer proxy
-            ping: http://jackett.media.svc.cluster.local:9117
+            siteMonitor: http://jackett.media.svc.cluster.local:9117
 
     # Column 3: Infrastructure
     - Infrastructure:
@@ -96,7 +96,7 @@ config:
             icon: longhorn.png
             href: http://longhorn.homelab/
             description: Block storage
-            ping: http://longhorn-frontend.longhorn-system.svc.cluster.local
+            siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
             widget:
               type: longhorn
               url: http://longhorn-frontend.longhorn-system.svc.cluster.local
@@ -104,7 +104,7 @@ config:
             icon: prometheus.png
             href: http://prometheus.homelab/
             description: Metrics
-            ping: http://prometheus-operated.monitoring.svc.cluster.local:9090
+            siteMonitor: http://prometheus-operated.monitoring.svc.cluster.local:9090
             widget:
               type: prometheus
               url: http://prometheus-operated.monitoring.svc.cluster.local:9090
@@ -112,7 +112,7 @@ config:
             icon: grafana.png
             href: http://grafana.homelab/
             description: Dashboards
-            ping: http://monitoring-grafana.monitoring.svc.cluster.local/api/health
+            siteMonitor: http://monitoring-grafana.monitoring.svc.cluster.local
             widget:
               type: grafana
               url: http://monitoring-grafana.monitoring.svc.cluster.local
@@ -122,7 +122,7 @@ config:
             icon: argocd.png
             href: http://argocd.homelab/
             description: GitOps CD
-            ping: http://argocd-server.argocd.svc.cluster.local
+            siteMonitor: http://argocd-server.argocd.svc.cluster.local
 
   widgets:
     - kubernetes:
