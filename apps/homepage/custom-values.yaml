@@ -35,18 +35,7 @@ config:
               key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
 
     # Column 2: Media
-    - Media:
-        - Jellyfin:
-            icon: jellyfin.png
-            href: http://jellyfin.homelab/
-            description: Media streaming
-            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
-            widget:
-              type: jellyfin
-              url: http://jellyfin.media.svc.cluster.local:8096
-              key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
-              enableBlocks: true
-              enableNowPlaying: false
+    - Media Processing:
         - Radarr:
             icon: radarr.png
             href: http://radarr.homelab/
@@ -65,15 +54,6 @@ config:
               type: bazarr
               url: http://bazarr.media.svc.cluster.local:6767
               key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
-        - Jellyseerr:
-            icon: jellyseerr.png
-            href: http://jellyseerr.homelab/
-            description: Request new media
-            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
-            widget:
-              type: jellyseerr
-              url: http://jellyseerr.media.svc.cluster.local:5055
-              key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
         - qBittorrent:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
@@ -89,6 +69,28 @@ config:
             href: http://jackett.homelab/
             description: Indexer proxy
             siteMonitor: http://jackett.media.svc.cluster.local:9117
+
+    - Media Management:
+        - Jellyfin:
+            icon: jellyfin.png
+            href: http://jellyfin.homelab/
+            description: Media streaming
+            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
+            widget:
+              type: jellyfin
+              url: http://jellyfin.media.svc.cluster.local:8096
+              key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
+              enableBlocks: true
+              enableNowPlaying: false
+        - Jellyseerr:
+            icon: jellyseerr.png
+            href: http://jellyseerr.homelab/
+            description: Request new media
+            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
+            widget:
+              type: jellyseerr
+              url: http://jellyseerr.media.svc.cluster.local:5055
+              key: "{{HOMEPAGE_VAR_JELLYSEERR_API_KEY}}"
 
     # Column 3: Infrastructure
     - Infrastructure:
@@ -125,18 +127,39 @@ config:
             siteMonitor: http://argocd-server.argocd.svc.cluster.local
 
   widgets:
+    - logo:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kubernetes.png
+    - greeting:
+        text_size: xl
+        text: "Pablo's Homelab"
+    - datetime:
+        text_size: l
+        format:
+          dateStyle: long
+          timeStyle: short
+          hour12: false
+    - openmeteo:
+        label: Madrid
+        latitude: 40.4168
+        longitude: -3.7038
+        units: metric
+        cache: 5
+    - search:
+        provider: google
+        target: _blank
     - kubernetes:
         cluster:
           show: true
           cpu: true
           memory: true
           showLabel: true
-          label: "cluster"
+          label: "Cluster"
         nodes:
           show: true
           cpu: true
           memory: true
           showLabel: true
+
 
   # Kubernetes integration settings
   kubernetes:
@@ -156,7 +179,10 @@ config:
       Home:
         style: column
         header: true
-      Media:
+      Media Processing:
+        style: column
+        header: true
+      Media Management:
         style: column
         header: true
       Infrastructure:
