@@ -100,6 +100,10 @@ config:
             href: http://minio-console.homelab/
             description: Object storage
             siteMonitor: http://minio-console.minio.svc.cluster.local:9001
+        - UGREEN NAS:
+            icon: ugreen.png
+            href: http://100.96.235.59:9999/
+            description: NAS storage
         - Synology NAS:
             icon: synology-dsm.png
             href: http://192.168.1.42:5000/
@@ -110,10 +114,6 @@ config:
               url: http://192.168.1.42:5000
               username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
               password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
-        - UGREEN NAS:
-            icon: ugreen.png
-            href: http://100.96.235.59:9999/
-            description: NAS storage
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
