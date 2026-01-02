@@ -100,21 +100,11 @@ config:
             href: http://grafana.homelab/
             description: Dashboards
             siteMonitor: http://monitoring-grafana.monitoring.svc.cluster.local
-            widget:
-              type: grafana
-              url: http://monitoring-grafana.monitoring.svc.cluster.local
-              username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
-              password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
         - Longhorn:
             icon: longhorn.png
             href: http://longhorn.homelab/
             description: Block storage
             siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
-        - Prometheus:
-            icon: prometheus.png
-            href: http://prometheus.homelab/
-            description: Metrics
-            siteMonitor: http://prometheus-operated.monitoring.svc.cluster.local:9090
 
     # Column 4: Storage
     - Storage:
