@@ -73,7 +73,7 @@ config:
             siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
 
     # Column 4: Storage
-    - NAS Storage:
+    - Storage:
         - Longhorn:
             icon: longhorn.png
             href: http://longhorn.homelab/
@@ -150,6 +150,23 @@ config:
           cpu: true
           memory: true
           showLabel: true
+        refreshInterval: 5000
+    # Glances for Beelink
+    - glances:
+        url: http://192.168.1.106:61208
+        version: 4
+        cpu: true
+        mem: true
+        label: "Beelink"
+        refreshInterval: 5000
+    # Glances for Worker
+    - glances:
+        url: http://192.168.1.57:61208
+        version: 4
+        cpu: true
+        mem: true
+        label: "Worker"
+        refreshInterval: 5000
 
   # Kubernetes integration settings
   kubernetes:
