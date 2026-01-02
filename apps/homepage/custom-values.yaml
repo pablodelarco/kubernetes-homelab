@@ -2,26 +2,26 @@ config:
   bookmarks:
     - Development:
         - GitHub Repo:
-            abbr: GH
-            icon: si-github
-            href: https://github.com/pablodelarco/kubernetes-homelab
+            - abbr: GH
+              icon: si-github
+              href: https://github.com/pablodelarco/kubernetes-homelab
         - Tailscale:
-            abbr: TS
-            icon: si-tailscale
-            href: https://login.tailscale.com/admin/machines
+            - abbr: TS
+              icon: si-tailscale
+              href: https://login.tailscale.com/admin/machines
     - Management:
         - ArgoCD:
-            abbr: AR
-            icon: si-argo
-            href: http://argocd.homelab/
+            - abbr: AR
+              icon: si-argo
+              href: http://argocd.homelab/
         - Minio Console:
-            abbr: MC
-            icon: minio.png
-            href: http://minio-console.homelab/
+            - abbr: MC
+              icon: minio.png
+              href: http://minio-console.homelab/
         - ESPHome:
-            abbr: ES
-            icon: esphome.png
-            href: http://esphome.homelab/
+            - abbr: ES
+              icon: esphome.png
+              href: http://esphome.homelab/
 
   services:
     # Column 1: Home
