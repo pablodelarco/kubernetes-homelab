@@ -58,15 +58,6 @@ config:
 
     # Column 2: Media
     - Media Processing:
-        - Radarr:
-            icon: radarr.png
-            href: http://radarr.homelab/
-            description: Movies automation
-            siteMonitor: http://radarr.media.svc.cluster.local
-            widget:
-              type: radarr
-              url: http://radarr.media.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
         - qBittorrent:
             icon: qbittorrent.png
             href: http://qbitt.homelab/
@@ -77,6 +68,15 @@ config:
               url: http://qbitt.media.svc.cluster.local
               username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
               password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
+        - Radarr:
+            icon: radarr.png
+            href: http://radarr.homelab/
+            description: Movies automation
+            siteMonitor: http://radarr.media.svc.cluster.local
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local
+              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
@@ -91,14 +91,19 @@ config:
 
     # Column 3: Infrastructure
     - Infrastructure:
+        - Speedtest Tracker:
+            icon: speedtest-tracker.png
+            href: http://speedtest.homelab/
+            description: Internet speed monitoring
+            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
+            widget:
+              type: speedtest
+              url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
         - Longhorn:
             icon: longhorn.png
             href: http://longhorn.homelab/
             description: Block storage
             siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
-            widget:
-              type: longhorn
-              url: http://longhorn-frontend.longhorn-system.svc.cluster.local
         - Prometheus:
             icon: prometheus.png
             href: http://prometheus.homelab/
@@ -118,16 +123,52 @@ config:
               username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
               password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
 
-    # Horizontal row: Tools
-    - Tools:
-        - Speedtest Tracker:
-            icon: speedtest-tracker.png
-            href: http://speedtest.homelab/
-            description: Internet speed monitoring
-            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
+    # Column 4: Storage
+    - Storage:
+        - Synology NAS:
+            icon: synology-dsm.png
+            href: http://192.168.1.42:5000/
+            description: NAS storage
+            siteMonitor: http://192.168.1.42:5000
             widget:
-              type: speedtest
-              url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
+              type: diskstation
+              url: http://192.168.1.42:5000
+              username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
+              password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
+
+    # Horizontal row: System Monitoring
+    - System Monitoring:
+        - System Overview:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              metric: info
+              chart: false
+        - CPU Monitor:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              metric: cpu
+        - Memory Status:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              metric: memory
+        - Network Traffic:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              metric: network:eth0
+        - Disk Performance:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              metric: disk:sda
+        - Process List:
+            widget:
+              type: glances
+              url: http://192.168.1.106:61208
+              metric: process
 
   widgets:
     - logo:
@@ -185,9 +226,16 @@ config:
       Infrastructure:
         style: column
         header: true
+      Storage:
+        style: column
+        header: true
       Tools:
         style: row
         columns: 4
+        header: true
+      System Monitoring:
+        style: row
+        columns: 6
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
@@ -213,9 +261,8 @@ persistence:
   logs:
     enabled: true
     type: pvc
-    existingClaim: homepage  # Use manual PVC -> creates volume 'pvc-homepage'
+    existingClaim: homepage # Use manual PVC -> creates volume 'pvc-homepage'
     mountPath: /app/config/logs
-
 
 controller:
   annotations:
@@ -232,8 +279,3 @@ affinity:
               operator: In
               values:
                 - worker
-
-
-
-
-
