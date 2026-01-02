@@ -17,6 +17,10 @@ config:
             - abbr: JS
               icon: jellyseerr.png
               href: http://jellyseerr.homelab/
+        - Jackett:
+            - abbr: JK
+              icon: jackett.png
+              href: http://jackett.homelab/
 
   services:
     # Column 1: Home
