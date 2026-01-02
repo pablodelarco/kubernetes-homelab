@@ -45,6 +45,10 @@ config:
               url: http://adguard-home.adguard-home.svc.cluster.local:3000
               username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
               password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
+        - Tailscale:
+            icon: tailscale.png
+            href: https://login.tailscale.com/admin/machines
+            description: VPN mesh network
     # Column 2: Media
     - Media Server:
         - Radarr:
@@ -67,6 +71,11 @@ config:
               url: http://qbitt.media.svc.cluster.local
               username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
               password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
+        - Jellyseerr:
+            icon: jellyseerr.png
+            href: http://jellyseerr.homelab/
+            description: Media requests
+            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
@@ -113,6 +122,10 @@ config:
               url: http://192.168.1.42:5000
               username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
               password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
+        - UGREEN NAS:
+            icon: ugreen.png
+            href: http://100.96.235.59:9999/
+            description: NAS storage
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
