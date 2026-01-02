@@ -2,23 +2,32 @@ config:
   bookmarks: []
 
   services:
-    # Column 1: Files & Storage
-    - Files Management:
-        - Synology:
-            icon: synology.png
-            href: http://192.168.1.106:5000/
-            description: NAS storage
-        - MinIO:
-            icon: minio.png
-            href: http://minio-console.homelab/
-            description: S3 object storage
-        - Longhorn:
-            icon: longhorn.png
-            href: http://longhorn.homelab/
-            description: Block storage
+    # Column 1: Home
+    - Home:
+        - AdGuard Home:
+            icon: adguard-home.png
+            href: http://adguard.homelab/
+            description: DNS & ad blocking
             widget:
-              type: longhorn
-              url: http://longhorn-frontend.longhorn-system.svc.cluster.local
+              type: adguard
+              url: http://adguard-home.adguard-home.svc.cluster.local:3000
+              username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
+              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
+        - Home Assistant:
+            icon: home-assistant.png
+            href: http://ha.homelab/
+            description: Home automation
+            widget:
+              type: homeassistant
+              url: http://home-assistant.home-assistant.svc.cluster.local
+              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
+        - Uptime Kuma:
+            icon: uptime-kuma.png
+            href: http://uptime.homelab/
+            description: Service uptime
+
+    # Column 2: Media
+    - Media:
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
@@ -29,9 +38,22 @@ config:
               key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
               enableBlocks: true
               enableNowPlaying: false
-
-    # Column 2: Media Processing (requests & downloads)
-    - Media Processing:
+        - Radarr:
+            icon: radarr.png
+            href: http://radarr.homelab/
+            description: Movies automation
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local
+              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+        - Bazarr:
+            icon: bazarr.png
+            href: http://bazarr.homelab/
+            description: Subtitles management
+            widget:
+              type: bazarr
+              url: http://bazarr.media.svc.cluster.local:6767
+              key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
         - Jellyseerr:
             icon: jellyseerr.png
             href: http://jellyseerr.homelab/
@@ -54,31 +76,22 @@ config:
             href: http://jackett.homelab/
             description: Indexer proxy
 
-    # Column 3: Media Management (automation)
-    - Media Management:
-        - Radarr:
-            icon: radarr.png
-            href: http://radarr.homelab/
-            description: Movies automation
+    # Column 3: Infrastructure
+    - Infrastructure:
+        - Longhorn:
+            icon: longhorn.png
+            href: http://longhorn.homelab/
+            description: Block storage
             widget:
-              type: radarr
-              url: http://radarr.media.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
-        - Bazarr:
-            icon: bazarr.png
-            href: http://bazarr.homelab/
-            description: Subtitles management
+              type: longhorn
+              url: http://longhorn-frontend.longhorn-system.svc.cluster.local
+        - Prometheus:
+            icon: prometheus.png
+            href: http://prometheus.homelab/
+            description: Metrics
             widget:
-              type: bazarr
-              url: http://bazarr.media.svc.cluster.local:6767
-              key: "{{HOMEPAGE_VAR_BAZARR_API_KEY}}"
-
-    # Column 4: System Monitoring & Infrastructure
-    - System Monitoring:
-        - Uptime Kuma:
-            icon: uptime-kuma.png
-            href: http://uptime.homelab/
-            description: Service uptime
+              type: prometheus
+              url: http://prometheus-operated.monitoring.svc.cluster.local:9090
         - Grafana:
             icon: grafana.png
             href: http://grafana.homelab/
@@ -88,45 +101,10 @@ config:
               url: http://monitoring-grafana.monitoring.svc.cluster.local
               username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
               password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
-        - Prometheus:
-            icon: prometheus.png
-            href: http://prometheus.homelab/
-            description: Metrics
-            widget:
-              type: prometheus
-              url: http://prometheus-operated.monitoring.svc.cluster.local:9090
         - ArgoCD:
             icon: argocd.png
             href: http://argocd.homelab/
             description: GitOps CD
-        - AdGuard Home:
-            icon: adguard-home.png
-            href: http://adguard.homelab/
-            description: DNS & ad blocking
-            widget:
-              type: adguard
-              url: http://adguard-home.adguard-home.svc.cluster.local:3000
-              username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
-              password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
-
-    # Row 5: Home Automation (full width)
-    - Home Automation:
-        - Home Assistant:
-            icon: home-assistant.png
-            href: http://ha.homelab/
-            description: Home automation
-            widget:
-              type: homeassistant
-              url: http://home-assistant.home-assistant.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
-        - ESPHome:
-            icon: esphome.png
-            href: http://esphome.homelab/
-            description: IoT devices
-        - n8n:
-            icon: n8n.png
-            href: http://n8n.homelab/
-            description: Workflow automation
 
   widgets:
     - kubernetes:
@@ -156,21 +134,14 @@ config:
     hideVersion: true
     cardBlur: md
     layout:
-      Files Management:
+      Home:
         style: column
         header: true
-      Media Processing:
+      Media:
         style: column
         header: true
-      Media Management:
+      Infrastructure:
         style: column
-        header: true
-      System Monitoring:
-        style: column
-        header: true
-      Home Automation:
-        style: row
-        columns: 4
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
