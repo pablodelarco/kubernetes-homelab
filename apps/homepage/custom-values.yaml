@@ -36,15 +36,6 @@ config:
               url: http://adguard-home.adguard-home.svc.cluster.local:3000
               username: "{{HOMEPAGE_VAR_ADGUARD_USER}}"
               password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
-        - Home Assistant:
-            icon: home-assistant.png
-            href: http://ha.homelab/
-            description: Home automation
-            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
-            widget:
-              type: homeassistant
-              url: http://home-assistant.home-assistant.svc.cluster.local
-              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
         - Uptime Kuma:
             icon: uptime-kuma.png
             href: http://uptime.homelab/
@@ -55,6 +46,11 @@ config:
               url: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
               slug: homelab
               key: "{{HOMEPAGE_VAR_UPTIMEKUMA_API_KEY}}"
+        - Home Assistant:
+            icon: home-assistant.png
+            href: http://ha.homelab/
+            description: Home automation
+            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
 
     # Column 2: Media
     - Media Processing:
@@ -99,19 +95,6 @@ config:
             widget:
               type: speedtest
               url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
-        - Longhorn:
-            icon: longhorn.png
-            href: http://longhorn.homelab/
-            description: Block storage
-            siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
-        - Prometheus:
-            icon: prometheus.png
-            href: http://prometheus.homelab/
-            description: Metrics
-            siteMonitor: http://prometheus-operated.monitoring.svc.cluster.local:9090
-            widget:
-              type: prometheus
-              url: http://prometheus-operated.monitoring.svc.cluster.local:9090
         - Grafana:
             icon: grafana.png
             href: http://grafana.homelab/
@@ -122,6 +105,16 @@ config:
               url: http://monitoring-grafana.monitoring.svc.cluster.local
               username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
               password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
+        - Longhorn:
+            icon: longhorn.png
+            href: http://longhorn.homelab/
+            description: Block storage
+            siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
+        - Prometheus:
+            icon: prometheus.png
+            href: http://prometheus.homelab/
+            description: Metrics
+            siteMonitor: http://prometheus-operated.monitoring.svc.cluster.local:9090
 
     # Column 4: Storage
     - Storage:
@@ -136,38 +129,72 @@ config:
               username: "{{HOMEPAGE_VAR_SYNOLOGY_USER}}"
               password: "{{HOMEPAGE_VAR_SYNOLOGY_PASSWORD}}"
 
-    # Horizontal row: System Monitoring
-    - System Monitoring:
-        - System Overview:
+    # Horizontal row: System Monitoring - Beelink (Control Plane)
+    - Beelink (Control Plane):
+        - Beelink Info:
             widget:
               type: glances
               url: http://192.168.1.106:61208
               metric: info
               chart: false
-        - CPU Monitor:
+        - Beelink CPU:
             widget:
               type: glances
               url: http://192.168.1.106:61208
               metric: cpu
-        - Memory Status:
+        - Beelink Memory:
             widget:
               type: glances
               url: http://192.168.1.106:61208
               metric: memory
-        - Network Traffic:
+        - Beelink Network:
             widget:
               type: glances
               url: http://192.168.1.106:61208
-              metric: network:eth0
-        - Disk Performance:
+              metric: network:enp1s0
+        - Beelink Disk:
             widget:
               type: glances
               url: http://192.168.1.106:61208
               metric: disk:sda
-        - Process List:
+        - Beelink Processes:
             widget:
               type: glances
               url: http://192.168.1.106:61208
+              metric: process
+
+    # Horizontal row: System Monitoring - Worker Node
+    - Worker Node:
+        - Worker Info:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              metric: info
+              chart: false
+        - Worker CPU:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              metric: cpu
+        - Worker Memory:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              metric: memory
+        - Worker Network:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              metric: network:enp1s0
+        - Worker Disk:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
+              metric: disk:sda
+        - Worker Processes:
+            widget:
+              type: glances
+              url: http://192.168.1.57:61208
               metric: process
 
   widgets:
@@ -233,7 +260,11 @@ config:
         style: row
         columns: 4
         header: true
-      System Monitoring:
+      Beelink (Control Plane):
+        style: row
+        columns: 6
+        header: true
+      Worker Node:
         style: row
         columns: 6
         header: true
