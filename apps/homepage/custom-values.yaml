@@ -9,6 +9,10 @@ config:
             - abbr: TS
               icon: si-tailscale
               href: https://login.tailscale.com/admin/machines
+        - UGREEN NAS:
+            - abbr: UG
+              icon: ugreen.png
+              href: http://100.96.235.59:9999/
 
   services:
     # Column 1: Home
