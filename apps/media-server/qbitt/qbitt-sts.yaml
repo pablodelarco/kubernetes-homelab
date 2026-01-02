@@ -22,23 +22,44 @@ spec:
             - -c
             - |
               CONFIG_FILE="/config/qBittorrent/qBittorrent.conf"
+              # Subnet whitelist for cluster access (pod network + service network + local LAN)
+              WHITELIST_SUBNETS="10.42.0.0/16, 10.43.0.0/16, 192.168.1.0/24"
+              
               if [ -f "$CONFIG_FILE" ]; then
-                echo "Updating qBittorrent config for Tailscale access..."
+                echo "Updating qBittorrent config for cluster and Tailscale access..."
+                
                 # Disable HostHeaderValidation (causes "Unauthorized" with reverse proxy/different hosts)
                 if grep -q "WebUI.HostHeaderValidation" "$CONFIG_FILE"; then
                   sed -i 's|WebUI\\HostHeaderValidation=true|WebUI\\HostHeaderValidation=false|' "$CONFIG_FILE"
                 else
                   sed -i '/\[Preferences\]/a WebUI\\HostHeaderValidation=false' "$CONFIG_FILE"
                 fi
+                
                 # Disable CSRF protection for API access
                 if grep -q "WebUI.CSRFProtection" "$CONFIG_FILE"; then
                   sed -i 's|WebUI\\CSRFProtection=true|WebUI\\CSRFProtection=false|' "$CONFIG_FILE"
                 else
                   sed -i '/\[Preferences\]/a WebUI\\CSRFProtection=false' "$CONFIG_FILE"
                 fi
-                # Disable AuthSubnetWhitelist
-                sed -i 's|WebUI\\AuthSubnetWhitelistEnabled=true|WebUI\\AuthSubnetWhitelistEnabled=false|' "$CONFIG_FILE"
-                echo "Config updated for remote access"
+                
+                # Enable AuthSubnetWhitelist for passwordless access from trusted subnets
+                # This allows Homepage widget to access qBittorrent API without auth
+                sed -i 's|WebUI\\AuthSubnetWhitelistEnabled=false|WebUI\\AuthSubnetWhitelistEnabled=true|' "$CONFIG_FILE"
+                sed -i 's|WebUI\\AuthSubnetWhitelistEnabled=true|WebUI\\AuthSubnetWhitelistEnabled=true|' "$CONFIG_FILE"
+                
+                # Update the whitelist subnets
+                if grep -q "WebUI\\\\AuthSubnetWhitelist=" "$CONFIG_FILE"; then
+                  sed -i "s|WebUI\\\\AuthSubnetWhitelist=.*|WebUI\\\\AuthSubnetWhitelist=$WHITELIST_SUBNETS|" "$CONFIG_FILE"
+                else
+                  sed -i "/\[Preferences\]/a WebUI\\\\AuthSubnetWhitelist=$WHITELIST_SUBNETS" "$CONFIG_FILE"
+                fi
+                
+                # Ensure whitelist is enabled
+                if ! grep -q "WebUI\\\\AuthSubnetWhitelistEnabled=true" "$CONFIG_FILE"; then
+                  sed -i '/\[Preferences\]/a WebUI\\AuthSubnetWhitelistEnabled=true' "$CONFIG_FILE"
+                fi
+                
+                echo "Config updated for cluster access"
                 grep -E "HostHeader|CSRF|AuthSubnet" "$CONFIG_FILE"
               else
                 echo "Config file not found, will be created on first run"
@@ -84,7 +105,7 @@ spec:
             - name: SERVER_COUNTRIES
               value: "Netherlands"
             - name: FIREWALL_INPUT_PORTS
-              value: "8080,8888,8191"
+              value: "8080,8888"
             - name: FIREWALL_VPN_INPUT_PORTS
               value: "8080,6881,6969,1337"
             - name: FIREWALL_OUTBOUND_SUBNETS
