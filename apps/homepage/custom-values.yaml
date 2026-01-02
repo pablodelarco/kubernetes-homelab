@@ -216,6 +216,12 @@ config:
       - NAS Storage:
           style: column
           header: true
+      - Development:
+          style: row
+          header: true
+      - Management:
+          style: row
+          header: true
       - Beelink (Control Plane):
           style: row
           columns: 3
