@@ -139,9 +139,9 @@ config:
           timeStyle: short
           hour12: false
     - openmeteo:
-        label: Madrid
-        latitude: 40.4168
-        longitude: -3.7038
+        label: Valencia
+        latitude: 39.4699
+        longitude: -0.3763
         units: metric
         cache: 5
     - search:
