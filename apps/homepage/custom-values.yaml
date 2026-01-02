@@ -217,11 +217,11 @@ config:
         style: column
         header: true
       Beelink (Control Plane):
-        style: column
+        style: row
         columns: 6
         header: true
       Worker Node:
-        style: column
+        style: row
         columns: 6
         header: true
 
