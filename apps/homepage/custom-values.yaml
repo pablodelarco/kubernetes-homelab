@@ -212,7 +212,7 @@ config:
         header: true
       Monitoring:
         style: column
-        header: false
+        header: true
       NAS Storage:
         style: column
         header: true
