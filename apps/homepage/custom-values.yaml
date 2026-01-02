@@ -1,5 +1,22 @@
 config:
-  bookmarks: []
+  bookmarks:
+    - Development:
+        - GitHub Repo:
+            - icon: si-github
+            - href: https://github.com/pablodelarco/kubernetes-homelab
+        - Tailscale:
+            - icon: si-tailscale
+            - href: https://login.tailscale.com/admin/machines
+    - Management:
+        - ArgoCD:
+            - icon: si-argo
+            - href: http://argocd.homelab/
+        - Minio Console:
+            - icon: minio.png
+            - href: http://minio-console.homelab/
+        - ESPHome:
+            - icon: esphome.png
+            - href: http://esphome.homelab/
 
   services:
     # Column 1: Home
@@ -96,23 +113,8 @@ config:
               username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
               password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
 
-    # Column 4: Other Apps
-    - Other Apps:
-        - ArgoCD:
-            icon: si-argo
-            href: http://argocd.homelab/
-            description: GitOps CD
-            siteMonitor: http://argocd-server.argocd.svc.cluster.local
-        - Minio:
-            icon: minio.png
-            href: http://minio-console.homelab/
-            description: Object storage
-            siteMonitor: http://minio-console.minio.svc.cluster.local:9001
-        - ESPHome:
-            icon: esphome.png
-            href: http://esphome.homelab/
-            description: IoT device management
-            siteMonitor: http://esphome.home-assistant.svc.cluster.local:6052
+    # Column 4: Tools
+    - Tools:
         - Speedtest Tracker:
             icon: speedtest-tracker.png
             href: http://speedtest.homelab/
@@ -121,14 +123,6 @@ config:
             widget:
               type: speedtest
               url: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
-        - GitHub Repo:
-            icon: si-github
-            href: https://github.com/pablodelarco/kubernetes-homelab
-            description: Homelab repository
-        - Tailscale:
-            icon: si-tailscale
-            href: https://login.tailscale.com/admin/machines
-            description: VPN management
 
   widgets:
     - logo:
@@ -183,13 +177,10 @@ config:
       Media Processing:
         style: column
         header: true
-      Media Management:
-        style: column
-        header: true
       Infrastructure:
         style: column
         header: true
-      Other Apps:
+      Tools:
         style: column
         header: true
 
