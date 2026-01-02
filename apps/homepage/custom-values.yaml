@@ -31,16 +31,16 @@ config:
             href: http://adguard.homelab/
             description: DNS & ad blocking
             siteMonitor: http://adguard-home.adguard-home.svc.cluster.local:3000
-        - Uptime Kuma:
-            icon: uptime-kuma.png
-            href: http://uptime.homelab/
-            description: Systems monitoring
-            siteMonitor: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
-        - Speedtest Tracker:
-            icon: speedtest-tracker.png
-            href: http://speedtest.homelab/
-            description: Internet speed monitoring
-            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
+        - Home Assistant:
+            icon: home-assistant.png
+            href: http://ha.homelab/
+            description: Home automation
+            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
+        - ESPHome:
+            icon: esphome.png
+            href: http://esphome.homelab/
+            description: IoT firmware
+            siteMonitor: http://esphome.esphome.svc.cluster.local:6052
     # Column 2: Media
     - Media Processing:
         - qBittorrent:
@@ -76,11 +76,16 @@ config:
             href: http://argocd.homelab/
             description: GitOps CD
             siteMonitor: http://argocd-server.argocd.svc.cluster.local
-        - Home Assistant:
-            icon: home-assistant.png
-            href: http://ha.homelab/
-            description: Home automation
-            siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
+        - Uptime Kuma:
+            icon: uptime-kuma.png
+            href: http://uptime.homelab/
+            description: Systems monitoring
+            siteMonitor: http://uptime-kuma.uptime-kuma.svc.cluster.local:3001
+        - Speedtest Tracker:
+            icon: speedtest-tracker.png
+            href: http://speedtest.homelab/
+            description: Internet speed monitoring
+            siteMonitor: http://speedtest-tracker.speedtest-tracker.svc.cluster.local
 
     # Column 4: Storage
     - Storage:
@@ -89,6 +94,11 @@ config:
             href: http://longhorn.homelab/
             description: Block storage
             siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
+        - Minio:
+            icon: minio.png
+            href: http://minio-console.homelab/
+            description: Object storage
+            siteMonitor: http://minio-console.minio.svc.cluster.local:9001
         - Synology NAS:
             icon: synology-dsm.png
             href: http://192.168.1.42:5000/
@@ -189,12 +199,6 @@ config:
       - Storage:
           style: column
           header: true
-      - Development:
-          style: column
-          header: true
-      - Management:
-          style: column
-          header: true
       - Beelink (Control Plane):
           style: row
           columns: 2
@@ -202,6 +206,9 @@ config:
       - Worker Node:
           style: row
           columns: 2
+          header: true
+      - Development:
+          style: column
           header: true
 
 # Environment variables
