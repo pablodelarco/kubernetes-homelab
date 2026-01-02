@@ -44,11 +44,6 @@ config:
             href: http://radarr.homelab/
             description: Movies automation
             siteMonitor: http://radarr.media.svc.cluster.local
-        - Jellyseerr:
-            icon: jellyseerr.png
-            href: http://jellyseerr.homelab/
-            description: Media requests
-            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
@@ -77,6 +72,11 @@ config:
             href: http://argocd.homelab/
             description: GitOps CD
             siteMonitor: http://argocd-server.argocd.svc.cluster.local
+        - Jellyseerr:
+            icon: jellyseerr.png
+            href: http://jellyseerr.homelab/
+            description: Media requests
+            siteMonitor: http://jellyseerr.media.svc.cluster.local:5055
         - Uptime Kuma:
             icon: uptime-kuma.png
             href: http://uptime.homelab/
