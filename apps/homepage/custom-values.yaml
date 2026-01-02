@@ -78,12 +78,6 @@ config:
             href: http://jellyfin.homelab/
             description: Media streaming
             siteMonitor: http://jellyfin.media.svc.cluster.local:8096
-            widget:
-              type: jellyfin
-              url: http://jellyfin.media.svc.cluster.local:8096
-              key: "{{HOMEPAGE_VAR_JELLYFIN_API_KEY}}"
-              enableBlocks: true
-              enableNowPlaying: false
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
