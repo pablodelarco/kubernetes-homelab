@@ -63,6 +63,11 @@ config:
             href: http://radarr.homelab/
             description: Movies automation
             siteMonitor: http://radarr.media.svc.cluster.local
+        - Jellyfin:
+            icon: jellyfin.png
+            href: http://jellyfin.homelab/
+            description: Media streaming
+            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
@@ -84,11 +89,6 @@ config:
             href: http://ha.homelab/
             description: Home automation
             siteMonitor: http://home-assistant.home-assistant.svc.cluster.local
-        - Jellyfin:
-            icon: jellyfin.png
-            href: http://jellyfin.homelab/
-            description: Media streaming
-            siteMonitor: http://jellyfin.media.svc.cluster.local:8096
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
