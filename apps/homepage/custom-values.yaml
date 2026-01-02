@@ -118,7 +118,7 @@ config:
               username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
               password: "{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}"
 
-    # Column 4: Tools
+    # Horizontal row: Tools
     - Tools:
         - Speedtest Tracker:
             icon: speedtest-tracker.png
@@ -186,7 +186,8 @@ config:
         style: column
         header: true
       Tools:
-        style: column
+        style: row
+        columns: 4
         header: true
 
 # Environment variables loaded from Secret (created manually, not in Git)
