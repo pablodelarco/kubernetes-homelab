@@ -35,15 +35,21 @@ spec:
             - containerPort: 60072
               name: http
           env:
-            # POSTGRES_PASSWORD must be defined before DATABASE_URL for $(VAR) substitution
-            - name: POSTGRES_PASSWORD
+            # Scanopy uses individual DB env vars
+            - name: SCANOPY_DATABASE__HOST
+              value: "postgres"
+            - name: SCANOPY_DATABASE__PORT
+              value: "5432"
+            - name: SCANOPY_DATABASE__DATABASE
+              value: "scanopy"
+            - name: SCANOPY_DATABASE__USER
+              value: "scanopy"
+            - name: SCANOPY_DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: scanopy-secrets
                   key: POSTGRES_PASSWORD
-            - name: DATABASE_URL
-              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@postgres:5432/scanopy"
-            - name: DAEMON_API_KEY
+            - name: SCANOPY_DAEMON__API_KEY
               valueFrom:
                 secretKeyRef:
                   name: scanopy-secrets
