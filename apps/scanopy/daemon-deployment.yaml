@@ -1,0 +1,75 @@
+# Scanopy Daemon - Network scanner with hostNetwork access
+# Pinned to beelink node for consistent network scanning from main node
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scanopy-daemon
+  namespace: scanopy
+  labels:
+    app: scanopy-daemon
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  # Required for hostNetwork to avoid port conflicts
+  selector:
+    matchLabels:
+      app: scanopy-daemon
+  template:
+    metadata:
+      labels:
+        app: scanopy-daemon
+    spec:
+      # Use host network for proper network scanning
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      # Pin to beelink (main node) for consistent scanning
+      nodeSelector:
+        kubernetes.io/hostname: beelink
+      containers:
+        - name: daemon
+          image: ghcr.io/scanopy/scanopy/daemon:latest
+          env:
+            - name: SCANOPY_SERVER_URL
+              value: "http://scanopy-server.scanopy.svc.cluster.local:60072"
+            - name: DAEMON_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scanopy-secrets
+                  key: DAEMON_API_KEY
+            - name: TZ
+              value: "Europe/Madrid"
+            # Network scanning configuration
+            - name: SCAN_NETWORKS
+              value: "192.168.1.0/24"  # Adjust to your network
+            - name: SCAN_INTERVAL
+              value: "300"  # Scan every 5 minutes
+          # Network scanning requires elevated capabilities
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "50m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "pgrep -f daemon || exit 1"
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - "pgrep -f daemon || exit 1"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
