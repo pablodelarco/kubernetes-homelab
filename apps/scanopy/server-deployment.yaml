@@ -35,13 +35,14 @@ spec:
             - containerPort: 60072
               name: http
           env:
-            - name: DATABASE_URL
-              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@postgres:5432/scanopy"
+            # POSTGRES_PASSWORD must be defined before DATABASE_URL for $(VAR) substitution
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: scanopy-secrets
                   key: POSTGRES_PASSWORD
+            - name: DATABASE_URL
+              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@postgres:5432/scanopy"
             - name: DAEMON_API_KEY
               valueFrom:
                 secretKeyRef:
