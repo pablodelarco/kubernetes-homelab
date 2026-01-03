@@ -35,25 +35,24 @@ spec:
             - containerPort: 60072
               name: http
           env:
-            # Scanopy uses individual DB env vars
-            - name: SCANOPY_DATABASE__HOST
-              value: "postgres"
-            - name: SCANOPY_DATABASE__PORT
-              value: "5432"
-            - name: SCANOPY_DATABASE__DATABASE
-              value: "scanopy"
-            - name: SCANOPY_DATABASE__USER
-              value: "scanopy"
-            - name: SCANOPY_DATABASE__PASSWORD
+            # POSTGRES_PASSWORD must be defined before SCANOPY_DATABASE_URL for $(VAR) substitution
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: scanopy-secrets
                   key: POSTGRES_PASSWORD
-            - name: SCANOPY_DAEMON__API_KEY
+            # URL-encode the password to handle special characters (/ becomes %2F)
+            - name: SCANOPY_DATABASE_URL
+              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@postgres:5432/scanopy"
+            - name: SCANOPY_DAEMON_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: scanopy-secrets
                   key: DAEMON_API_KEY
+            - name: SCANOPY_SERVER_PORT
+              value: "60072"
+            - name: SCANOPY_LOG_LEVEL
+              value: "info"
             - name: TZ
               value: "Europe/Madrid"
           resources:
