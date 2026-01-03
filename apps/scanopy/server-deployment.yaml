@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scanopy-server
+  namespace: scanopy
+  labels:
+    app: scanopy-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scanopy-server
+  template:
+    metadata:
+      labels:
+        app: scanopy-server
+    spec:
+      # Wait for PostgreSQL to be ready
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z scanopy-postgresql 5432; do
+                echo "Waiting for PostgreSQL..."
+                sleep 2
+              done
+              echo "PostgreSQL is ready!"
+      containers:
+        - name: server
+          image: ghcr.io/scanopy/scanopy/server:latest
+          ports:
+            - containerPort: 60072
+              name: http
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@scanopy-postgresql:5432/scanopy"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scanopy-secrets
+                  key: POSTGRES_PASSWORD
+            - name: DAEMON_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scanopy-secrets
+                  key: DAEMON_API_KEY
+            - name: TZ
+              value: "Europe/Madrid"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 60072
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 60072
+            initialDelaySeconds: 10
+            periodSeconds: 10
+

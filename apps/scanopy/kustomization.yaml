@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: scanopy
+
+resources:
+  - namespace.yaml
+  - secret-sealed.yaml
+  - postgresql-pvc.yaml
+  - postgresql-sts.yaml
+  - postgresql-svc.yaml
+  - server-deployment.yaml
+  - server-svc.yaml
+  - daemon-deployment.yaml
+  - httproute.yaml
+

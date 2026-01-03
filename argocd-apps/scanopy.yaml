@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: scanopy
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/scanopy
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: scanopy
+  ignoreDifferences:
+    - group: ""
+      kind: PersistentVolumeClaim
+      jsonPointers:
+        - /spec/volumeName
+    # Ignore sealed secret data (managed by sealed-secrets controller)
+    - group: bitnami.com
+      kind: SealedSecret
+      name: scanopy-secrets
+      jsonPointers:
+        - /spec/encryptedData
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+
