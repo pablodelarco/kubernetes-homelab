@@ -33,18 +33,21 @@ spec:
           env:
             - name: SCANOPY_SERVER_URL
               value: "http://server.scanopy.svc.cluster.local:60072"
-            - name: DAEMON_API_KEY
+            - name: SCANOPY_NETWORK_ID
+              value: "252286e7-b169-49d8-916a-1380f5241cef"
+            - name: SCANOPY_DAEMON_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: scanopy-secrets
-                  key: DAEMON_API_KEY
+                  key: SCANOPY_DAEMON_API_KEY
+            - name: SCANOPY_USER_ID
+              value: "98e47302-d3be-48c7-9efb-00b3697aaf0c"
+            - name: SCANOPY_NAME
+              value: "homelab-daemon"
+            - name: SCANOPY_MODE
+              value: "Pull"
             - name: TZ
               value: "Europe/Madrid"
-            # Network scanning configuration
-            - name: SCAN_NETWORKS
-              value: "192.168.1.0/24" # Adjust to your network
-            - name: SCAN_INTERVAL
-              value: "300" # Scan every 5 minutes
           # Network scanning requires elevated capabilities
           securityContext:
             capabilities:
