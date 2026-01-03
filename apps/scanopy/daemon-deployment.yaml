@@ -19,6 +19,8 @@ spec:
       labels:
         app: scanopy-daemon
     spec:
+      # Disable automatic service environment variables injection
+      enableServiceLinks: false
       # Use host network for proper network scanning
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
