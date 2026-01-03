@@ -15,6 +15,9 @@ spec:
       labels:
         app: scanopy-server
     spec:
+      # Disable automatic service environment variables injection
+      # to prevent conflicts with SCANOPY_SERVER_PORT and SERVER_PORT
+      enableServiceLinks: false
       # Wait for PostgreSQL to be ready
       initContainers:
         - name: wait-for-postgres
