@@ -56,6 +56,10 @@ spec:
               value: "60072"
             - name: SCANOPY_LOG_LEVEL
               value: "info"
+            - name: SCANOPY_WEB_EXTERNAL_PATH
+              value: "/app/static"
+            - name: SCANOPY_PUBLIC_URL
+              value: "http://scanopy.homelab"
             - name: TZ
               value: "Europe/Madrid"
           resources:
