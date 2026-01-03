@@ -23,7 +23,7 @@ spec:
             - sh
             - -c
             - |
-              until nc -z scanopy-postgresql 5432; do
+              until nc -z postgres 5432; do
                 echo "Waiting for PostgreSQL..."
                 sleep 2
               done
@@ -36,7 +36,7 @@ spec:
               name: http
           env:
             - name: DATABASE_URL
-              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@scanopy-postgresql:5432/scanopy"
+              value: "postgresql://scanopy:$(POSTGRES_PASSWORD)@postgres:5432/scanopy"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -68,4 +68,3 @@ spec:
               port: 60072
             initialDelaySeconds: 10
             periodSeconds: 10
-

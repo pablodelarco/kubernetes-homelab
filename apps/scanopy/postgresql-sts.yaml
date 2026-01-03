@@ -6,7 +6,7 @@ metadata:
   labels:
     app: scanopy-postgresql
 spec:
-  serviceName: scanopy-postgresql
+  serviceName: postgres
   replicas: 1
   selector:
     matchLabels:
@@ -64,4 +64,3 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: scanopy-postgresql-data
-
