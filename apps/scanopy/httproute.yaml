@@ -15,6 +15,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: scanopy-server
+        - name: server
           port: 60072
-

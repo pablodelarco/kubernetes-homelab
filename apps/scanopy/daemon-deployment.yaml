@@ -10,7 +10,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate  # Required for hostNetwork to avoid port conflicts
+    type: Recreate # Required for hostNetwork to avoid port conflicts
   selector:
     matchLabels:
       app: scanopy-daemon
@@ -30,7 +30,7 @@ spec:
           image: ghcr.io/scanopy/scanopy/daemon:latest
           env:
             - name: SCANOPY_SERVER_URL
-              value: "http://scanopy-server.scanopy.svc.cluster.local:60072"
+              value: "http://server.scanopy.svc.cluster.local:60072"
             - name: DAEMON_API_KEY
               valueFrom:
                 secretKeyRef:
@@ -40,9 +40,9 @@ spec:
               value: "Europe/Madrid"
             # Network scanning configuration
             - name: SCAN_NETWORKS
-              value: "192.168.1.0/24"  # Adjust to your network
+              value: "192.168.1.0/24" # Adjust to your network
             - name: SCAN_INTERVAL
-              value: "300"  # Scan every 5 minutes
+              value: "300" # Scan every 5 minutes
           # Network scanning requires elevated capabilities
           securityContext:
             capabilities:
@@ -72,4 +72,3 @@ spec:
                 - "pgrep -f daemon || exit 1"
             initialDelaySeconds: 10
             periodSeconds: 10
-
