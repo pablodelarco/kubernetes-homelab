@@ -4,6 +4,20 @@
     "config:recommended"
   ],
   "timezone": "Europe/Madrid",
+  "registryAliases": {
+    "http://pajikos.github.io/home-assistant-helm-chart": "https://pajikos.github.io/home-assistant-helm-chart"
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Process Home Assistant helm chart in ArgoCD Application",
+      "fileMatch": ["argocd-apps/home-assistant\\.ya?ml$"],
+      "matchStrings": [
+        "repoURL: [\"']?(?<registryUrl>https?://pajikos\\.github\\.io/home-assistant-helm-chart)[\"']?\\n\\s+chart: (?<depName>home-assistant)\\n\\s+targetRevision: (?<currentValue>[0-9.]+)"
+      ],
+      "datasourceTemplate": "helm"
+    }
+  ],
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "🤖 Renovate Dashboard",
@@ -19,6 +33,9 @@
   },
   "helm-values": {
     "fileMatch": ["apps/.+/custom-values\\.ya?ml$"]
+  },
+  "argocd": {
+    "fileMatch": ["argocd-apps/.+\\.ya?ml$"]
   },
   "kubernetes": {
     "fileMatch": [
