@@ -25,7 +25,7 @@ spec:
                       - worker
       containers:
       - name: jackett
-        image: linuxserver/jackett:0.24.360
+        image: linuxserver/jackett:0.24.404
         env:
         - name: PUID
           value: "65534"
