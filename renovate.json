@@ -39,6 +39,7 @@
         "# renovate: registryUrl=(?<registryUrl>.*?)\\n\\s*- repoURL: .*?\\n\\s*chart: (?<depName>.*?)\\n\\s*targetRevision: (?<currentValue>.*)",
         "registryUrl=(?<registryUrl>.*?)\\n\\s*- repoURL: .*?\\n\\s*chart: (?<depName>.*?)\\n\\s*targetRevision: (?<currentValue>.*)",
         "registryUrl=(?<registryUrl>.*?)\\n *chart: (?<depName>.*?)\\n *targetRevision: (?<currentValue>.*)",
+        "- repoURL: [\"']?(?<registryUrl>https?://[^\"'\\s]+)[\"']?\\n\\s*chart: (?<depName>.*?)\\n\\s*targetRevision: (?<currentValue>.*)",
         "chart: (?<depName>.*)\\n.*targetRevision: (?<currentValue>.*)"
       ],
       "datasourceTemplate": "helm"

@@ -6,7 +6,6 @@ metadata:
 spec:
   project: default
   sources:
-    # renovate: registryUrl=http://pajikos.github.io/home-assistant-helm-chart/
     - repoURL: "http://pajikos.github.io/home-assistant-helm-chart/"
       chart: home-assistant
       targetRevision: 0.3.33
