@@ -10,6 +10,7 @@
   "suppressNotifications": ["prEditedNotification"],
   "rebaseWhen": "conflicted",
   "schedule": ["after 4am and before 5am every day"],
+  "ignoreDeps": ["home-assistant", "ghcr.io/home-assistant/home-assistant"],
   "pre-commit": {
     "enabled": true
   },
