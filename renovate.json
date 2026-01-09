@@ -124,13 +124,68 @@
       "labels": ["major-update", "requires-review"]
     },
     {
-      "description": "Group all ArgoCD app updates",
-      "matchFileNames": ["argocd-apps/**"],
-      "groupName": "ArgoCD Applications",
-      "commitMessageTopic": "ArgoCD app {{depName}}"
+      "description": "Independent apps: Auto-update immediately for all versions",
+      "matchPackageNames": [
+        "home-assistant",
+        "esphome",
+        "n8n",
+        "8gears.container-registry.com/library/n8n",
+        "uptime-kuma",
+        "louislam/uptime-kuma",
+        "adguard-home",
+        "speedtest-tracker",
+        "homepage",
+        "ghcr.io/esphome/esphome"
+      ],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash",
+      "schedule": ["at any time"],
+      "labels": ["auto-update"],
+      "prPriority": 20
     },
     {
-      "description": "Separate monitoring stack updates",
+      "description": "Critical infrastructure: Manual approval for ALL updates",
+      "matchPackageNames": ["longhorn", "sealed-secrets"],
+      "automerge": false,
+      "labels": ["critical", "requires-review"],
+      "prPriority": 10
+    },
+    {
+      "description": "Media stack: Group related apps together",
+      "matchPackagePatterns": [
+        "jellyfin",
+        "radarr",
+        "sonarr",
+        "jackett",
+        "bazarr",
+        "jellyseerr",
+        "qbittorrent",
+        "flaresolverr",
+        "gluetun"
+      ],
+      "groupName": "Media Stack",
+      "labels": ["media"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Infrastructure: Group infra tools together",
+      "matchPackageNames": [
+        "minio",
+        "opencost",
+        "argocd-image-updater",
+        "renovate"
+      ],
+      "groupName": "Infrastructure",
+      "labels": ["infrastructure"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Monitoring stack: Weekly updates",
       "matchPackagePatterns": [
         "kube-prometheus-stack",
         "prometheus",
@@ -139,18 +194,10 @@
       ],
       "groupName": "Monitoring Stack",
       "labels": ["monitoring"],
-      "schedule": ["before 6am on monday"]
-    },
-    {
-      "description": "Separate media stack updates",
-      "matchPackagePatterns": [
-        "jellyfin",
-        "radarr",
-        "sonarr",
-        "jackett"
-      ],
-      "groupName": "Media Stack",
-      "labels": ["media"]
+      "schedule": ["before 6am on monday"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
     },
     {
       "description": "linuxserver/qbittorrent - use semver versioning and ignore invalid v14+ versions",
