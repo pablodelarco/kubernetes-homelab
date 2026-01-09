@@ -1,7 +1,3 @@
-# Image configuration - automatically updated by ArgoCD Image Updater
-image:
-  tag: "2025.1.2"
-
 service:
   # Service type - ClusterIP since we use Cilium Gateway for external access
   type: ClusterIP
