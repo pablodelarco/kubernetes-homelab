@@ -10,7 +10,7 @@
   "suppressNotifications": ["prEditedNotification"],
   "rebaseWhen": "conflicted",
   "schedule": ["after 4am and before 5am every day"],
-  "ignoreDeps": ["home-assistant", "ghcr.io/home-assistant/home-assistant"],
+
   "pre-commit": {
     "enabled": true
   },
@@ -125,9 +125,19 @@
       "labels": ["major-update", "requires-review"]
     },
     {
+      "description": "Home Assistant: Own PR, auto-merge immediately",
+      "matchPackageNames": ["home-assistant"],
+      "groupName": null,
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash",
+      "schedule": ["at any time"],
+      "labels": ["home-assistant", "auto-update"],
+      "prPriority": 30
+    },
+    {
       "description": "Independent apps: Auto-update immediately for all versions",
       "matchPackageNames": [
-        "home-assistant",
         "esphome",
         "n8n",
         "8gears.container-registry.com/library/n8n",

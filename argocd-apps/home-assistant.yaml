@@ -3,12 +3,6 @@ kind: Application
 metadata:
   name: home-assistant
   namespace: argocd
-  annotations:
-    # ArgoCD Image Updater - automatically updates Home Assistant to latest stable
-    argocd-image-updater.argoproj.io/image-list: ha=ghcr.io/home-assistant/home-assistant
-    argocd-image-updater.argoproj.io/ha.update-strategy: semver
-    argocd-image-updater.argoproj.io/ha.helm.image-tag: image.tag
-    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   sources:
