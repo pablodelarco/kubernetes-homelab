@@ -88,7 +88,7 @@ spec:
           # Note: No probes on qbitt - gluetun owns the network namespace
 
         - name: gluetun
-          image: qmcgaw/gluetun:v3.40.3
+          image: qmcgaw/gluetun:v3.41.0
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"
