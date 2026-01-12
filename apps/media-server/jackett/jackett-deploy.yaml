@@ -25,7 +25,7 @@ spec:
                       - worker
       containers:
       - name: jackett
-        image: linuxserver/jackett:0.24.404
+        image: linuxserver/jackett:0.24.790
         env:
         - name: PUID
           value: "65534"
@@ -58,7 +58,7 @@ spec:
           failureThreshold: 3
 
       - name: flaresolverr
-        image: ghcr.io/flaresolverr/flaresolverr:v3.3.21
+        image: ghcr.io/flaresolverr/flaresolverr:v3.4.6
         env:
         - name: LOG_LEVEL
           value: "info"
