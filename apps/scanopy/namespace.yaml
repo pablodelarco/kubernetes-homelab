@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: scanopy
-  labels:
-    app.kubernetes.io/name: scanopy
-
