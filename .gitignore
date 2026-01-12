@@ -25,6 +25,9 @@ apps/adguard-home/sync-secret.yaml
 apps/acestream/
 argocd-apps/acestream.yaml
 
+# Backups (keep local only)
+backups/
+
 # Local development
 .env
 .env.local
