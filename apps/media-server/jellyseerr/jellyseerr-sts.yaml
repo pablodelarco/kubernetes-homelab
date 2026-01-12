@@ -13,6 +13,9 @@ spec:
     metadata:
       labels:
         app: jellyseerr
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: jellyseerr=fallenbagel/jellyseerr
+        argocd-image-updater.argoproj.io/jellyseerr.update-strategy: semver
     spec:
       affinity:
         nodeAffinity:
@@ -65,4 +68,3 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: jellyseerr
-

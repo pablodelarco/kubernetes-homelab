@@ -17,6 +17,9 @@ spec:
     metadata:
       labels:
         app: speedtest-tracker
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: speedtest=lscr.io/linuxserver/speedtest-tracker
+        argocd-image-updater.argoproj.io/speedtest.update-strategy: latest
     spec:
       affinity:
         nodeAffinity:
@@ -66,4 +69,3 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: speedtest-tracker-pvc
-

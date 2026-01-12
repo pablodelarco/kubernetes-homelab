@@ -6,17 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    repoURL: "https://github.com/pablodelarco/kubernetes-homelab"
     targetRevision: main
     path: apps/media-server/jellyfin
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: media
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
-
-
-

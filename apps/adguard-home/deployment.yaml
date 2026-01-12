@@ -22,6 +22,9 @@ spec:
       labels:
         app: adguard-home
         adguard-role: primary
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: adguard=adguard/adguardhome
+        argocd-image-updater.argoproj.io/adguard.update-strategy: semver
     spec:
       # Use host network so DNS is accessible on node IP
       hostNetwork: true
@@ -95,4 +98,3 @@ spec:
         - name: conf
           persistentVolumeClaim:
             claimName: adguard-home-primary-conf
-

@@ -13,6 +13,9 @@ spec:
     metadata:
       labels:
         app: bazarr
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: bazarr=linuxserver/bazarr
+        argocd-image-updater.argoproj.io/bazarr.update-strategy: semver
     spec:
       affinity:
         nodeAffinity:
@@ -77,4 +80,3 @@ spec:
         - name: temp
           persistentVolumeClaim:
             claimName: qbitt-temp
-

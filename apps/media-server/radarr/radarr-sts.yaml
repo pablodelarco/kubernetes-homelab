@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: radarr
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: radarr=linuxserver/radarr,gluetun=qmcgaw/gluetun
+        argocd-image-updater.argoproj.io/radarr.update-strategy: semver
+        argocd-image-updater.argoproj.io/gluetun.update-strategy: semver
     spec:
       containers:
         - name: radarr
@@ -44,14 +48,14 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 10
-            failureThreshold: 30  # Allow up to 5 minutes for VPN + Radarr startup
+            failureThreshold: 30 # Allow up to 5 minutes for VPN + Radarr startup
           livenessProbe:
             httpGet:
               path: /ping
               port: 7878
             periodSeconds: 60
             timeoutSeconds: 10
-            failureThreshold: 5  # More tolerant of brief VPN reconnections
+            failureThreshold: 5 # More tolerant of brief VPN reconnections
           readinessProbe:
             httpGet:
               path: /ping

@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         app: scanopy-server
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: server=ghcr.io/scanopy/scanopy/server
+        argocd-image-updater.argoproj.io/server.update-strategy: latest
     spec:
       # Disable automatic service environment variables injection
       # to prevent conflicts with SCANOPY_SERVER_PORT and SERVER_PORT
