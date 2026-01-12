@@ -174,17 +174,7 @@
       "labels": ["critical", "requires-review"],
       "prPriority": 10
     },
-    {
-      "description": "Media stack: Group related apps together (Helm charts only - raw K8s apps use ArgoCD Image Updater)",
-      "matchPackagePatterns": [
-        "sonarr"
-      ],
-      "groupName": "Media Stack",
-      "labels": ["media"],
-      "automerge": true,
-      "automergeType": "pr",
-      "automergeStrategy": "squash"
-    },
+
     {
       "description": "Infrastructure: Group infra tools together",
       "matchPackageNames": [
