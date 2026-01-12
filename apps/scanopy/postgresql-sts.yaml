@@ -15,6 +15,9 @@ spec:
     metadata:
       labels:
         app: scanopy-postgresql
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: postgresql=postgres
+        argocd-image-updater.argoproj.io/postgresql.update-strategy: semver
     spec:
       containers:
         - name: postgresql

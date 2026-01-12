@@ -8,15 +8,18 @@ spec:
   selector:
     matchLabels:
       app: uptime-kuma
-  strategy:  # Add the update strategy here
+  strategy: # Add the update strategy here
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 1         # Allow 1 extra pod during updates
-      maxUnavailable: 0   # Ensure no pods are unavailable
+      maxSurge: 1 # Allow 1 extra pod during updates
+      maxUnavailable: 0 # Ensure no pods are unavailable
   template:
     metadata:
       labels:
         app: uptime-kuma
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: uptime=louislam/uptime-kuma
+        argocd-image-updater.argoproj.io/uptime.update-strategy: semver
     spec:
       affinity:
         nodeAffinity:
@@ -59,9 +62,9 @@ spec:
             httpGet:
               path: /
               port: 3001
-            initialDelaySeconds: 30  # Wait 30 seconds before starting the first check
-            periodSeconds: 10        # Check every 10 seconds
-          readinessProbe:                     # Add readiness probe
+            initialDelaySeconds: 30 # Wait 30 seconds before starting the first check
+            periodSeconds: 10 # Check every 10 seconds
+          readinessProbe: # Add readiness probe
             httpGet:
               path: /
               port: 3001

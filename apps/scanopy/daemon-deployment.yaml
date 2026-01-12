@@ -18,6 +18,9 @@ spec:
     metadata:
       labels:
         app: scanopy-daemon
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: daemon=ghcr.io/scanopy/scanopy/daemon
+        argocd-image-updater.argoproj.io/daemon.update-strategy: latest
     spec:
       # Disable automatic service environment variables injection
       enableServiceLinks: false

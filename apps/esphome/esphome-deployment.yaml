@@ -17,6 +17,9 @@ spec:
     metadata:
       labels:
         app: esphome
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: esphome=ghcr.io/esphome/esphome
+        argocd-image-updater.argoproj.io/esphome.update-strategy: semver
     spec:
       # Pin to worker node (same as Home Assistant for mDNS discovery)
       nodeSelector:
@@ -25,27 +28,26 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: esphome
-        image: ghcr.io/esphome/esphome:2025.12.5
-        ports:
-        - name: http
-          containerPort: 6052
-          protocol: TCP
-        volumeMounts:
-        - name: config
-          mountPath: /config
-        env:
-        - name: ESPHOME_DASHBOARD_USE_PING
-          value: "true"
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
-            memory: "1Gi"
-            cpu: "1000m"
+        - name: esphome
+          image: ghcr.io/esphome/esphome:2025.12.5
+          ports:
+            - name: http
+              containerPort: 6052
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          env:
+            - name: ESPHOME_DASHBOARD_USE_PING
+              value: "true"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
       volumes:
-      - name: config
-        persistentVolumeClaim:
-          claimName: esphome
-
+        - name: config
+          persistentVolumeClaim:
+            claimName: esphome

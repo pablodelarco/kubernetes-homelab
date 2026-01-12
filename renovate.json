@@ -154,17 +154,11 @@
       "prPriority": 30
     },
     {
-      "description": "Independent apps: Auto-update immediately for all versions",
+      "description": "Independent apps: Auto-update immediately for all versions (Helm charts only)",
       "matchPackageNames": [
-        "esphome",
         "n8n",
         "8gears.container-registry.com/library/n8n",
-        "uptime-kuma",
-        "louislam/uptime-kuma",
-        "adguard-home",
-        "speedtest-tracker",
-        "homepage",
-        "ghcr.io/esphome/esphome"
+        "homepage"
       ],
       "automerge": true,
       "automergeType": "pr",
@@ -181,17 +175,9 @@
       "prPriority": 10
     },
     {
-      "description": "Media stack: Group related apps together",
+      "description": "Media stack: Group related apps together (Helm charts only - raw K8s apps use ArgoCD Image Updater)",
       "matchPackagePatterns": [
-        "jellyfin",
-        "radarr",
-        "sonarr",
-        "jackett",
-        "bazarr",
-        "jellyseerr",
-        "qbittorrent",
-        "flaresolverr",
-        "gluetun"
+        "sonarr"
       ],
       "groupName": "Media Stack",
       "labels": ["media"],
