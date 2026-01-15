@@ -44,15 +44,4 @@ main:
 
 # ── 3. Ingress - Disabled, using Cilium Gateway API instead ─────────────────
 ingress:
-  enabled: true
-  className: tailscale
-  annotations:
-    tailscale.com/funnel: "true"
-  hosts:
-    - host: n8n   # public domain
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - hosts:
-        - n8n     # TLS terminates at Funnel/Ingress
+  enabled: false
