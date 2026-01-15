@@ -13,17 +13,20 @@ main:
     port: 443                       # ← becomes containerPort
     n8n:
       # Public URLs n8n advertises internally
-      webhookUrl:       "https://n8n.tabby-carp.ts.net"
-      host:             "n8n.tabby-carp.ts.net"
-      protocol:         "https"
-      publicApiBaseUrl: "https://n8n.tabby-carp.ts.net"
+      # Public URLs n8n advertises internally
+      webhookUrl:       "http://n8n.homelab"
+      host:             "n8n.homelab"
+      protocol:         "http"
+      publicApiBaseUrl: "http://n8n.homelab"
 
   # 2-b) Extra env so n8n process actually binds 443 & HTTPS
   extraEnv:
     N8N_PORT:
       value: "5678"
     N8N_PROTOCOL:
-      value: "https"
+      value: "http"
+    N8N_SECURE_COOKIE:
+      value: "false"
     # Optimizations/Deprecation Fixes
     DB_SQLITE_POOL_SIZE:
       value: "50"
@@ -34,7 +37,11 @@ main:
 
   # 2-c) Security context ⇒ allow binding port <1024
   securityContext:
-    enabled: true
+  # 2-c) Security context ⇒ allow binding port <1024
+  securityContext:
+    # enabled: true  <-- REMOVED: Causes SyncError (field not declared in schema)
+    capabilities:
+      add: ["NET_BIND_SERVICE"]
     capabilities:
       add: ["NET_BIND_SERVICE"]
 
