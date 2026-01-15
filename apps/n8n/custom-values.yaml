@@ -24,6 +24,13 @@ main:
       value: "5678"
     N8N_PROTOCOL:
       value: "https"
+    # Optimizations/Deprecation Fixes
+    DB_SQLITE_POOL_SIZE:
+      value: "50"
+    N8N_RUNNERS_ENABLED:
+      value: "true"
+    N8N_GIT_NODE_DISABLE_BARE_REPOS:
+      value: "true"
 
   # 2-c) Security context ⇒ allow binding port <1024
   securityContext:
