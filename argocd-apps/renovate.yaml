@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: 'https://docs.renovatebot.com/helm-charts'
       chart: renovate
-      targetRevision: 45.85.4
+      targetRevision: 45.85.9
       helm:
         valueFiles:
           - $values/apps/renovate/custom-values.yaml
