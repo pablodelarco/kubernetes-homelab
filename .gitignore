@@ -45,3 +45,7 @@ Thumbs.db
 nohup.out
 
 apps/adguard-home/sync-secret.yaml
+
+# Claude Code (local only)
+CLAUDE.md
+tasks/
