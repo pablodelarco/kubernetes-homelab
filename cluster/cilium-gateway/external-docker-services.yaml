@@ -1,0 +1,93 @@
+# External services running on Docker (worker node 192.168.1.57)
+# These Service+Endpoints pairs allow Cilium Gateway to route to Docker containers
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: docker-services
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8123
+      targetPort: 8123
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: home-assistant
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 192.168.1.57
+    ports:
+      - port: 8123
+        protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: esphome
+  namespace: docker-services
+spec:
+  ports:
+    - port: 6052
+      targetPort: 6052
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: esphome
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 192.168.1.57
+    ports:
+      - port: 6052
+        protocol: TCP
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: home-assistant
+  namespace: docker-services
+spec:
+  parentRefs:
+    - name: homelab-gateway
+      namespace: kube-system
+  hostnames:
+    - "ha.homelab"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: home-assistant
+          port: 8123
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: esphome
+  namespace: docker-services
+spec:
+  parentRefs:
+    - name: homelab-gateway
+      namespace: kube-system
+  hostnames:
+    - "esphome.homelab"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: esphome
+          port: 6052
