@@ -51,11 +51,6 @@ if [ -f "argocd-apps/minio.yaml" ]; then
     add_annotations "argocd-apps/minio.yaml" "minio" "^5\\."
 fi
 
-# Home Assistant - allow 0.2.x updates
-if [ -f "argocd-apps/home-assistant.yaml" ]; then
-    add_annotations "argocd-apps/home-assistant.yaml" "home-assistant" "^0\\.2\\."
-fi
-
 # EMQX - allow 5.x.x updates
 if [ -f "argocd-apps/emqx.yaml" ]; then
     add_annotations "argocd-apps/emqx.yaml" "emqx" "^5\\."

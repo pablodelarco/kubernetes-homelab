@@ -4,20 +4,6 @@
     "config:recommended"
   ],
   "timezone": "Europe/Madrid",
-  "registryAliases": {
-    "http://pajikos.github.io/home-assistant-helm-chart": "https://pajikos.github.io/home-assistant-helm-chart"
-  },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Process Home Assistant helm chart in ArgoCD Application",
-      "fileMatch": ["argocd-apps/home-assistant\\.ya?ml$"],
-      "matchStrings": [
-        "repoURL: [\"']?(?<registryUrl>https?://pajikos\\.github\\.io/home-assistant-helm-chart)[\"']?\\n\\s+chart: (?<depName>home-assistant)\\n\\s+targetRevision: (?<currentValue>[0-9.]+)"
-      ],
-      "datasourceTemplate": "helm"
-    }
-  ],
   "semanticCommits": "enabled",
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "🤖 Renovate Dashboard",
@@ -136,17 +122,6 @@
       "matchUpdateTypes": ["major"],
       "automerge": false,
       "labels": ["major-update", "requires-review"]
-    },
-    {
-      "description": "Home Assistant: Own PR, auto-merge immediately",
-      "matchPackageNames": ["home-assistant"],
-      "groupName": null,
-      "automerge": true,
-      "automergeType": "pr",
-      "automergeStrategy": "squash",
-      "schedule": ["at any time"],
-      "labels": ["home-assistant", "auto-update"],
-      "prPriority": 30
     },
     {
       "description": "Independent apps: Auto-update immediately for all versions (Helm charts only)",
