@@ -2,7 +2,6 @@
 # Format: app-name|namespace|pvc-name|backup-name|original-volume|size-bytes
 
 # Already restored:
-# home-assistant|home-assistant|home-assistant-home-assistant-0|backup-a9ffde902273474e|pvc-d09cc8a2-3ad6-444e-8add-9e7c6be71d7a|5368709120
 # jellyfin|media|jellyfin-config|ALREADY_RESTORED
 # radarr|media|radarr|ALREADY_RESTORED
 # sonarr|media|sonarr|ALREADY_RESTORED
