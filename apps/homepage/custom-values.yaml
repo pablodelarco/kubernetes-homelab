@@ -15,14 +15,14 @@ config:
     - Infrastructure:
         - Home Assistant:
             icon: home-assistant.png
-            href: http://192.168.1.57:8123
+            href: http://ha.homelab/
             description: Home automation
-            siteMonitor: http://192.168.1.57:8123
+            siteMonitor: http://home-assistant.docker-services.svc.cluster.local:8123
         - ESPHome:
             icon: esphome.png
-            href: http://192.168.1.57:6052
+            href: http://esphome.homelab/
             description: IoT firmware
-            siteMonitor: http://192.168.1.57:6052
+            siteMonitor: http://esphome.docker-services.svc.cluster.local:6052
         - Tailscale:
             icon: tailscale.png
             href: https://login.tailscale.com/admin/machines

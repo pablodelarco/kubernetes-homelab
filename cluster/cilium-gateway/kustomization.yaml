@@ -6,4 +6,5 @@ resources:
   - httproutes-media.yaml
   - httproutes-infra.yaml
   - httproutes-storage.yaml
+  - external-docker-services.yaml
 
