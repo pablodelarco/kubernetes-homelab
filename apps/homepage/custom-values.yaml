@@ -248,6 +248,7 @@ persistence:
     mountPath: /app/config/logs
 
 controller:
+  strategy: Recreate
   annotations:
     configmap-checksum: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
 
