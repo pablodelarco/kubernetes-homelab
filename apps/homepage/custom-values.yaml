@@ -103,11 +103,11 @@ config:
         - UGREEN NAS:
             icon: ugreen.png
             href: http://100.96.235.59:9999/
-            description: NAS storage
+            description: Primary NAS (Murcia)
         - Synology NAS:
             icon: synology-dsm.png
             href: http://192.168.1.42:5000/
-            description: NAS storage
+            description: Backup mirror (Murcia)
             siteMonitor: http://192.168.1.42:5000
             widget:
               type: diskstation
