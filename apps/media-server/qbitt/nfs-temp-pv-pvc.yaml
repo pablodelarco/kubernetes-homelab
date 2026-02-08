@@ -13,7 +13,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   mountOptions:
     - hard
-    - nfsvers=4
+    - nfsvers=3
   storageClassName: ""
 
 ---
