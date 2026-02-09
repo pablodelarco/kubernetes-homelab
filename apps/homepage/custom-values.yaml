@@ -18,6 +18,11 @@ config:
             href: http://ha.homelab/
             description: Home automation
             siteMonitor: http://home-assistant.docker-services.svc.cluster.local:8123
+        - Zigbee2MQTT:
+            icon: zigbee2mqtt.png
+            href: http://z2m.homelab/
+            description: Zigbee device management
+            siteMonitor: http://zigbee2mqtt.docker-services.svc.cluster.local:8081
         - ESPHome:
             icon: esphome.png
             href: http://esphome.homelab/
