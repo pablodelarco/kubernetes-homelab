@@ -11,6 +11,6 @@ data:
     homelab:53 {
       errors
       cache 30
-      forward . 192.168.1.106
+      forward . 10.10.1.37
     }
 

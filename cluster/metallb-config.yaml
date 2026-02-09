@@ -6,7 +6,7 @@ metadata:
 spec:
   addresses:
 #    - 100.90.0.1-100.90.0.50
-   - 192.168.1.230-192.168.1.250
+   - 10.10.1.230-10.10.1.250
 
 ---
 apiVersion: metallb.io/v1beta1

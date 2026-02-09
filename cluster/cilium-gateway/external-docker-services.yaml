@@ -1,4 +1,4 @@
-# External services running on Docker (worker node 192.168.1.57)
+# External services running on Docker (worker node 10.10.1.39)
 # These Service+Endpoints pairs allow Cilium Gateway to route to Docker containers
 ---
 apiVersion: v1
@@ -24,7 +24,7 @@ metadata:
   namespace: docker-services
 subsets:
   - addresses:
-      - ip: 192.168.1.57
+      - ip: 10.10.1.39
     ports:
       - port: 8123
         protocol: TCP
@@ -47,7 +47,7 @@ metadata:
   namespace: docker-services
 subsets:
   - addresses:
-      - ip: 192.168.1.57
+      - ip: 10.10.1.39
     ports:
       - port: 6052
         protocol: TCP
