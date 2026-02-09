@@ -120,13 +120,13 @@ config:
         - CPU Monitor:
             widget:
               type: glances
-              url: http://192.168.1.106:61208
+              url: http://10.10.1.37:61208
               version: 4
               metric: cpu
         - Memory Status:
             widget:
               type: glances
-              url: http://192.168.1.106:61208
+              url: http://10.10.1.37:61208
               version: 4
               metric: memory
 
@@ -135,13 +135,13 @@ config:
         - CPU Monitor:
             widget:
               type: glances
-              url: http://192.168.1.57:61208
+              url: http://10.10.1.39:61208
               version: 4
               metric: cpu
         - Memory Status:
             widget:
               type: glances
-              url: http://192.168.1.57:61208
+              url: http://10.10.1.39:61208
               version: 4
               metric: memory
 
