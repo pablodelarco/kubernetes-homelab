@@ -91,3 +91,46 @@ spec:
       backendRefs:
         - name: esphome
           port: 6052
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zigbee2mqtt
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: zigbee2mqtt
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.39
+    ports:
+      - port: 8081
+        protocol: TCP
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: zigbee2mqtt
+  namespace: docker-services
+spec:
+  parentRefs:
+    - name: homelab-gateway
+      namespace: kube-system
+  hostnames:
+    - "z2m.homelab"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: zigbee2mqtt
+          port: 8081
