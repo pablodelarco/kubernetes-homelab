@@ -17,7 +17,7 @@ ipam:
 ipv4NativeRoutingCIDR: 10.42.0.0/16
 
 # Kubernetes API server (LAN IP)
-k8sServiceHost: 192.168.1.106
+k8sServiceHost: 10.10.1.37
 k8sServicePort: 6443
 
 # Kube-proxy replacement
@@ -80,7 +80,7 @@ bpf:
 # ============================================
 # NATIVE ROUTING CONFIGURATION
 # ============================================
-# Since all nodes are on the same LAN (192.168.1.x), we use native routing
+# Since all nodes are on the same LAN (10.10.1.x), we use native routing
 # This is faster than VXLAN as there's no encapsulation overhead
 
 # Routing mode: native (direct routing between nodes)
@@ -98,6 +98,6 @@ enableIPv4Masquerade: true
 # ============================================
 # - Native routing: No VXLAN overhead, direct pod-to-pod communication
 # - Gateway API: Replaces Traefik/Tailscale ingress with Cilium native ingress
-# - Host Network Mode: Gateway exposed on node IPs (192.168.1.106/192.168.1.57)
+# - Host Network Mode: Gateway exposed on node IPs (10.10.1.37/10.10.1.39)
 # - Apply: helm upgrade cilium cilium/cilium -n kube-system -f cilium-values-vxlan.yaml
 # - After applying, install Gateway API CRDs and create Gateway/HTTPRoute resources

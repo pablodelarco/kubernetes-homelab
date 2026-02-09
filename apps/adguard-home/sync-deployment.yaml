@@ -34,7 +34,7 @@ spec:
               value: "info"
             # Origin (primary) - beelink
             - name: ORIGIN_URL
-              value: "http://192.168.1.106:3000"
+              value: "http://10.10.1.37:3000"
             - name: ORIGIN_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -47,7 +47,7 @@ spec:
                   key: password
             # Replica (secondary) - worker
             - name: REPLICA1_URL
-              value: "http://192.168.1.57:3000"
+              value: "http://10.10.1.39:3000"
             - name: REPLICA1_USERNAME
               valueFrom:
                 secretKeyRef:
