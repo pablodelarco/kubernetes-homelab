@@ -85,6 +85,17 @@ clusterConfig:
       public: false
   # Keys created manually via admin API after deploy (Garage requires GK-prefixed key format)
 
+## Web UI for admin access
+webui:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: khairul169/garage-webui
+    tag: "1.1.0"
+  service:
+    type: ClusterIP
+    port: 3909
+
 ## Resources - Garage is lightweight (Rust-based)
 resources:
   requests:
