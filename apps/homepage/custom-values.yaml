@@ -100,11 +100,11 @@ config:
             href: http://longhorn.homelab/
             description: Block storage
             siteMonitor: http://longhorn-frontend.longhorn-system.svc.cluster.local
-        - Minio:
-            icon: minio.png
-            href: http://minio-console.homelab/
-            description: Object storage
-            siteMonitor: http://minio-console.minio.svc.cluster.local:9001
+        - Garage:
+            icon: garage.png
+            href: http://garage.homelab/
+            description: S3 object storage (CLI admin)
+            siteMonitor: http://garage.garage.svc.cluster.local:3903
         - UGREEN NAS:
             icon: ugreen.png
             href: http://100.96.235.59:9999/

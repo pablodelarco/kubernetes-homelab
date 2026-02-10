@@ -1,0 +1,130 @@
+## Garage S3-compatible object storage
+## Single-node homelab deployment on NFS
+
+image:
+  repository: dxflrs/garage
+  pullPolicy: IfNotPresent
+
+## Garage configuration
+garage:
+  # SQLite is safer than LMDB on NFS (LMDB risks corruption on unclean shutdown)
+  dbEngine: "sqlite"
+
+  # Single-node: no replication needed
+  replicationFactor: 1
+  consistencyMode: "consistent"
+
+  # Compression for backup data
+  compressionLevel: "1"
+
+  # Use pre-existing secret for RPC secret and admin token
+  secret:
+    create: false
+    name: "garage-secrets"
+
+  s3:
+    api:
+      region: "us-east-1"
+      rootDomain: ".s3.garage.tld"
+
+## Deployment settings
+deployment:
+  kind: StatefulSet
+  replicaCount: 1
+
+## Persistence - NFS StorageClass (data on NAS)
+persistence:
+  enabled: true
+  meta:
+    storageClass: nfs
+    size: 1Gi
+  data:
+    storageClass: nfs
+    size: 150Gi
+
+## Service configuration
+service:
+  type: ClusterIP
+  ports:
+    s3Api: 3900
+    rpc: 3901
+    s3Web: 3902
+    admin: 3903
+
+## Ingress - Disabled, using Cilium Gateway API instead
+ingress:
+  s3:
+    api:
+      enabled: false
+  web:
+    enabled: false
+
+## Gateway API - Disabled, managed separately in httproutes-storage.yaml
+gatewayApi:
+  s3:
+    api:
+      enabled: false
+
+## Monitoring
+monitoring:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 60s
+
+## Cluster configuration job - auto-setup layout, bucket, and key
+clusterConfig:
+  enabled: true
+  layout:
+    enabled: true
+    zone: homelab
+    capacity: "150G"
+  buckets:
+    - name: k8s-backups
+      public: false
+  keys:
+    longhorn-backup-key:
+      secretName: garage-secrets
+      keyId: s3AccessKeyId
+      secretKey: s3SecretAccessKey
+      buckets:
+        - name: k8s-backups
+          permissions:
+            read: true
+            write: true
+
+## Resources - Garage is lightweight (Rust-based)
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 256m
+  limits:
+    memory: 1Gi
+    cpu: 500m
+
+## Security context
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  fsGroupChangePolicy: "OnRootMismatch"
+  runAsNonRoot: true
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+
+## Prefer scheduling on worker node to balance cluster load
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - worker
