@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: garage
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: 'https://datahub-local.github.io/garage-helm'
+      chart: garage
+      targetRevision: 0.2.1
+      helm:
+        valueFiles:
+          - $values/apps/garage/custom-values.yaml
+    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+      targetRevision: main
+      ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: garage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
