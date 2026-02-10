@@ -83,16 +83,7 @@ clusterConfig:
   buckets:
     - name: k8s-backups
       public: false
-  keys:
-    longhorn-backup-key:
-      secretName: garage-secrets
-      keyId: s3AccessKeyId
-      secretKey: s3SecretAccessKey
-      buckets:
-        - name: k8s-backups
-          permissions:
-            read: true
-            write: true
+  # Keys created manually via admin API after deploy (Garage requires GK-prefixed key format)
 
 ## Resources - Garage is lightweight (Rust-based)
 resources:
