@@ -59,8 +59,26 @@ spec:
                   sed -i '/\[Preferences\]/a WebUI\\AuthSubnetWhitelistEnabled=true' "$CONFIG_FILE"
                 fi
                 
+                # Auto-delete torrent files after seeding completes (ratio 1.0 or 24h)
+                # Radarr copies files to /movies/ on import, so /downloads/ copies are redundant
+                if grep -q "Session\\\\ShareLimitAction=" "$CONFIG_FILE"; then
+                  sed -i 's|Session\\ShareLimitAction=.*|Session\\ShareLimitAction=RemoveWithContent|' "$CONFIG_FILE"
+                else
+                  sed -i '/\[BitTorrent\]/a Session\\ShareLimitAction=RemoveWithContent' "$CONFIG_FILE"
+                fi
+                if grep -q "Session\\\\GlobalMaxRatio=" "$CONFIG_FILE"; then
+                  sed -i 's|Session\\GlobalMaxRatio=.*|Session\\GlobalMaxRatio=1|' "$CONFIG_FILE"
+                else
+                  sed -i '/\[BitTorrent\]/a Session\\GlobalMaxRatio=1' "$CONFIG_FILE"
+                fi
+                if grep -q "Session\\\\GlobalMaxSeedingMinutes=" "$CONFIG_FILE"; then
+                  sed -i 's|Session\\GlobalMaxSeedingMinutes=.*|Session\\GlobalMaxSeedingMinutes=1440|' "$CONFIG_FILE"
+                else
+                  sed -i '/\[BitTorrent\]/a Session\\GlobalMaxSeedingMinutes=1440' "$CONFIG_FILE"
+                fi
+
                 echo "Config updated for cluster access"
-                grep -E "HostHeader|CSRF|AuthSubnet" "$CONFIG_FILE"
+                grep -E "HostHeader|CSRF|AuthSubnet|ShareLimit" "$CONFIG_FILE"
               else
                 echo "Config file not found, will be created on first run"
               fi
