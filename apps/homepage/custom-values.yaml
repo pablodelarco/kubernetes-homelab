@@ -103,8 +103,8 @@ config:
         - Garage:
             icon: garage.png
             href: http://garage.homelab/
-            description: S3 object storage (CLI admin)
-            siteMonitor: http://garage.garage.svc.cluster.local:3903
+            description: S3 object storage
+            siteMonitor: http://garage-webui.garage.svc.cluster.local:3909
         - UGREEN NAS:
             icon: ugreen.png
             href: http://100.96.235.59:9999/

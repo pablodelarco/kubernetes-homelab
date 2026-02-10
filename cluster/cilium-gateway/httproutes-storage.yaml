@@ -37,8 +37,8 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: garage
-          port: 3903
+        - name: garage-webui
+          port: 3909
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
