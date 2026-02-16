@@ -1,5 +1,5 @@
 crds:
-  create: false
+  create: true
 
 grafana:
   service:
