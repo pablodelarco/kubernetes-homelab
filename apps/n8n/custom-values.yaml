@@ -1,25 +1,20 @@
-# ── 1. Persistent data (unchanged) ────────────────────────────────────────────
-persistence:
-  enabled: true
-  accessMode: ReadWriteOnce
-  size: 5Gi
-  storageClass: ""
-  mountPath: /home/node/.n8n
-
-# ── 2. n8n container & app-level config ──────────────────────────────────────
+# ── 1. n8n container & app-level config ──────────────────────────────────────
 main:
-  # 2-a) Port the container will LISTEN on
+  # App configuration (becomes ConfigMap env vars)
   config:
-    port: 443                       # ← becomes containerPort
+    port: 443
     n8n:
-      # Public URLs n8n advertises internally
-      # Public URLs n8n advertises internally
       webhookUrl:       "http://n8n.homelab"
       host:             "n8n.homelab"
       protocol:         "http"
       publicApiBaseUrl: "http://n8n.homelab"
 
-  # 2-b) Extra env so n8n process actually binds 443 & HTTPS
+  # Secrets (becomes K8s Secret, referenced as env vars)
+  secret:
+    n8n:
+      encryption_key: "Nb+XP252eQXsESLthEb7mWKoyF721sIv"
+
+  # Extra env vars
   extraEnv:
     N8N_PORT:
       value: "5678"
@@ -27,7 +22,6 @@ main:
       value: "http"
     N8N_SECURE_COOKIE:
       value: "false"
-    # Optimizations/Deprecation Fixes
     DB_SQLITE_POOL_SIZE:
       value: "50"
     N8N_RUNNERS_ENABLED:
@@ -35,21 +29,25 @@ main:
     N8N_GIT_NODE_DISABLE_BARE_REPOS:
       value: "true"
 
-  # 2-c) Security context ⇒ allow binding port <1024
+  # Persistent storage (under main, not top-level)
+  persistence:
+    enabled: true
+    type: dynamic
+    storageClass: "longhorn"
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
+
+  # Security context
   securityContext:
-  # 2-c) Security context ⇒ allow binding port <1024
-  securityContext:
-    # enabled: true  <-- REMOVED: Causes SyncError (field not declared in schema)
-    capabilities:
-      add: ["NET_BIND_SERVICE"]
     capabilities:
       add: ["NET_BIND_SERVICE"]
 
-  # 2-d) Kubernetes Service settings
+  # Kubernetes Service
   service:
     type: ClusterIP
 
-  # 2-e) Node affinity - prefer worker to balance memory across nodes
+  # Node affinity - prefer worker to balance memory
   affinity:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -61,7 +59,6 @@ main:
                 values:
                   - worker
 
-# ── 3. Ingress - Disabled, using Cilium Gateway API instead ─────────────────
+# ── 2. Ingress - Disabled, using Cilium Gateway API instead ─────────────────
 ingress:
   enabled: false
-
