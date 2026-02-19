@@ -16,6 +16,16 @@ spec:
         argocd-image-updater.argoproj.io/image-list: flaresolverr=ghcr.io/flaresolverr/flaresolverr
         argocd-image-updater.argoproj.io/flaresolverr.update-strategy: semver
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
       containers:
         - name: flaresolverr
           image: ghcr.io/flaresolverr/flaresolverr:v3.4.6
