@@ -9,6 +9,10 @@ config:
             - abbr: JK
               icon: jackett.png
               href: http://jackett.homelab/
+        - Tailscale:
+            - abbr: TS
+              icon: tailscale.png
+              href: https://login.tailscale.com/admin/machines
 
   services:
     # Column 1: Home
@@ -33,10 +37,6 @@ config:
             href: http://n8n.homelab/
             description: Workflow automation
             siteMonitor: http://n8n.n8n.svc.cluster.local
-        - Tailscale:
-            icon: tailscale.png
-            href: https://login.tailscale.com/admin/machines
-            description: VPN mesh network
         - AdGuard Home:
             icon: adguard-home.png
             href: http://adguard.homelab/
