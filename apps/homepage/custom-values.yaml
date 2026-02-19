@@ -44,6 +44,11 @@ config:
               password: "{{HOMEPAGE_VAR_ADGUARD_PASSWORD}}"
     # Column 2: Media
     - Media Server:
+        - Stremio:
+            icon: stremio.png
+            href: http://10.10.1.39:11470/
+            description: Stream movies & TV
+            siteMonitor: http://10.10.1.39:11470
         - Radarr:
             icon: radarr.png
             href: http://radarr.homelab/
