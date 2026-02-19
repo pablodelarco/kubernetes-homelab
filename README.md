@@ -1,6 +1,6 @@
 # 🏠 Kubernetes Homelab
 
-Welcome to my Kubernetes Homelab repository! This is where I document my journey with cloud-native technologies and self-hosting applications. This homelab is more than a playground — it's a platform where I explore ideas, automate workflows, and solve complex challenges while having fun.
+Welcome to my Kubernetes Homelab repository! This is where I document my journey with cloud-native technologies and self-hosting applications. This homelab is more than a playground, it's a platform where I explore ideas, automate workflows, and solve complex challenges while having fun.
 
 As a **Cloud Solutions Architect**, Kubernetes is part of my daily toolkit. This homelab represents my passion for learning and experimenting with technology, focusing on scalability, backup strategies, and operational simplicity.
 
