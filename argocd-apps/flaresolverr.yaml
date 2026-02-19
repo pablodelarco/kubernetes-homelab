@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: flaresolverr
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: flaresolverr=ghcr.io/flaresolverr/flaresolverr
+    argocd-image-updater.argoproj.io/flaresolverr.update-strategy: semver
 spec:
   project: default
   source:

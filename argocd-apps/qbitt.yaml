@@ -3,6 +3,10 @@ kind: Application
 metadata:
   name: qbitt
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: qbitt=linuxserver/qbittorrent, gluetun=qmcgaw/gluetun
+    argocd-image-updater.argoproj.io/qbitt.update-strategy: semver
+    argocd-image-updater.argoproj.io/gluetun.update-strategy: semver
 spec:
   project: default
   source:
