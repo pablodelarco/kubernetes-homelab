@@ -28,6 +28,11 @@ config:
             href: http://esphome.homelab/
             description: IoT firmware
             siteMonitor: http://esphome.docker-services.svc.cluster.local:6052
+        - n8n:
+            icon: n8n.png
+            href: http://n8n.homelab/
+            description: Workflow automation
+            siteMonitor: http://n8n.n8n.svc.cluster.local
         - Tailscale:
             icon: tailscale.png
             href: https://login.tailscale.com/admin/machines
