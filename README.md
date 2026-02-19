@@ -1,8 +1,19 @@
-# Kubernetes Homelab
+# 🏠 Kubernetes Homelab
 
-A GitOps-managed K3s cluster running on two Beelink mini PCs, serving home automation, media streaming, monitoring, and infrastructure services.
+Welcome to my Kubernetes Homelab repository! This is where I document my journey with cloud-native technologies and self-hosting applications. This homelab is more than a playground — it's a platform where I explore ideas, automate workflows, and solve complex challenges while having fun.
 
-## Architecture
+As a **Cloud Solutions Architect**, Kubernetes is part of my daily toolkit. This homelab represents my passion for learning and experimenting with technology, focusing on scalability, backup strategies, and operational simplicity.
+
+---
+
+## 🚀 Why a Homelab?
+
+1. **Learning by Doing**: By self-hosting, I tackle the complexities of deploying and managing real-world applications.
+2. **All-in-One Environment**: This Kubernetes cluster manages all the applications of my home setup, serving as a single, integrated environment for testing, developing, and automating cloud-native workflows.
+
+---
+
+## 🏗️ Architecture
 
 ```
                         Tailscale Mesh (WireGuard)
@@ -33,16 +44,20 @@ A GitOps-managed K3s cluster running on two Beelink mini PCs, serving home autom
                                           +-----------+
 ```
 
-## Hardware
+---
+
+## 🖥️ Hardware
+
+To keep things simple yet powerful, the homelab runs on two **Beelink Mini S12 Pro** mini PCs — low power consumption (~10W each) and fanless-quiet operation.
 
 | Node | Role | CPU | RAM | Storage |
 |------|------|-----|-----|---------|
 | beelink | control-plane + worker | Intel N100 (4C/4T) | 16 GB DDR4 | 500 GB NVMe |
 | worker | worker | Intel N100 (4C/4T) | 16 GB DDR4 | 500 GB NVMe |
 
-Both nodes are **Beelink Mini S12 Pro** mini PCs. Low power consumption (~10W each), fanless-quiet operation.
+---
 
-## Tech Stack
+## 🔧 Tech Stack
 
 | Category | Tools |
 |----------|-------|
@@ -52,9 +67,12 @@ Both nodes are **Beelink Mini S12 Pro** mini PCs. Low power consumption (~10W ea
 | Storage | Longhorn (distributed block), Garage (S3-compatible), NFS (NAS) |
 | Monitoring | Prometheus, Grafana, Alertmanager, Uptime Kuma, Glances, OpenCost |
 | Security | Sealed Secrets, cert-manager (Let's Encrypt), AdGuard Home (DNS) |
-| DNS | AdGuard Home (ad blocking + local DNS) |
 
-## Applications
+---
+
+## 📦 Applications
+
+The homelab runs a variety of applications, deployed using Kubernetes and managed declaratively through GitOps. Some services run on Docker and are exposed through the Kubernetes Gateway API.
 
 ### Kubernetes-managed
 
@@ -90,7 +108,9 @@ Both nodes are **Beelink Mini S12 Pro** mini PCs. Low power consumption (~10W ea
 | ESPHome | Home Automation | IoT device firmware |
 | Stremio | Media | Streaming aggregator |
 
-## Repository Structure
+---
+
+## 📂 Repository Structure
 
 ```
 .
@@ -125,23 +145,29 @@ Both nodes are **Beelink Mini S12 Pro** mini PCs. Low power consumption (~10W ea
 └── renovate.json               # Renovate bot configuration
 ```
 
-## Networking
+---
 
-- **Tailscale** mesh connects both nodes and provides remote access via WireGuard VPN
-- **Cilium** serves as CNI and provides Gateway API for HTTP routing (`.homelab` domains)
-- **MetalLB** assigns IPs from a local L2 pool (`10.10.1.230-250`)
-- **AdGuard Home** provides DNS resolution for `*.homelab` domains and ad blocking
-- Docker services (Home Assistant, ESPHome, Zigbee2MQTT) are exposed through Kubernetes Gateway API via external Service/Endpoints
+## 🌐 Networking
 
-## Backup Strategy
+- **Tailscale** mesh connects both nodes and provides remote access via WireGuard VPN.
+- **Cilium** serves as CNI and provides Gateway API for HTTP routing (`.homelab` domains).
+- **MetalLB** assigns IPs from a local L2 pool (`10.10.1.230-250`).
+- **AdGuard Home** provides DNS resolution for `*.homelab` domains and ad blocking.
+- Docker services (Home Assistant, ESPHome, Zigbee2MQTT) are exposed through Kubernetes Gateway API via external Service/Endpoints.
 
-- **Longhorn** snapshots replicate volumes across both nodes
-- **Garage** (S3) stores off-cluster Longhorn backups
-- **UGREEN NAS** provides NFS-mounted media storage
-- **Synology NAS** mirrors critical data as secondary backup
-- Restore manifests in `scripts/restore/` for disaster recovery
+---
 
-## GitOps Workflow
+## 💾 Backup Strategy
+
+- **Longhorn** snapshots replicate volumes across both nodes.
+- **Garage** (S3) stores off-cluster Longhorn backups.
+- **UGREEN NAS** provides NFS-mounted media storage.
+- **Synology NAS** mirrors critical data as secondary backup.
+- Restore manifests in `scripts/restore/` for disaster recovery.
+
+---
+
+## 🔄 GitOps Workflow
 
 ```
 GitHub repo ──> ArgoCD (auto-sync) ──> Kubernetes cluster
@@ -150,12 +176,22 @@ GitHub repo ──> ArgoCD (auto-sync) ──> Kubernetes cluster
      └── Image Updater (new tags) ────────────┘
 ```
 
-1. All cluster state is declared in this repository
-2. **ArgoCD** watches the repo and auto-syncs changes to the cluster
-3. **ArgoCD Image Updater** detects new container image tags and commits updates
-4. **Renovate** opens PRs for Helm chart and dependency updates
-5. **Sealed Secrets** allows encrypted secrets to be stored safely in Git
+1. All cluster state is declared in this repository.
+2. **ArgoCD** watches the repo and auto-syncs changes to the cluster.
+3. **ArgoCD Image Updater** detects new container image tags and commits updates.
+4. **Renovate** opens PRs for Helm chart and dependency updates.
+5. **Sealed Secrets** allows encrypted secrets to be stored safely in Git.
 
-## License
+---
+
+## 📈 Goals
+
+- **Deepen Kubernetes Knowledge**: Dive deep into advanced Kubernetes concepts, such as networking, GitOps, and federation.
+- **Enhance Resilience**: Design a self-hosted environment with reliable backups and minimal downtime.
+- **Share Knowledge**: Document my progress and learnings to help others interested in setting up their own homelab.
+
+---
+
+## 📄 License
 
 See [LICENSE](LICENSE).
