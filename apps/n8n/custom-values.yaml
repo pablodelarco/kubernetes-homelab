@@ -49,18 +49,19 @@ main:
   service:
     type: ClusterIP
 
+  # 2-e) Node affinity - prefer worker to balance memory across nodes
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - worker
+
 # ── 3. Ingress - Disabled, using Cilium Gateway API instead ─────────────────
 ingress:
   enabled: false
 
-# ── 4. Node affinity - prefer worker to balance memory across nodes ────────
-affinity:
-  nodeAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        preference:
-          matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - worker
