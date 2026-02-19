@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: jellyfin
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: jellyfin=jellyfin/jellyfin
+    argocd-image-updater.argoproj.io/jellyfin.update-strategy: semver
 spec:
   project: default
   source:

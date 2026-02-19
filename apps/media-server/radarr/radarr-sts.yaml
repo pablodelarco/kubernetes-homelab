@@ -13,10 +13,6 @@ spec:
     metadata:
       labels:
         app: radarr
-      annotations:
-        argocd-image-updater.argoproj.io/image-list: radarr=linuxserver/radarr,gluetun=qmcgaw/gluetun
-        argocd-image-updater.argoproj.io/radarr.update-strategy: semver
-        argocd-image-updater.argoproj.io/gluetun.update-strategy: semver
     spec:
       containers:
         - name: radarr

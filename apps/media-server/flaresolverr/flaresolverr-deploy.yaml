@@ -12,9 +12,6 @@ spec:
     metadata:
       labels:
         app: flaresolverr
-      annotations:
-        argocd-image-updater.argoproj.io/image-list: flaresolverr=ghcr.io/flaresolverr/flaresolverr
-        argocd-image-updater.argoproj.io/flaresolverr.update-strategy: semver
     spec:
       affinity:
         nodeAffinity:
