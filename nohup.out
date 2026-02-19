@@ -1,9 +1,0 @@
-ERROR:  authentication failed: Your account is limited to 1 simultaneous ngrok agent sessions.
-ERROR:  You can run multiple simultaneous tunnels from a single agent session by defining the tunnels in your agent configuration file and starting them with the command `ngrok start --all`.
-ERROR:  Read more about the agent configuration file: https://ngrok.com/docs/secure-tunnels/ngrok-agent/reference/config
-ERROR:  You can view your current agent sessions in the dashboard:
-ERROR:  https://dashboard.ngrok.com/agents
-ERROR:  
-ERROR:  ERR_NGROK_108
-ERROR:  https://ngrok.com/docs/errors/err_ngrok_108
-ERROR:  
