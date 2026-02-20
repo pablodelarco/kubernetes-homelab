@@ -1,3 +1,7 @@
+# ── 0. Image version (managed by ArgoCD Image Updater) ────────────────────────
+image:
+  tag: "2.9.1"
+
 # ── 1. n8n container & app-level config ──────────────────────────────────────
 main:
   # App configuration (becomes ConfigMap env vars)
