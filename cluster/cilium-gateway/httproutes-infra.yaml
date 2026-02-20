@@ -154,6 +154,7 @@ spec:
       namespace: kube-system
   hostnames:
     - "n8n.homelab"
+    - "beelink.tabby-carp.ts.net"
   rules:
     - matches:
         - path:
