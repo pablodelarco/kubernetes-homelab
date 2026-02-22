@@ -26,8 +26,8 @@ data:
         - 0.0.0.0  # Bind to all interfaces (works on any node)
       port: 53
       anonymize_client_ip: false
-      ratelimit: 0
-      ratelimit_subnet_len_ipv4: 24
+      ratelimit: 50
+      ratelimit_subnet_len_ipv4: 32
       ratelimit_subnet_len_ipv6: 56
       ratelimit_whitelist: []
       refuse_any: true
@@ -83,14 +83,14 @@ data:
     querylog:
       dir_path: ""
       ignored: []
-      interval: 2160h
-      size_memory: 1000
+      interval: 24h
+      size_memory: 500
       enabled: true
       file_enabled: true
     statistics:
       dir_path: ""
       ignored: []
-      interval: 2160h
+      interval: 720h
       enabled: true
     filters:
       - enabled: true
