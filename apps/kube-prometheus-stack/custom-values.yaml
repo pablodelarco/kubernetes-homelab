@@ -124,7 +124,7 @@ additionalPrometheusRulesMap:
               severity: critical
             annotations:
               summary: "High CPU usage on {{ $labels.instance }}"
-              description: "CPU usage is {{ printf \"%.0f\" (mul $value 100) }}% for 5 minutes."
+              description: "CPU usage is {{ $value | humanizePercentage }} for 5 minutes."
           - alert: HighMemoryUsage
             expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.85
             for: 5m
@@ -132,7 +132,7 @@ additionalPrometheusRulesMap:
               severity: critical
             annotations:
               summary: "High memory usage on {{ $labels.instance }}"
-              description: "Memory usage is {{ printf \"%.0f\" (mul $value 100) }}% for 5 minutes."
+              description: "Memory usage is {{ $value | humanizePercentage }} for 5 minutes."
           - alert: MemoryWarning
             expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.75
             for: 10m
@@ -140,7 +140,7 @@ additionalPrometheusRulesMap:
               severity: warning
             annotations:
               summary: "Memory usage rising on {{ $labels.instance }}"
-              description: "Memory usage is {{ printf \"%.0f\" (mul $value 100) }}% for 10 minutes."
+              description: "Memory usage is {{ $value | humanizePercentage }} for 10 minutes."
           - alert: NodeDown
             expr: up{job="node-exporter"} == 0
             for: 2m
@@ -156,7 +156,7 @@ additionalPrometheusRulesMap:
               severity: warning
             annotations:
               summary: "Disk usage high on {{ $labels.instance }}"
-              description: "Filesystem {{ $labels.mountpoint }} is {{ printf \"%.0f\" (mul $value 100) }}% full."
+              description: "Filesystem {{ $labels.mountpoint }} is {{ $value | humanizePercentage }} full."
           - alert: DiskAlmostFull
             expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) > 0.95
             for: 5m
@@ -164,7 +164,7 @@ additionalPrometheusRulesMap:
               severity: critical
             annotations:
               summary: "Disk almost full on {{ $labels.instance }}"
-              description: "Filesystem {{ $labels.mountpoint }} is {{ printf \"%.0f\" (mul $value 100) }}% full."
+              description: "Filesystem {{ $labels.mountpoint }} is {{ $value | humanizePercentage }} full."
       - name: pod-alerts
         rules:
           - alert: CrashLoopBackOff
@@ -198,7 +198,7 @@ additionalPrometheusRulesMap:
               severity: warning
             annotations:
               summary: "Pod {{ $labels.pod }} restarting frequently"
-              description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} has restarted {{ printf \"%.0f\" $value }} times in the last hour."
+              description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} has restarted {{ $value | humanize }} times in the last hour."
       - name: kubernetes-alerts
         rules:
           - alert: KubeNodeNotReady
@@ -224,7 +224,7 @@ additionalPrometheusRulesMap:
               severity: warning
             annotations:
               summary: "PVC {{ $labels.persistentvolumeclaim }} is almost full"
-              description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ printf \"%.0f\" (mul $value 100) }}% full."
+              description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full."
 
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
