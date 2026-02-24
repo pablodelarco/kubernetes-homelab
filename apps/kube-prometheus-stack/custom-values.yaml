@@ -57,7 +57,7 @@ alertmanager:
       - name: "null"
       - name: "telegram"
         telegram_configs:
-          - bot_token: "8604547769:AAEt1HNATZzZFXwfeMTMaU-URDIM863nwNc"
+          - bot_token_file: "/etc/alertmanager/secrets/alertmanager-telegram-secret/bot_token"
             chat_id: 308055748
             parse_mode: "HTML"
             message: |
@@ -100,6 +100,8 @@ alertmanager:
           - severity = info
         equal: [namespace, alertname]
   alertmanagerSpec:
+    secrets:
+      - alertmanager-telegram-secret
     storage:
       volumeClaimTemplate:
         spec:
