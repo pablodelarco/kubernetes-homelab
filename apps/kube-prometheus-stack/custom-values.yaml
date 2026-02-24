@@ -80,6 +80,14 @@ alertmanager:
         - matchers:
             - alertname = "InfoInhibitor"
           receiver: "null"
+        # K3s false positives — scheduler/proxy/controller-manager are bundled into k3s binary
+        - matchers:
+            - alertname =~ "KubeSchedulerDown|KubeProxyDown|KubeControllerManagerDown"
+          receiver: "null"
+        # NodeSystemSaturation is too noisy for an overcommitted 2-node cluster
+        - matchers:
+            - alertname = "NodeSystemSaturation"
+          receiver: "null"
         - matchers:
             - severity = "critical"
           receiver: "telegram"
@@ -136,13 +144,13 @@ additionalPrometheusRulesMap:
               summary: "High memory usage on {{ $labels.instance }}"
               description: "Memory usage is {{ $value | humanizePercentage }} for 5 minutes."
           - alert: MemoryWarning
-            expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.75
-            for: 10m
+            expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.80
+            for: 15m
             labels:
               severity: warning
             annotations:
               summary: "Memory usage rising on {{ $labels.instance }}"
-              description: "Memory usage is {{ $value | humanizePercentage }} for 10 minutes."
+              description: "Memory usage is {{ $value | humanizePercentage }} for 15 minutes."
           - alert: NodeDown
             expr: up{job="node-exporter"} == 0
             for: 2m
