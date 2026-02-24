@@ -78,12 +78,10 @@ spec:
                 fi
 
                 # Update download paths for consolidated NFS mount
-                if grep -q "DefaultSavePath=" "$CONFIG_FILE"; then
-                  sed -i 's|DefaultSavePath=.*|DefaultSavePath=/media/temp/|' "$CONFIG_FILE"
-                fi
-                if grep -q "TempPath=" "$CONFIG_FILE"; then
-                  sed -i 's|TempPath=.*|TempPath=/media/temp/incomplete/|' "$CONFIG_FILE"
-                fi
+                # Patch both [BitTorrent] Session\ keys and [Preferences] Downloads\ keys
+                sed -i 's|DefaultSavePath=.*|DefaultSavePath=/media/temp/|' "$CONFIG_FILE"
+                sed -i 's|Downloads\\SavePath=.*|Downloads\\SavePath=/media/temp/|' "$CONFIG_FILE"
+                sed -i 's|TempPath=.*|TempPath=/media/temp/incomplete/|' "$CONFIG_FILE"
 
                 echo "Config updated for cluster access"
                 grep -E "HostHeader|CSRF|AuthSubnet|ShareLimit|SavePath|TempPath" "$CONFIG_FILE"
