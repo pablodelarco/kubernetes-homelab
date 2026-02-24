@@ -49,8 +49,57 @@ prometheus:
         cpu: 2
 
 alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+      telegram_api_url: "https://api.telegram.org"
+    receivers:
+      - name: "null"
+      - name: "telegram"
+        telegram_configs:
+          - bot_token: "8604547769:AAEt1HNATZzZFXwfeMTMaU-URDIM863nwNc"
+            chat_id: 308055748
+            parse_mode: "HTML"
+            message: |
+              {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }} <b>{{ .Status | toUpper }}</b>
+              {{ range .Alerts }}
+              <b>{{ .Labels.alertname }}</b> ({{ .Labels.severity }})
+              {{ .Annotations.summary }}
+              {{ .Annotations.description }}
+              {{ end }}
+    route:
+      receiver: "telegram"
+      group_by: [alertname, namespace]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      routes:
+        - matchers:
+            - alertname = "Watchdog"
+          receiver: "null"
+        - matchers:
+            - alertname = "InfoInhibitor"
+          receiver: "null"
+        - matchers:
+            - severity = "critical"
+          receiver: "telegram"
+          repeat_interval: 1h
+        - matchers:
+            - severity = "warning"
+          receiver: "telegram"
+          repeat_interval: 4h
+    inhibit_rules:
+      - source_matchers:
+          - severity = critical
+        target_matchers:
+          - severity =~ warning|info
+        equal: [namespace, alertname]
+      - source_matchers:
+          - severity = warning
+        target_matchers:
+          - severity = info
+        equal: [namespace, alertname]
   alertmanagerSpec:
-    # Removed affinity to beelink - Longhorn CSI driver not available on control-plane node
     storage:
       volumeClaimTemplate:
         spec:
@@ -62,6 +111,120 @@ alertmanager:
               storage: 5Gi
 
 # kubeStateMetrics - using default configuration (no affinity)
+
+additionalPrometheusRulesMap:
+  cluster-alerts:
+    groups:
+      - name: node-alerts
+        rules:
+          - alert: HighCPUUsage
+            expr: (1 - avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance)) > 0.8
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High CPU usage on {{ $labels.instance }}"
+              description: "CPU usage is {{ printf \"%.0f\" (mul $value 100) }}% for 5 minutes."
+          - alert: HighMemoryUsage
+            expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.85
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High memory usage on {{ $labels.instance }}"
+              description: "Memory usage is {{ printf \"%.0f\" (mul $value 100) }}% for 5 minutes."
+          - alert: MemoryWarning
+            expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.75
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Memory usage rising on {{ $labels.instance }}"
+              description: "Memory usage is {{ printf \"%.0f\" (mul $value 100) }}% for 10 minutes."
+          - alert: NodeDown
+            expr: up{job="node-exporter"} == 0
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Node {{ $labels.instance }} is down"
+              description: "Node has been unreachable for 2 minutes."
+          - alert: HighDiskUsage
+            expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) > 0.85
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Disk usage high on {{ $labels.instance }}"
+              description: "Filesystem {{ $labels.mountpoint }} is {{ printf \"%.0f\" (mul $value 100) }}% full."
+          - alert: DiskAlmostFull
+            expr: (1 - (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) > 0.95
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Disk almost full on {{ $labels.instance }}"
+              description: "Filesystem {{ $labels.mountpoint }} is {{ printf \"%.0f\" (mul $value 100) }}% full."
+      - name: pod-alerts
+        rules:
+          - alert: CrashLoopBackOff
+            expr: kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"} == 1
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Pod {{ $labels.pod }} is crashing"
+              description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} is in CrashLoopBackOff."
+          - alert: PodOOMKilled
+            expr: kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+            for: 0m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Pod {{ $labels.pod }} was OOM killed"
+              description: "Container {{ $labels.container }} in {{ $labels.namespace }}/{{ $labels.pod }} was killed due to OOM."
+          - alert: PodNotReady
+            expr: kube_pod_status_phase{phase=~"Pending|Unknown"} == 1
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Pod {{ $labels.pod }} not ready"
+              description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} has been {{ $labels.phase }} for 15 minutes."
+          - alert: TooManyRestarts
+            expr: increase(kube_pod_container_status_restarts_total[1h]) > 5
+            for: 0m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Pod {{ $labels.pod }} restarting frequently"
+              description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} has restarted {{ printf \"%.0f\" $value }} times in the last hour."
+      - name: kubernetes-alerts
+        rules:
+          - alert: KubeNodeNotReady
+            expr: kube_node_status_condition{condition="Ready",status="true"} == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Node {{ $labels.node }} is not ready"
+              description: "Kubernetes node {{ $labels.node }} has been NotReady for 5 minutes."
+          - alert: KubeNodeMemoryPressure
+            expr: kube_node_status_condition{condition="MemoryPressure",status="true"} == 1
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Node {{ $labels.node }} has memory pressure"
+              description: "Node {{ $labels.node }} is under memory pressure — pods may be evicted."
+          - alert: PersistentVolumeAlmostFull
+            expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.9
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "PVC {{ $labels.persistentvolumeclaim }} is almost full"
+              description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ printf \"%.0f\" (mul $value 100) }}% full."
 
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
