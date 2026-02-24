@@ -92,6 +92,11 @@ alertmanager:
         - matchers:
             - alertname = "KubeVersionMismatch"
           receiver: "null"
+        # argocd-image-updater metrics require auth; runs weekly, not worth monitoring
+        - matchers:
+            - alertname = "TargetDown"
+            - job = "argocd-image-updater-metrics"
+          receiver: "null"
         - matchers:
             - severity = "critical"
           receiver: "telegram"
