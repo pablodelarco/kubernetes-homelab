@@ -88,6 +88,10 @@ alertmanager:
         - matchers:
             - alertname = "NodeSystemSaturation"
           receiver: "null"
+        # K3s version skew between nodes is expected during rolling upgrades
+        - matchers:
+            - alertname = "KubeVersionMismatch"
+          receiver: "null"
         - matchers:
             - severity = "critical"
           receiver: "telegram"
