@@ -31,10 +31,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: videos
-              mountPath: /movies
-            - name: temp
-              mountPath: /downloads
+            - name: media
+              mountPath: /media
           ports:
             - containerPort: 7878
           startupProbe:
@@ -109,12 +107,9 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: radarr
-        - name: videos
+        - name: media
           persistentVolumeClaim:
             claimName: jellyfin-videos
-        - name: temp
-          persistentVolumeClaim:
-            claimName: qbitt-temp
         - name: gluetun-config
           emptyDir: {}
         - name: iptables-rules

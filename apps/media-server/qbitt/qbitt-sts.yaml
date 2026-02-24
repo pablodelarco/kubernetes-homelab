@@ -60,7 +60,7 @@ spec:
                 fi
                 
                 # Auto-delete torrent files after seeding completes (ratio 1.0 or 24h)
-                # Radarr copies files to /movies/ on import, so /downloads/ copies are redundant
+                # Radarr hardlinks files to /media/movies/ on import, so /media/temp/ copies are redundant
                 if grep -q "Session\\\\ShareLimitAction=" "$CONFIG_FILE"; then
                   sed -i 's|Session\\ShareLimitAction=.*|Session\\ShareLimitAction=RemoveWithContent|' "$CONFIG_FILE"
                 else
@@ -77,14 +77,24 @@ spec:
                   sed -i '/\[BitTorrent\]/a Session\\GlobalMaxSeedingMinutes=1440' "$CONFIG_FILE"
                 fi
 
+                # Update download paths for consolidated NFS mount
+                if grep -q "DefaultSavePath=" "$CONFIG_FILE"; then
+                  sed -i 's|DefaultSavePath=.*|DefaultSavePath=/media/temp/|' "$CONFIG_FILE"
+                fi
+                if grep -q "TempPath=" "$CONFIG_FILE"; then
+                  sed -i 's|TempPath=.*|TempPath=/media/temp/incomplete/|' "$CONFIG_FILE"
+                fi
+
                 echo "Config updated for cluster access"
-                grep -E "HostHeader|CSRF|AuthSubnet|ShareLimit" "$CONFIG_FILE"
+                grep -E "HostHeader|CSRF|AuthSubnet|ShareLimit|SavePath|TempPath" "$CONFIG_FILE"
               else
                 echo "Config file not found, will be created on first run"
               fi
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: media
+              mountPath: /media
       containers:
         - name: qbitt
           image: linuxserver/qbittorrent:5.1.4
@@ -101,8 +111,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: temp
-              mountPath: /downloads
+            - name: media
+              mountPath: /media
           # Note: No probes on qbitt - gluetun owns the network namespace
 
         - name: gluetun
@@ -156,8 +166,8 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /gluetun
-            - name: temp
-              mountPath: /downloads
+            - name: media
+              mountPath: /media
           # Probes on gluetun since it owns port 8080
           livenessProbe:
             httpGet:
@@ -179,6 +189,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: qbitt
-        - name: temp
+        - name: media
           persistentVolumeClaim:
-            claimName: qbitt-temp
+            claimName: jellyfin-videos
