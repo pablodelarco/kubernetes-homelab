@@ -59,7 +59,7 @@ spec:
                   sed -i '/\[Preferences\]/a WebUI\\AuthSubnetWhitelistEnabled=true' "$CONFIG_FILE"
                 fi
                 
-                # Pause torrents after seeding completes (ratio 1.0 or 24h)
+                # Pause torrents after seeding completes (ratio 1.0 or 2h)
                 # Radarr handles removal via Completed Download Handling after import
                 if grep -q "Session\\\\ShareLimitAction=" "$CONFIG_FILE"; then
                   sed -i 's|Session\\ShareLimitAction=.*|Session\\ShareLimitAction=Pause|' "$CONFIG_FILE"
@@ -72,9 +72,9 @@ spec:
                   sed -i '/\[BitTorrent\]/a Session\\GlobalMaxRatio=1' "$CONFIG_FILE"
                 fi
                 if grep -q "Session\\\\GlobalMaxSeedingMinutes=" "$CONFIG_FILE"; then
-                  sed -i 's|Session\\GlobalMaxSeedingMinutes=.*|Session\\GlobalMaxSeedingMinutes=1440|' "$CONFIG_FILE"
+                  sed -i 's|Session\\GlobalMaxSeedingMinutes=.*|Session\\GlobalMaxSeedingMinutes=120|' "$CONFIG_FILE"
                 else
-                  sed -i '/\[BitTorrent\]/a Session\\GlobalMaxSeedingMinutes=1440' "$CONFIG_FILE"
+                  sed -i '/\[BitTorrent\]/a Session\\GlobalMaxSeedingMinutes=120' "$CONFIG_FILE"
                 fi
 
                 # Update download paths for consolidated NFS mount
