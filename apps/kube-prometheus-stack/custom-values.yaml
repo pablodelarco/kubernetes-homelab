@@ -27,8 +27,6 @@ grafana:
 prometheus:
   prometheusSpec:
     remoteWriteDashboards: false
-    # Removed affinity to beelink because Longhorn CSI driver is not available on control-plane node
-    # Prometheus will run on worker node where Longhorn volumes can be attached
     serverSideApply: true
     retention: 12h
     storageSpec:
@@ -42,11 +40,22 @@ prometheus:
               storage: 5Gi
     resources:
       requests:
-        memory: 3Gi
+        memory: 2Gi
         cpu: 500m
       limits:
-        memory: 6Gi
+        memory: 4Gi
         cpu: 2
+    # Schedule on worker node to offload beelink (control-plane is memory-constrained at 16GB)
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - worker
 
 alertmanager:
   config:
@@ -128,6 +137,17 @@ alertmanager:
           resources:
             requests:
               storage: 5Gi
+    # Schedule on worker to reduce beelink memory pressure
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - worker
 
 # kubeStateMetrics - using default configuration (no affinity)
 
