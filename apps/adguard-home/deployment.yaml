@@ -30,6 +30,10 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       # Pin to beelink node
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+          operator: Exists
       nodeSelector:
         kubernetes.io/hostname: beelink
       initContainers:
