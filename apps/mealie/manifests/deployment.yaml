@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mealie
+  namespace: mealie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mealie
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mealie
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: mealie=ghcr.io/mealie-recipes/mealie
+        argocd-image-updater.argoproj.io/mealie.update-strategy: latest
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
+      containers:
+        - name: mealie
+          image: ghcr.io/mealie-recipes/mealie:latest
+          ports:
+            - containerPort: 9000
+          env:
+            - name: ALLOW_SIGNUP
+              value: "false"
+            - name: BASE_URL
+              value: "http://mealie.homelab"
+            - name: TZ
+              value: "Europe/Madrid"
+            - name: MAX_WORKERS
+              value: "1"
+            - name: WEB_CONCURRENCY
+              value: "1"
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mealie-pvc
