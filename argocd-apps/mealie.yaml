@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mealie
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: mealie=ghcr.io/mealie-recipes/mealie
+    argocd-image-updater.argoproj.io/mealie.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/mealie/manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: mealie
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

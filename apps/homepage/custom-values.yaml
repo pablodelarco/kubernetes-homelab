@@ -82,6 +82,11 @@ config:
 
     # Column 3: Monitoring & Infra (no header)
     - Monitoring:
+        - Mealie:
+            icon: mealie.png
+            href: http://mealie.homelab/
+            description: Recipe manager & meal planning
+            siteMonitor: http://mealie.mealie.svc.cluster.local:9000
         - Grafana:
             icon: grafana.png
             href: http://grafana.homelab/
