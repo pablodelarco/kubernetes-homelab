@@ -100,7 +100,7 @@ webui:
 resources:
   requests:
     memory: 512Mi
-    cpu: 256m
+    cpu: 50m
   limits:
     memory: 1Gi
     cpu: 500m
