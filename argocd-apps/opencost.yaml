@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: 'https://opencost.github.io/opencost-helm-chart'
       chart: opencost
-      targetRevision: 2.5.9
+      targetRevision: 2.5.11
       helm:
         valueFiles:
           - $values/apps/opencost/custom-values.yaml
