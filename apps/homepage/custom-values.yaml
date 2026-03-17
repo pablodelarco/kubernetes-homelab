@@ -137,41 +137,33 @@ config:
 
     # Horizontal row: Beelink (Control Plane)
     - Beelink (Control Plane):
-        - CPU:
+        - CPU Monitor:
             widget:
-              type: prometheus
-              url: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-              query: 100-(avg by(instance)(rate(node_cpu_seconds_total{mode="idle",instance="10.10.1.37:9100"}[5m]))*100)
-              format:
-                type: percent
-                decimals: 1
-        - Memoria:
+              type: glances
+              url: http://10.10.1.37:61208
+              version: 4
+              metric: cpu
+        - Memory Status:
             widget:
-              type: prometheus
-              url: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-              query: (node_memory_MemTotal_bytes{instance="10.10.1.37:9100"}-node_memory_MemAvailable_bytes{instance="10.10.1.37:9100"})/node_memory_MemTotal_bytes{instance="10.10.1.37:9100"}*100
-              format:
-                type: percent
-                decimals: 1
+              type: glances
+              url: http://10.10.1.37:61208
+              version: 4
+              metric: memory
 
     # Horizontal row: Worker Node
     - Worker Node:
-        - CPU:
+        - CPU Monitor:
             widget:
-              type: prometheus
-              url: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-              query: 100-(avg by(instance)(rate(node_cpu_seconds_total{mode="idle",instance="10.10.1.39:9100"}[5m]))*100)
-              format:
-                type: percent
-                decimals: 1
-        - Memoria:
+              type: glances
+              url: http://10.10.1.39:61208
+              version: 4
+              metric: cpu
+        - Memory Status:
             widget:
-              type: prometheus
-              url: http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-              query: (node_memory_MemTotal_bytes{instance="10.10.1.39:9100"}-node_memory_MemAvailable_bytes{instance="10.10.1.39:9100"})/node_memory_MemTotal_bytes{instance="10.10.1.39:9100"}*100
-              format:
-                type: percent
-                decimals: 1
+              type: glances
+              url: http://10.10.1.39:61208
+              version: 4
+              metric: memory
 
   widgets:
     - logo:
