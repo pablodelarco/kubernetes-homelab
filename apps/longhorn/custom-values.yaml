@@ -34,3 +34,9 @@ longhornUI:
       operator: Exists
       effect: NoSchedule
 
+# CSI sidecar replicas — match node count (2 nodes = 2 replicas max)
+csi:
+  attacherReplicaCount: 2
+  provisionerReplicaCount: 2
+  resizerReplicaCount: 2
+  snapshotterReplicaCount: 2
