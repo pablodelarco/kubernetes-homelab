@@ -8,7 +8,7 @@ spec:
   sources:
     - repoURL: 'https://datahub-local.github.io/garage-helm'
       chart: garage
-      targetRevision: 0.2.1
+      targetRevision: 0.3.0
       helm:
         valueFiles:
           - $values/apps/garage/custom-values.yaml
