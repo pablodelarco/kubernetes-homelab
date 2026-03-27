@@ -1,3 +1,18 @@
+
+kubeApiServer:
+  serviceMonitor:
+    metricRelabelings:
+      - action: drop
+        sourceLabels: ["__name__"]
+        regex: "(apiserver|etcd)_.+_bucket"
+
+kubeControllerManager:
+  serviceMonitor:
+    metricRelabelings:
+      - action: drop
+        sourceLabels: ["__name__"]
+        regex: ".+_bucket"
+
 crds:
   create: true
 
