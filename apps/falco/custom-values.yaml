@@ -1,0 +1,57 @@
+# Falco custom values - homelab safe deployment
+# eBPF driver mode - no kernel module needed
+driver:
+  kind: modern_ebpf
+
+# Resource limits to prevent system impact
+resources:
+  requests:
+    cpu: 50m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+# Falcosidekick for webhook forwarding
+falcosidekick:
+  enabled: true
+  config:
+    webhook:
+      address: "http://raspberrypi5:9998/webhook/falco"
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+# Reduce noise - only critical and warning rules
+falco:
+  rules_files:
+    - /etc/falco/falco_rules.yaml
+    - /etc/falco/rules.d
+  json_output: true
+  json_include_output_property: true
+  log_level: warning
+  priority: warning
+  buffered_outputs: true
+  syscall_event_drops:
+    actions:
+      - log
+    rate: 0.03333
+    max_burst: 1
+
+# Tolerate control-plane taint
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+# Disable unnecessary components for homelab
+falcoctl:
+  artifact:
+    install:
+      enabled: true
+    follow:
+      enabled: true

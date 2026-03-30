@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-problem-detector
+  namespace: node-problem-detector
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: node-problem-detector
+      rules:
+        - alert: NodeKernelDeadlock
+          expr: problem_gauge{type="KernelDeadlock"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Kernel deadlock detected on {{ $labels.node }}"
+            description: "Node {{ $labels.node }} has a kernel deadlock condition."
+        - alert: NodeFilesystemCorruption
+          expr: problem_gauge{type="FilesystemCorruption"} == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Filesystem corruption detected on {{ $labels.node }}"
+            description: "Node {{ $labels.node }} has filesystem corruption."
+        - alert: NodeOOMKillsHigh
+          expr: rate(problem_counter{reason="OOMKilling"}[5m]) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "OOM kills detected on {{ $labels.node }}"
+            description: "Node {{ $labels.node }} is experiencing OOM kills."
