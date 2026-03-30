@@ -91,8 +91,13 @@ alertmanager:
               {{ .Annotations.summary }}
               {{ .Annotations.description }}
               {{ end }}
+      - name: "claw-webhook"
+        webhook_configs:
+          - url: "http://raspberrypi5:9998/webhook/alertmanager"
+            send_resolved: true
+            max_alerts: 10
     route:
-      receiver: "telegram"
+      receiver: "claw-webhook"
       group_by: [alertname, namespace]
       group_wait: 30s
       group_interval: 5m
@@ -123,11 +128,11 @@ alertmanager:
           receiver: "null"
         - matchers:
             - severity = "critical"
-          receiver: "telegram"
+          receiver: "claw-webhook"
           repeat_interval: 1h
         - matchers:
             - severity = "warning"
-          receiver: "telegram"
+          receiver: "claw-webhook"
           repeat_interval: 4h
     inhibit_rules:
       - source_matchers:
