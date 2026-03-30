@@ -93,7 +93,7 @@ alertmanager:
               {{ end }}
       - name: "claw-webhook"
         webhook_configs:
-          - url: "http://raspberrypi5:9998/webhook/alertmanager"
+          - url: "http://raspberrypi5:9998/webhook"
             send_resolved: true
             max_alerts: 10
     route:
