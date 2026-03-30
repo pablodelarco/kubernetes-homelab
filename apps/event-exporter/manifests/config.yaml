@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: event-exporter-config
+  namespace: event-exporter
+data:
+  config.yaml: |
+    logLevel: warn
+    logFormat: json
+    route:
+      routes:
+        - match:
+            - receiver: claw-webhook
+          drop:
+            - type: "Normal"
+    receivers:
+      - name: claw-webhook
+        webhook:
+          endpoint: "http://raspberrypi5:9998/webhook/k8s-events"
+          headers:
+            Content-Type: application/json
