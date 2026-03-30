@@ -80,17 +80,17 @@ spec:
               path: /health
               port: 8096
             initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 5
-            failureThreshold: 3
+            periodSeconds: 60
+            timeoutSeconds: 15
+            failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /health
               port: 8096
             initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            failureThreshold: 3
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
       volumes:
         - name: config
           persistentVolumeClaim:
