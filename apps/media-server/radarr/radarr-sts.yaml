@@ -31,6 +31,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: config
+              mountPath: /custom-cont-init.d
+              subPath: custom-cont-init.d
             - name: media
               mountPath: /media
           ports:
