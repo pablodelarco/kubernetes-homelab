@@ -22,10 +22,9 @@ data:
       <EnableRemoteAccess>true</EnableRemoteAccess>
       <LocalNetworkSubnets />
       <LocalNetworkAddresses />
-      <!-- Trust Tailscale Funnel proxy - pod network range -->
+      <!-- Trust pod network range as proxy (Tailscale Funnel terminates here) -->
       <KnownProxies>
         <string>10.42.0.0/16</string>
-        <string>100.64.0.0/10</string>
       </KnownProxies>
       <IgnoreVirtualInterfaces>true</IgnoreVirtualInterfaces>
       <VirtualInterfaceNames>
