@@ -6,7 +6,9 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: radarr=linuxserver/radarr, gluetun=qmcgaw/gluetun
     argocd-image-updater.argoproj.io/radarr.update-strategy: semver
+    argocd-image-updater.argoproj.io/radarr.allow-tags: regexp:^\d+\.\d+\.\d+$
     argocd-image-updater.argoproj.io/gluetun.update-strategy: semver
+    argocd-image-updater.argoproj.io/gluetun.allow-tags: regexp:^v\d+\.\d+\.\d+$
 spec:
   ignoreDifferences:
   - group: ""

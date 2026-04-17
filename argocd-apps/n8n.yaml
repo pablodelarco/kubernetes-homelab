@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: n8n=n8nio/n8n
     argocd-image-updater.argoproj.io/n8n.update-strategy: semver
+    argocd-image-updater.argoproj.io/n8n.allow-tags: regexp:^\d+\.\d+\.\d+$
     argocd-image-updater.argoproj.io/n8n.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/write-back-method: git
 spec:

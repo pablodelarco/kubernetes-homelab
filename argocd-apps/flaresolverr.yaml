@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: flaresolverr=ghcr.io/flaresolverr/flaresolverr
     argocd-image-updater.argoproj.io/flaresolverr.update-strategy: semver
+    argocd-image-updater.argoproj.io/flaresolverr.allow-tags: regexp:^v\d+\.\d+\.\d+$
 spec:
   project: default
   source:

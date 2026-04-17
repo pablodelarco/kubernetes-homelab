@@ -5,7 +5,8 @@ metadata:
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/image-list: mealie=ghcr.io/mealie-recipes/mealie
-    argocd-image-updater.argoproj.io/mealie.update-strategy: latest
+    argocd-image-updater.argoproj.io/mealie.update-strategy: semver
+    argocd-image-updater.argoproj.io/mealie.allow-tags: regexp:^v\d+\.\d+\.\d+$
     argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
