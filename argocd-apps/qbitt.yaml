@@ -6,9 +6,9 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: qbitt=linuxserver/qbittorrent, gluetun=qmcgaw/gluetun
     argocd-image-updater.argoproj.io/qbitt.update-strategy: semver
-    argocd-image-updater.argoproj.io/qbitt.allow-tags: regexp:^\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/qbitt.allow-tags: regexp:^5\.\d+\.\d+$
     argocd-image-updater.argoproj.io/gluetun.update-strategy: semver
-    argocd-image-updater.argoproj.io/gluetun.allow-tags: regexp:^v\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/gluetun.allow-tags: regexp:^v3\.\d+\.\d+$
 spec:
   project: default
   source:

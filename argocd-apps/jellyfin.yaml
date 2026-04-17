@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: jellyfin=jellyfin/jellyfin
     argocd-image-updater.argoproj.io/jellyfin.update-strategy: semver
-    argocd-image-updater.argoproj.io/jellyfin.allow-tags: regexp:^\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/jellyfin.allow-tags: regexp:^10\.\d+\.\d+$
 spec:
   project: default
   source:

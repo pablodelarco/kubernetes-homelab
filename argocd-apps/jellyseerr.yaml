@@ -6,7 +6,8 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: jellyseerr=fallenbagel/jellyseerr
     argocd-image-updater.argoproj.io/jellyseerr.update-strategy: semver
-    argocd-image-updater.argoproj.io/jellyseerr.allow-tags: regexp:^\d+\.\d+\.\d+$
+    # Pinned to 2.x — upstream 3.x is a major rewrite with breaking changes.
+    argocd-image-updater.argoproj.io/jellyseerr.allow-tags: regexp:^2\.\d+\.\d+$
 spec:
   project: default
   source:

@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: jackett=linuxserver/jackett
     argocd-image-updater.argoproj.io/jackett.update-strategy: semver
-    argocd-image-updater.argoproj.io/jackett.allow-tags: regexp:^\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/jackett.allow-tags: regexp:^0\.24\.\d+$
 spec:
   ignoreDifferences:
     - group: ""

@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: bazarr=linuxserver/bazarr
     argocd-image-updater.argoproj.io/bazarr.update-strategy: semver
-    argocd-image-updater.argoproj.io/bazarr.allow-tags: regexp:^\d+\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/bazarr.allow-tags: regexp:^1\.\d+\.\d+$
 spec:
   project: default
   source:
