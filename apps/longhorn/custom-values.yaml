@@ -4,10 +4,13 @@ persistence:
   # deleted/recreated (e.g. ArgoCD force-sync). Orphaned PVs need
   # manual cleanup, which is an acceptable tradeoff for safety.
   reclaimPolicy: Retain
-  # Automatically enable default backup group for all new volumes
+  # Automatically enable default backup group for all new volumes.
+  # Group name MUST match the RecurringJob.spec.groups value. The actual
+  # RecurringJob 'default-backup' targets group 'default', not 'default-backup'.
+  # Mismatch = volumes get wrong label = not picked up by backup schedule.
   recurringJobSelector:
     enable: true
-    jobList: '[{"name":"default-backup","isGroup":true}]'
+    jobList: '[{"name":"default","isGroup":true}]'
 
 defaultSettings:
   backupTarget: "s3://k8s-backups@us-east-1/"
