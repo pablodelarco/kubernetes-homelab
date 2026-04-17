@@ -93,27 +93,11 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /media
-      containers:
-        - name: qbitt
-          image: linuxserver/qbittorrent:5.1.4
-          resources:
-            limits:
-              memory: "2Gi"
-            requests:
-              memory: "512Mi"
-          env:
-            - name: PUID
-              value: "1026"
-            - name: PGID
-              value: "100"
-          volumeMounts:
-            - name: config
-              mountPath: /config
-            - name: media
-              mountPath: /media
-          # Note: No probes on qbitt - gluetun owns the network namespace
-
+        # Native sidecar (K8s 1.29+): restartPolicy: Always keeps gluetun alive
+        # alongside qbitt AND blocks qbitt from starting until startupProbe passes.
+        # Order: fix-qbitt-config (traditional) → gluetun (sidecar) → qbitt (main).
         - name: gluetun
+          restartPolicy: Always
           image: qmcgaw/gluetun:v3.41.0
           env:
             - name: VPN_SERVICE_PROVIDER
@@ -146,6 +130,8 @@ spec:
               value: ":8888"
             - name: SHADOWSOCKS
               value: "off"
+            - name: HEALTH_SERVER_ADDRESS
+              value: "0.0.0.0:9999"
           ports:
             - containerPort: 8080
               name: qbitt-web
@@ -166,23 +152,46 @@ spec:
               mountPath: /gluetun
             - name: media
               mountPath: /media
-          # Probes on gluetun since it owns port 8080
+          # startupProbe on gluetun's health server — blocks qbitt start until VPN up.
+          startupProbe:
+            httpGet:
+              path: /
+              port: 9999
+            periodSeconds: 3
+            failureThreshold: 60 # up to 3m for VPN handshake
+          # liveness keeps the VPN tunnel honest; readiness still on :8080 (qbitt WebUI).
           livenessProbe:
             httpGet:
               path: /
-              port: 8080
-            initialDelaySeconds: 120
+              port: 9999
             periodSeconds: 30
-            timeoutSeconds: 30
-            failureThreshold: 5
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /
               port: 8080
-            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 30
             failureThreshold: 5
+      containers:
+        - name: qbitt
+          image: linuxserver/qbittorrent:5.1.4
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "512Mi"
+          env:
+            - name: PUID
+              value: "1026"
+            - name: PGID
+              value: "100"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+          # Note: No probes on qbitt - gluetun owns the network namespace
       volumes:
         - name: config
           persistentVolumeClaim:
