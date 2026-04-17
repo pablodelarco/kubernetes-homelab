@@ -19,7 +19,10 @@ config:
     - name: Docker Hub
       api_url: https://registry-1.docker.io
       ping: yes
-      credentials: pullsecret:argocd/dockerhub-secret
+      # Anonymous access — rate-limited (~100 pulls/6h per IP) but
+      # sufficient for checking tags on ~10 apps daily. Remove this
+      # comment and add `credentials: pullsecret:argocd/dockerhub-secret`
+      # if rate limits start biting.
       default: yes
     
     - name: GitHub Container Registry
