@@ -3,11 +3,9 @@ kind: Application
 metadata:
   name: mealie
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: mealie=ghcr.io/mealie-recipes/mealie
-    argocd-image-updater.argoproj.io/mealie.update-strategy: semver
-    argocd-image-updater.argoproj.io/mealie.allow-tags: regexp:^v\d+\.\d+\.\d+$
-    argocd-image-updater.argoproj.io/write-back-method: git
+  # Auto-update disabled: pod runs with :latest tag which re-pulls on
+  # restart — no need for Image Updater to rewrite spec. Bump manually
+  # by editing the image tag if a specific version is desired.
 spec:
   project: default
   source:

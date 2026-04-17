@@ -3,12 +3,10 @@ kind: Application
 metadata:
   name: n8n
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: n8n=n8nio/n8n
-    argocd-image-updater.argoproj.io/n8n.update-strategy: semver
-    argocd-image-updater.argoproj.io/n8n.allow-tags: regexp:^\d+\.\d+\.\d+$
-    argocd-image-updater.argoproj.io/n8n.helm.image-tag: image.tag
-    argocd-image-updater.argoproj.io/write-back-method: git
+  # Auto-update disabled: multi-source Application (Helm chart from
+  # 8gears.container-registry.com + kustomize-homelab) confuses Image
+  # Updater's git-fetch logic. Bump manually by editing targetRevision
+  # on the helm source below.
 spec:
   project: default
   syncPolicy:
