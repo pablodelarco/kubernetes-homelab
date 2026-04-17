@@ -9,6 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
+  volumeName: pv-homepage
   resources:
     requests:
       storage: 5Gi

@@ -7,6 +7,9 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
+  # Pin to the actively-used PV to prevent ArgoCD from recreating
+  # it on force-sync (which would orphan the current data).
+  volumeName: pvc-jellyfin-config-latest
   resources:
     requests:
       storage: 5Gi

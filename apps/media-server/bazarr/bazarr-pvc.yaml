@@ -7,6 +7,8 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: longhorn
+  # Pin to the manually-restored PV from 2025-11-24 DR event.
+  volumeName: pvc-bazarr-restored
   resources:
     requests:
       storage: 2Gi
