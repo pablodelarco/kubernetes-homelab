@@ -8,7 +8,10 @@ spec:
   sources:
     - repoURL: 'https://argoproj.github.io/argo-helm'
       chart: argocd-image-updater
-      targetRevision: 1.1.1
+      # Pinned to 0.14.0 (app v0.17.0) — last release with legacy
+      # annotations support on ArgoCD Applications. Chart 1.x requires
+      # ImageUpdater CustomResources and silently ignores annotations.
+      targetRevision: 0.14.0
       helm:
         valueFiles:
           - $values/apps/argocd-image-updater/custom-values.yaml

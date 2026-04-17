@@ -34,8 +34,8 @@ config:
 
 # Extra arguments for the image updater
 extraArgs:
-  # Check for updates every 1 week (168 hours)
-  - --interval=168h
+  # Check for updates every 24 hours
+  - --interval=24h
 
 # Metrics
 metrics:
