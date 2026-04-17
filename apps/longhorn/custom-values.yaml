@@ -1,5 +1,9 @@
 persistence:
   defaultClass: true
+  # Retain by default — prevents data loss when PVCs get
+  # deleted/recreated (e.g. ArgoCD force-sync). Orphaned PVs need
+  # manual cleanup, which is an acceptable tradeoff for safety.
+  reclaimPolicy: Retain
   # Automatically enable default backup group for all new volumes
   recurringJobSelector:
     enable: true
