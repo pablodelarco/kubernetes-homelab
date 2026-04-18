@@ -10,7 +10,7 @@ data:
     # Ref: https://recyclarr.dev/wiki/yaml/templates/
 
     sonarr:
-      main:
+      sonarr-main:
         base_url: http://sonarr.media.svc.cluster.local
         api_key: !env_var SONARR_API_KEY
         delete_old_custom_formats: true
@@ -24,7 +24,7 @@ data:
           - template: sonarr-v4-custom-formats-web-1080p
 
     radarr:
-      main:
+      radarr-main:
         base_url: http://radarr.media.svc.cluster.local
         api_key: !env_var RADARR_API_KEY
         delete_old_custom_formats: true
