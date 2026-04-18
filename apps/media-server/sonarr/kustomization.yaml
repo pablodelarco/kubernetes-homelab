@@ -1,0 +1,7 @@
+resources:
+  - sonarr-pvc.yaml
+  - sonarr-sts.yaml
+  - sonarr-svc.yaml
+  - sonarr-iptables-cm.yaml
+
+namespace: media

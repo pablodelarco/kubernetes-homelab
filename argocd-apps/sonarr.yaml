@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sonarr
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: sonarr=linuxserver/sonarr, gluetun=qmcgaw/gluetun
+    argocd-image-updater.argoproj.io/sonarr.update-strategy: semver
+    argocd-image-updater.argoproj.io/sonarr.allow-tags: regexp:^4\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/gluetun.update-strategy: semver
+    argocd-image-updater.argoproj.io/gluetun.allow-tags: regexp:^v3\.\d+\.\d+$
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/media-server/sonarr
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
