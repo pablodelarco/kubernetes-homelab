@@ -33,12 +33,11 @@ spec:
               value: "65534"
             - name: TZ
               value: "Europe/Madrid"
-            - name: HTTP_PROXY
-              value: "http://qbitt.media.svc.cluster.local:8888"
-            - name: HTTPS_PROXY
-              value: "http://qbitt.media.svc.cluster.local:8888"
-            - name: NO_PROXY
-              value: "localhost,127.0.0.1,.cluster.local,radarr,sonarr,flaresolverr"
+            # No HTTP_PROXY: Prowlarr only talks to Byparr (in-cluster) for
+            # CF-protected indexers and direct to internet otherwise. The
+            # qbitt VPN proxy was conflicting with the Byparr indexer-proxy
+            # for 1337x/EZTV — cookies tied to qbitt exit IP couldn't be
+            # reused on Prowlarr's follow-up requests.
           volumeMounts:
             - name: config
               mountPath: /config
