@@ -5,10 +5,10 @@ config:
             - abbr: GH
               icon: si-github
               href: https://github.com/pablodelarco/kubernetes-homelab
-        - Jackett:
-            - abbr: JK
-              icon: jackett.png
-              href: http://jackett.homelab/
+        - Prowlarr:
+            - abbr: PR
+              icon: prowlarr.png
+              href: http://prowlarr.homelab/
         - Tailscale:
             - abbr: TS
               icon: tailscale.png
@@ -59,6 +59,16 @@ config:
             href: http://radarr.homelab/
             description: Movies automation
             siteMonitor: http://radarr.media.svc.cluster.local
+        - Sonarr:
+            icon: sonarr.png
+            href: http://sonarr.homelab/
+            description: TV shows automation
+            siteMonitor: http://sonarr.media.svc.cluster.local
+        - Prowlarr:
+            icon: prowlarr.png
+            href: http://prowlarr.homelab/
+            description: Indexer manager
+            siteMonitor: http://prowlarr.media.svc.cluster.local
         - Jellyfin:
             icon: jellyfin.png
             href: http://jellyfin.homelab/
