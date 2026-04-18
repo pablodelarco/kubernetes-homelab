@@ -1,0 +1,6 @@
+resources:
+  - prowlarr-pvc.yaml
+  - prowlarr-deploy.yaml
+  - prowlarr-svc.yaml
+
+namespace: media
