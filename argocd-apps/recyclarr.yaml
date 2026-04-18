@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: recyclarr=ghcr.io/recyclarr/recyclarr
     argocd-image-updater.argoproj.io/recyclarr.update-strategy: semver
-    argocd-image-updater.argoproj.io/recyclarr.allow-tags: regexp:^6\.\d+\.\d+$
+    argocd-image-updater.argoproj.io/recyclarr.allow-tags: regexp:^7\.\d+\.\d+$
 spec:
   project: default
   source:
