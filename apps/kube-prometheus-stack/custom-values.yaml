@@ -27,6 +27,14 @@ grafana:
     accessModes:
       - ReadWriteOnce
     size: 8Gi
+  plugins:
+    - victoriametrics-logs-datasource
+  additionalDataSources:
+    - name: VictoriaLogs
+      type: victoriametrics-logs-datasource
+      access: proxy
+      url: http://victoria-logs-victoria-logs-single-server.victoria-logs.svc.cluster.local:9428
+      isDefault: false
   # Prefer scheduling on worker node to balance cluster load
   affinity:
     nodeAffinity:
