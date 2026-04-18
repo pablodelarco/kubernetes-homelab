@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: recyclarr
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: recyclarr=ghcr.io/recyclarr/recyclarr
+    argocd-image-updater.argoproj.io/recyclarr.update-strategy: semver
+    argocd-image-updater.argoproj.io/recyclarr.allow-tags: regexp:^6\.\d+\.\d+$
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/media-server/recyclarr
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

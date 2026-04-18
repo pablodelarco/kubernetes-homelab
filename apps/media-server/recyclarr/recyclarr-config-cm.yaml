@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recyclarr-config
+  namespace: media
+data:
+  recyclarr.yml: |
+    # Recyclarr config — TRaSH Guides sync for Sonarr and Radarr
+    # Pulled daily by CronJob; uses standard TRaSH templates.
+    # Ref: https://recyclarr.dev/wiki/yaml/templates/
+
+    sonarr:
+      main:
+        base_url: http://sonarr.media.svc.cluster.local
+        api_key: !env_var SONARR_API_KEY
+        delete_old_custom_formats: true
+        replace_existing_custom_formats: true
+
+        include:
+          # Quality definitions for series
+          - template: sonarr-quality-definition-series
+          # WEB-DL 1080p quality profile (good default for streaming-like quality)
+          - template: sonarr-v4-quality-profile-web-1080p
+          - template: sonarr-v4-custom-formats-web-1080p
+
+    radarr:
+      main:
+        base_url: http://radarr.media.svc.cluster.local
+        api_key: !env_var RADARR_API_KEY
+        delete_old_custom_formats: true
+        replace_existing_custom_formats: true
+
+        include:
+          # Quality definitions for movies
+          - template: radarr-quality-definition-movie
+          # HD Bluray + WEB profile — most common for movie collections
+          - template: radarr-quality-profile-hd-bluray-web
+          - template: radarr-custom-formats-hd-bluray-web

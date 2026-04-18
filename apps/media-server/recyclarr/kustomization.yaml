@@ -1,0 +1,6 @@
+resources:
+  - recyclarr-config-cm.yaml
+  - recyclarr-cronjob.yaml
+  - recyclarr-secrets-sealed.yaml
+
+namespace: media
