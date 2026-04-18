@@ -40,12 +40,22 @@ server:
 vector:
   enabled: true
   role: Agent
+  # Tolerate master node taint so logs from beelink (control-plane) are also collected
+  tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
   resources:
     requests:
-      memory: 128Mi
+      memory: 256Mi
       cpu: 50m
     limits:
-      memory: 512Mi
+      # OOMKilled at 512Mi — vector buffers per-pod log batches before flushing.
+      # 1Gi gives headroom for clusters with many pods.
+      memory: 1Gi
       cpu: 500m
   customConfig:
     data_dir: /vector-data-dir
