@@ -1,0 +1,5 @@
+resources:
+  - byparr-deploy.yaml
+  - byparr-svc.yaml
+
+namespace: media
