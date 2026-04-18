@@ -1,7 +1,0 @@
-resources:
-  - jackett-pvc.yaml
-  - jackett-deploy.yaml
-  - jackett-svc.yaml
-
-namespace: media
-
