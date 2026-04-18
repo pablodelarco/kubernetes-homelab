@@ -36,8 +36,14 @@ spec:
                       name: recyclarr-api-keys
                       key: RADARR_API_KEY
               volumeMounts:
-                - name: config
+                # /config must be writable — recyclarr writes settings.yml,
+                # repositories cache, and logs. ConfigMap is mounted via
+                # subPath so only recyclarr.yml is read-only.
+                - name: data
                   mountPath: /config
+                - name: config-file
+                  mountPath: /config/recyclarr.yml
+                  subPath: recyclarr.yml
               resources:
                 requests:
                   memory: "128Mi"
@@ -46,6 +52,8 @@ spec:
                   memory: "512Mi"
                   cpu: "1000m"
           volumes:
-            - name: config
+            - name: data
+              emptyDir: {}
+            - name: config-file
               configMap:
                 name: recyclarr-config
