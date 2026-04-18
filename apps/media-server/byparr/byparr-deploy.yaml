@@ -25,7 +25,8 @@ spec:
                       - worker
       containers:
         - name: byparr
-          image: ghcr.io/thephaseless/byparr:v2.1.0
+          image: ghcr.io/thephaseless/byparr:latest
+          imagePullPolicy: Always
           env:
             - name: TZ
               value: "Europe/Madrid"
