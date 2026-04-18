@@ -1,0 +1,88 @@
+# VictoriaLogs single-node — centralized log aggregation
+# Replaces grepping `kubectl logs` across pods. ~200MB RAM target.
+
+server:
+  retentionPeriod: 14   # days — adjust as disk allows
+  retentionDiskSpaceUsage: ""   # let VictoriaLogs manage by time
+
+  persistentVolume:
+    enabled: true
+    storageClassName: longhorn
+    size: 20Gi
+    accessModes:
+      - ReadWriteOnce
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 1000m
+
+  service:
+    type: ClusterIP
+    servicePort: 9428
+
+  # Prefer worker node to balance against monitoring stack on master
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - worker
+
+# Vector subchart — DaemonSet that ships pod logs to VictoriaLogs
+vector:
+  enabled: true
+  role: Agent
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 50m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+  customConfig:
+    data_dir: /vector-data-dir
+    api:
+      enabled: true
+      address: 127.0.0.1:8686
+      playground: false
+    sources:
+      k8s:
+        type: kubernetes_logs
+        max_read_bytes: 10485760
+    transforms:
+      parser:
+        type: remap
+        inputs: [k8s]
+        source: |
+          .log = string!(.message)
+          del(.message)
+          .pod = .kubernetes.pod_name
+          .namespace = .kubernetes.pod_namespace
+          .container = .kubernetes.container_name
+          .node = .kubernetes.pod_node_name
+    sinks:
+      vlogs:
+        type: elasticsearch
+        inputs: [parser]
+        endpoints:
+          - http://victoria-logs-server:9428/insert/elasticsearch/
+        mode: bulk
+        api_version: v8
+        compression: gzip
+        healthcheck:
+          enabled: false
+        request:
+          headers:
+            VL-Time-Field: timestamp
+            VL-Stream-Fields: stream,kubernetes.pod_name,kubernetes.container_name,kubernetes.pod_namespace
+            VL-Msg-Field: log
+            AccountID: "0"
+            ProjectID: "0"
