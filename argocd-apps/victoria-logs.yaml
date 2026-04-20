@@ -7,18 +7,33 @@ spec:
   project: default
   sources:
     # renovate: registryUrl=https://victoriametrics.github.io/helm-charts/
-    - repoURL: 'https://victoriametrics.github.io/helm-charts/'
+    - repoURL: "https://victoriametrics.github.io/helm-charts/"
       chart: victoria-logs-single
       targetRevision: 0.12.0
       helm:
         valueFiles:
           - $values/apps/victoria-logs/custom-values.yaml
-    - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    - repoURL: "https://github.com/pablodelarco/kubernetes-homelab"
       targetRevision: main
       ref: values
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
     namespace: victoria-logs
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      jqPathExpressions:
+        - .spec.persistentVolumeClaimRetentionPolicy
+        - .spec.revisionHistoryLimit
+        - .spec.template.spec.containers[].ports[].protocol
+        - .spec.template.spec.containers[].livenessProbe.successThreshold
+        - .spec.template.spec.containers[].readinessProbe.successThreshold
+        - .spec.template.spec.containers[].resources.limits.cpu
+        - .spec.template.spec.containers[].terminationMessagePath
+        - .spec.template.spec.containers[].terminationMessagePolicy
+        - .spec.template.spec.dnsPolicy
+        - .spec.template.spec.restartPolicy
+        - .spec.template.spec.schedulerName
   syncPolicy:
     automated:
       prune: true
