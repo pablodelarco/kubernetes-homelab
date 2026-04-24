@@ -159,7 +159,8 @@ spec:
               port: 9999
             periodSeconds: 3
             failureThreshold: 60 # up to 3m for VPN handshake
-          # liveness keeps the VPN tunnel honest; readiness still on :8080 (qbitt WebUI).
+          # liveness + readiness on gluetun health server (:9999) — kubelet probes from
+          # outside the pod and gluetun firewall blocks :8080 from non-pod-network IPs.
           livenessProbe:
             httpGet:
               path: /
@@ -169,9 +170,9 @@ spec:
           readinessProbe:
             httpGet:
               path: /
-              port: 8080
+              port: 9999
             periodSeconds: 10
-            timeoutSeconds: 30
+            timeoutSeconds: 5
             failureThreshold: 5
       containers:
         - name: qbitt
