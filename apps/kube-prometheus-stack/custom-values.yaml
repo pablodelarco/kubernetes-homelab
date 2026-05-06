@@ -52,6 +52,17 @@ prometheus:
     remoteWriteDashboards: false
     serverSideApply: true
     retention: 12h
+    # 30 min margin for WAL replay on cold start (default is 15 min, insufficient
+    # if WAL grows large after a crash storm — see WAL pathology incident 2026-05-06)
+    startupProbe:
+      httpGet:
+        path: /-/ready
+        port: http-web
+        scheme: HTTP
+      periodSeconds: 15
+      timeoutSeconds: 3
+      successThreshold: 1
+      failureThreshold: 120
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -284,14 +295,22 @@ additionalPrometheusRulesMap:
             annotations:
               summary: "Node {{ $labels.node }} has memory pressure"
               description: "Node {{ $labels.node }} is under memory pressure — pods may be evicted."
-          - alert: PersistentVolumeAlmostFull
-            expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.9
-            for: 5m
+          - alert: PersistentVolumeFillingUp
+            expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.8
+            for: 15m
             labels:
               severity: warning
             annotations:
-              summary: "PVC {{ $labels.persistentvolumeclaim }} is almost full"
-              description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full."
+              summary: "PVC {{ $labels.persistentvolumeclaim }} filling up"
+              description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full — plan expansion or cleanup."
+          - alert: PersistentVolumeAlmostFull
+            expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.95
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "PVC {{ $labels.persistentvolumeclaim }} almost full"
+              description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full — imminent CrashLoop risk."
 
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
