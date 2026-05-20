@@ -87,11 +87,6 @@ config:
               url: http://qbitt.media.svc.cluster.local
               username: "{{HOMEPAGE_VAR_QBITTORRENT_USER}}"
               password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
-        - Mealie:
-            icon: mealie.png
-            href: http://mealie.homelab/
-            description: Recipe manager & meal planning
-            siteMonitor: http://mealie.mealie.svc.cluster.local:9000
         - Grafana:
             icon: grafana.png
             href: http://grafana.homelab/
