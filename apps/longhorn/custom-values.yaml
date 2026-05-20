@@ -1,5 +1,9 @@
 persistence:
   defaultClass: true
+  # 2-node cluster (beelink + worker). Helm chart default is 3 replicas
+  # with anti-affinity, so the 3rd is always unschedulable → "degraded".
+  # Forcing 2 here aligns the StorageClass with cluster topology.
+  defaultClassReplicaCount: 2
   # Retain by default — prevents data loss when PVCs get
   # deleted/recreated (e.g. ArgoCD force-sync). Orphaned PVs need
   # manual cleanup, which is an acceptable tradeoff for safety.
