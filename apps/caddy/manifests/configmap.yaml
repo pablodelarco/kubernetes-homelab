@@ -7,7 +7,7 @@ data:
   Caddyfile: |
     {
       auto_https off
-      admin :2019
+      admin off
     }
 
     http://adguard.homelab, http://dns.homelab {
