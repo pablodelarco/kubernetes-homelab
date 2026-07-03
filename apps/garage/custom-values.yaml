@@ -73,17 +73,12 @@ monitoring:
       enabled: true
       interval: 60s
 
-## Cluster configuration job - auto-setup layout, bucket, and key
+## Cluster configuration job
+## Disabled: the chart's PostSync hook hangs on Garage v2.1.0 in this single-node setup.
+## The cluster layout and k8s-backups bucket already exist, so rerunning the hook is unnecessary
+## and keeps ArgoCD operations stuck waiting for garage-configure.
 clusterConfig:
-  enabled: true
-  layout:
-    enabled: true
-    zone: homelab
-    capacity: "150G"
-  buckets:
-    - name: k8s-backups
-      public: false
-  # Keys created manually via admin API after deploy (Garage requires GK-prefixed key format)
+  enabled: false
 
 ## Web UI for admin access
 webui:
