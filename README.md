@@ -1,19 +1,27 @@
-# 🏠 Kubernetes Homelab
+<div align="center">
 
-Welcome to my Kubernetes Homelab repository! This is where I document my journey with cloud-native technologies and self-hosting applications. This homelab is more than a playground, it's a platform where I explore ideas, automate workflows, and solve complex challenges while having fun.
+# Kubernetes Homelab
 
-As a **Cloud Solutions Architect**, Kubernetes is part of my daily toolkit. This homelab represents my passion for learning and experimenting with technology, focusing on scalability, backup strategies, and operational simplicity.
+A GitOps-driven K3s cluster running on two mini PCs, managing media, monitoring, and home automation as a single cloud-native platform.
 
----
+[![GitHub Stars](https://img.shields.io/github/stars/pablodelarco/kubernetes-homelab?style=flat&logo=github)](https://github.com/pablodelarco/kubernetes-homelab/stargazers)
+[![License](https://img.shields.io/github/license/pablodelarco/kubernetes-homelab)](LICENSE)
+[![Top Language](https://img.shields.io/github/languages/top/pablodelarco/kubernetes-homelab)](https://github.com/pablodelarco/kubernetes-homelab)
+[![Renovate](https://github.com/pablodelarco/kubernetes-homelab/actions/workflows/renovate.yaml/badge.svg)](https://github.com/pablodelarco/kubernetes-homelab/actions/workflows/renovate.yaml)
 
-## 🚀 Why a Homelab?
+</div>
 
-1. **Learning by Doing**: By self-hosting, I tackle the complexities of deploying and managing real-world applications.
-2. **All-in-One Environment**: This Kubernetes cluster manages all the applications of my home setup, serving as a single, integrated environment for testing, developing, and automating cloud-native workflows.
+## Why a Homelab?
 
----
+Running real applications on your own hardware surfaces the operational challenges that tutorials skip: upgrades, backups, networking, and disaster recovery. This repository is the complete, declarative state of a production-style Kubernetes cluster that manages an entire home setup, and it documents the journey with cloud-native technologies along the way.
 
-## 🏗️ Architecture
+- **Learning by doing** 🎓: Self-hosting real workloads means tackling the complexities of deploying and managing applications end to end, not just in toy scenarios.
+- **All-in-one environment**: A single K3s cluster serves as the integrated platform for testing, developing, and automating cloud-native workflows across the whole home.
+- **Everything as code**: Every application, certificate, and network route is declared in Git and reconciled by ArgoCD, so the cluster can be rebuilt from this repository.
+- **Resilience by design**: Longhorn replication, S3 backups, and dual NAS mirrors keep data safe with minimal downtime.
+- **Shared knowledge**: Progress and lessons are documented in [`docs/`](docs/) to help others build their own homelab.
+
+## Architecture
 
 ```
                         Tailscale Mesh (WireGuard)
@@ -44,20 +52,16 @@ As a **Cloud Solutions Architect**, Kubernetes is part of my daily toolkit. This
                                           +-----------+
 ```
 
----
+### Hardware
 
-## 🖥️ Hardware
-
-To keep things simple yet powerful, the homelab runs on two **Beelink Mini S12 Pro** mini PCs — low power consumption (~10W each) and fanless-quiet operation.
+To keep things simple yet powerful, the homelab runs on two **Beelink Mini S12 Pro** mini PCs, with low power consumption (~10W each) and fanless-quiet operation.
 
 | Node | Role | CPU | RAM | Storage |
 |------|------|-----|-----|---------|
 | beelink | control-plane + worker | Intel N100 (4C/4T) | 16 GB DDR4 | 500 GB NVMe |
 | worker | worker | Intel N100 (4C/4T) | 16 GB DDR4 | 500 GB NVMe |
 
----
-
-## 🔧 Tech Stack
+### Tech Stack
 
 | Category | Tools |
 |----------|-------|
@@ -68,9 +72,7 @@ To keep things simple yet powerful, the homelab runs on two **Beelink Mini S12 P
 | Monitoring | Prometheus, Grafana, Alertmanager, Uptime Kuma, Glances, OpenCost |
 | Security | Sealed Secrets, cert-manager (Let's Encrypt), AdGuard Home (DNS) |
 
----
-
-## 📦 Applications
+## Applications
 
 The homelab runs a variety of applications, deployed using Kubernetes and managed declaratively through GitOps. Some services run on Docker and are exposed through the Kubernetes Gateway API.
 
@@ -108,9 +110,38 @@ The homelab runs a variety of applications, deployed using Kubernetes and manage
 | ESPHome | Home Automation | IoT device firmware |
 | Stremio | Media | Streaming aggregator |
 
----
+## GitOps Workflow
 
-## 📂 Repository Structure
+```
+GitHub repo ──> ArgoCD (auto-sync) ──> Kubernetes cluster
+     │                                        │
+     ├── Renovate (dependency PRs)            │
+     └── Image Updater (new tags) ────────────┘
+```
+
+1. All cluster state is declared in this repository.
+2. **ArgoCD** watches the repo and auto-syncs changes to the cluster.
+3. **ArgoCD Image Updater** detects new container image tags and commits updates.
+4. **Renovate** opens PRs for Helm chart and dependency updates.
+5. **Sealed Secrets** allows encrypted secrets to be stored safely in Git.
+
+## Networking
+
+- **Tailscale** mesh connects both nodes and provides remote access via WireGuard VPN.
+- **Cilium** serves as CNI and provides Gateway API for HTTP routing (`.homelab` domains).
+- **MetalLB** assigns IPs from a local L2 pool (`10.10.1.230-250`).
+- **AdGuard Home** provides DNS resolution for `*.homelab` domains and ad blocking.
+- Docker services (Home Assistant, ESPHome, Zigbee2MQTT) are exposed through Kubernetes Gateway API via external Service/Endpoints.
+
+## Backup Strategy
+
+- **Longhorn** snapshots replicate volumes across both nodes.
+- **Garage** (S3) stores off-cluster Longhorn backups.
+- **UGREEN NAS** provides NFS-mounted media storage.
+- **Synology NAS** mirrors critical data as secondary backup.
+- Restore manifests in `scripts/restore/` for disaster recovery.
+
+## Repository Structure
 
 ```
 .
@@ -145,53 +176,12 @@ The homelab runs a variety of applications, deployed using Kubernetes and manage
 └── renovate.json               # Renovate bot configuration
 ```
 
----
+## Goals
 
-## 🌐 Networking
+- **Deepen Kubernetes knowledge**: Dive deep into advanced Kubernetes concepts, such as networking, GitOps, and federation.
+- **Enhance resilience**: Design a self-hosted environment with reliable backups and minimal downtime.
+- **Share knowledge**: Document progress and learnings to help others interested in setting up their own homelab.
 
-- **Tailscale** mesh connects both nodes and provides remote access via WireGuard VPN.
-- **Cilium** serves as CNI and provides Gateway API for HTTP routing (`.homelab` domains).
-- **MetalLB** assigns IPs from a local L2 pool (`10.10.1.230-250`).
-- **AdGuard Home** provides DNS resolution for `*.homelab` domains and ad blocking.
-- Docker services (Home Assistant, ESPHome, Zigbee2MQTT) are exposed through Kubernetes Gateway API via external Service/Endpoints.
+## License
 
----
-
-## 💾 Backup Strategy
-
-- **Longhorn** snapshots replicate volumes across both nodes.
-- **Garage** (S3) stores off-cluster Longhorn backups.
-- **UGREEN NAS** provides NFS-mounted media storage.
-- **Synology NAS** mirrors critical data as secondary backup.
-- Restore manifests in `scripts/restore/` for disaster recovery.
-
----
-
-## 🔄 GitOps Workflow
-
-```
-GitHub repo ──> ArgoCD (auto-sync) ──> Kubernetes cluster
-     │                                        │
-     ├── Renovate (dependency PRs)            │
-     └── Image Updater (new tags) ────────────┘
-```
-
-1. All cluster state is declared in this repository.
-2. **ArgoCD** watches the repo and auto-syncs changes to the cluster.
-3. **ArgoCD Image Updater** detects new container image tags and commits updates.
-4. **Renovate** opens PRs for Helm chart and dependency updates.
-5. **Sealed Secrets** allows encrypted secrets to be stored safely in Git.
-
----
-
-## 📈 Goals
-
-- **Deepen Kubernetes Knowledge**: Dive deep into advanced Kubernetes concepts, such as networking, GitOps, and federation.
-- **Enhance Resilience**: Design a self-hosted environment with reliable backups and minimal downtime.
-- **Share Knowledge**: Document my progress and learnings to help others interested in setting up their own homelab.
-
----
-
-## 📄 License
-
-See [LICENSE](LICENSE).
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
