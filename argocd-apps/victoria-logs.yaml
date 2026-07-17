@@ -9,7 +9,7 @@ spec:
     # renovate: registryUrl=https://victoriametrics.github.io/helm-charts/
     - repoURL: "https://victoriametrics.github.io/helm-charts/"
       chart: victoria-logs-single
-      targetRevision: 0.12.0
+      targetRevision: 0.12.1
       helm:
         valueFiles:
           - $values/apps/victoria-logs/custom-values.yaml
