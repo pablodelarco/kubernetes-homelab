@@ -120,7 +120,7 @@ alertmanager:
             send_resolved: true
             max_alerts: 10
     route:
-      receiver: "claw-webhook"
+      receiver: "telegram"
       group_by: [alertname, namespace]
       group_wait: 30s
       group_interval: 5m
@@ -151,11 +151,11 @@ alertmanager:
           receiver: "null"
         - matchers:
             - severity = "critical"
-          receiver: "claw-webhook"
+          receiver: "telegram"
           repeat_interval: 1h
         - matchers:
             - severity = "warning"
-          receiver: "claw-webhook"
+          receiver: "telegram"
           repeat_interval: 4h
     inhibit_rules:
       - source_matchers:
