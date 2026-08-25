@@ -73,8 +73,8 @@ monitoring:
       enabled: true
       labels:
         release: monitoring
-      interval: 60s
-      scrapeTimeout: 45s
+      interval: 2m
+      scrapeTimeout: 90s
 
 ## Cluster configuration job
 ## Disabled: the chart's PostSync hook hangs on Garage v2.1.0 in this single-node setup.
