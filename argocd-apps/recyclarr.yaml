@@ -7,6 +7,8 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: recyclarr=ghcr.io/recyclarr/recyclarr
     argocd-image-updater.argoproj.io/recyclarr.update-strategy: semver
     argocd-image-updater.argoproj.io/recyclarr.allow-tags: regexp:^8\.\d+\.\d+$
+    # CronJob images are not exposed in Application status.summary.images.
+    argocd-image-updater.argoproj.io/recyclarr.force-update: "true"
 spec:
   project: default
   source:
