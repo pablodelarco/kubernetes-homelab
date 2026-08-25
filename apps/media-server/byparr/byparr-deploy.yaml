@@ -40,7 +40,8 @@ spec:
               memory: "384Mi"
               cpu: "100m"
             limits:
-              memory: "1500Mi"
+              # Chromium peaked above 1.5Gi during challenge solving.
+              memory: "2Gi"
               cpu: "2000m"
           livenessProbe:
             httpGet:

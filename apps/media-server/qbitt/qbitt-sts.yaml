@@ -14,6 +14,16 @@ spec:
       labels:
         app: qbitt
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
       initContainers:
         - name: fix-qbitt-config
           image: busybox

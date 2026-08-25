@@ -10,7 +10,8 @@ resources:
     memory: 256Mi
   limits:
     cpu: 500m
-    memory: 512Mi
+    # Falco has repeatedly exceeded 512Mi while rebuilding syscall state.
+    memory: 1Gi
 
 # Falcosidekick for webhook forwarding
 falcosidekick:

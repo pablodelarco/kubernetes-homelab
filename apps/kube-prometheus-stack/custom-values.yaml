@@ -1,3 +1,12 @@
+defaultRules:
+  disabled:
+    # k3s embeds these components and does not expose standalone targets.
+    KubeControllerManagerDown: true
+    KubeProxyDown: true
+    KubeSchedulerDown: true
+    # N-1 memory capacity is not an actionable SLO for this heterogeneous
+    # two-node homelab. A total-capacity rule below remains active.
+    KubeMemoryOvercommit: true
 
 kubeApiServer:
   serviceMonitor:
@@ -132,10 +141,6 @@ alertmanager:
         - matchers:
             - alertname = "InfoInhibitor"
           receiver: "null"
-        # K3s false positives — scheduler/proxy/controller-manager are bundled into k3s binary
-        - matchers:
-            - alertname =~ "KubeSchedulerDown|KubeProxyDown|KubeControllerManagerDown"
-          receiver: "null"
         # NodeSystemSaturation is too noisy for an overcommitted 2-node cluster
         - matchers:
             - alertname = "NodeSystemSaturation"
@@ -143,11 +148,6 @@ alertmanager:
         # K3s version skew between nodes is expected during rolling upgrades
         - matchers:
             - alertname = "KubeVersionMismatch"
-          receiver: "null"
-        # argocd-image-updater metrics require auth; runs weekly, not worth monitoring
-        - matchers:
-            - alertname = "TargetDown"
-            - job = "argocd-image-updater-metrics"
           receiver: "null"
         - matchers:
             - severity = "critical"
@@ -258,7 +258,10 @@ additionalPrometheusRulesMap:
               summary: "Pod {{ $labels.pod }} is crashing"
               description: "Pod {{ $labels.pod }} in {{ $labels.namespace }} is in CrashLoopBackOff."
           - alert: PodOOMKilled
-            expr: kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+            expr: |
+              (kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1)
+              and on (namespace, pod, container)
+              (time() - kube_pod_container_status_last_terminated_timestamp < 900)
             for: 0m
             labels:
               severity: critical
@@ -298,7 +301,15 @@ additionalPrometheusRulesMap:
               severity: critical
             annotations:
               summary: "Node {{ $labels.node }} has memory pressure"
-              description: "Node {{ $labels.node }} is under memory pressure — pods may be evicted."
+              description: "Kubernetes node {{ $labels.node }} is under memory pressure — pods may be evicted."
+          - alert: KubeMemoryRequestsExceedCapacity
+            expr: sum(namespace_memory:kube_pod_container_resource_requests:sum{}) > sum(kube_node_status_allocatable{resource="memory"})
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Pod memory requests exceed total cluster capacity"
+              description: "Requested memory exceeds total allocatable memory; new pods may remain Pending."
           - alert: PersistentVolumeFillingUp
             expr: kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.8
             for: 15m
