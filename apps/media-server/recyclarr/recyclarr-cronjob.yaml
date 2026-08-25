@@ -8,16 +8,19 @@ spec:
   schedule: "0 4 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       backoffLimit: 1
+      # Keep enough time for diagnosis but prevent stale failed Jobs from
+      # keeping KubeJobFailed firing indefinitely.
+      ttlSecondsAfterFinished: 86400
       template:
         spec:
           restartPolicy: OnFailure
           containers:
             - name: recyclarr
-              image: ghcr.io/recyclarr/recyclarr:7.3.0
+              image: ghcr.io/recyclarr/recyclarr:8.7.1
               args:
                 - sync
                 - --config
