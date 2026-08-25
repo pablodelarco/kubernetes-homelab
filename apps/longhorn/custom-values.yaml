@@ -8,18 +8,29 @@ persistence:
   # deleted/recreated (e.g. ArgoCD force-sync). Orphaned PVs need
   # manual cleanup, which is an acceptable tradeoff for safety.
   reclaimPolicy: Retain
-  # Automatically enable default backup group for all new volumes.
+  # Automatically enable the protected backup group for all new volumes.
   # Group name MUST match the RecurringJob.spec.groups value. The actual
-  # RecurringJob 'default-backup' targets group 'default', not 'default-backup'.
+  # RecurringJob 'default-backup' targets group 'protected'.
   # Mismatch = volumes get wrong label = not picked up by backup schedule.
   recurringJobSelector:
     enable: true
-    jobList: '[{"name":"default","isGroup":true}]'
+    jobList: '[{"name":"protected","isGroup":true}]'
 
 defaultSettings:
   backupTarget: "s3://k8s-backups@us-east-1/"
   backupTargetCredentialSecret: "garage-credentials"
   defaultReplicaCount: 2
+  # Back up PVCs even when their workload is stopped at 03:00.
+  allowRecurringJobWhileVolumeDetached: true
+  recurringSuccessfulJobsHistoryLimit: 1
+  recurringFailedJobsHistoryLimit: 1
+
+metrics:
+  serviceMonitor:
+    enabled: true
+    additionalLabels:
+      release: monitoring
+    interval: 60s
 
 service:
   ui:
@@ -51,3 +62,22 @@ csi:
   provisionerReplicaCount: 2
   resizerReplicaCount: 2
   snapshotterReplicaCount: 2
+
+# Persist the backup schedule in GitOps. The previous object existed only in
+# live cluster state and would disappear on a Longhorn reinstall.
+extraObjects:
+  - apiVersion: longhorn.io/v1beta2
+    kind: RecurringJob
+    metadata:
+      name: default-backup
+      namespace: longhorn-system
+    spec:
+      name: default-backup
+      cron: "0 3 * * *"
+      task: backup
+      groups:
+        - protected
+      retain: 7
+      concurrency: 1
+      labels:
+        type: scheduled-backup

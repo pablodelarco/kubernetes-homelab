@@ -4,7 +4,7 @@ metadata:
   name: node-problem-detector
   namespace: node-problem-detector
   labels:
-    release: kube-prometheus-stack
+    release: monitoring
 spec:
   groups:
     - name: node-problem-detector

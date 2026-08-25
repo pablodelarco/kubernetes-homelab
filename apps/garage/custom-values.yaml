@@ -71,6 +71,8 @@ monitoring:
     enabled: true
     serviceMonitor:
       enabled: true
+      labels:
+        release: monitoring
       interval: 60s
 
 ## Cluster configuration job

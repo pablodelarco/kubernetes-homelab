@@ -66,6 +66,15 @@ prometheus:
   prometheusSpec:
     remoteWriteDashboards: false
     serverSideApply: true
+    # Discover GitOps-managed monitors and rules across all namespaces. Several
+    # external charts previously used the old kube-prometheus-stack release label
+    # and were silently excluded from Prometheus.
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    ruleSelector: {}
+    ruleNamespaceSelector: {}
     retention: 12h
     # 30 min margin for WAL replay on cold start (default is 15 min, insufficient
     # if WAL grows large after a crash storm — see WAL pathology incident 2026-05-06).
@@ -332,6 +341,74 @@ additionalPrometheusRulesMap:
             annotations:
               summary: "PVC {{ $labels.persistentvolumeclaim }} almost full"
               description: "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full — imminent CrashLoop risk."
+      - name: longhorn-alerts
+        rules:
+          - alert: LonghornVolumeDegraded
+            expr: longhorn_volume_robustness{state="degraded"} == 1
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Longhorn volume {{ $labels.volume }} is degraded"
+              description: "Volume {{ $labels.volume }} (PVC {{ $labels.pvc_namespace }}/{{ $labels.pvc }}) has lost replica redundancy."
+          - alert: LonghornVolumeFaulted
+            expr: longhorn_volume_robustness{state="faulted"} == 1
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Longhorn volume {{ $labels.volume }} is faulted"
+              description: "Volume {{ $labels.volume }} (PVC {{ $labels.pvc_namespace }}/{{ $labels.pvc }}) may have data at risk."
+          - alert: LonghornNodeDown
+            expr: longhorn_node_status{condition="ready"} == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Longhorn node {{ $labels.node }} is unavailable"
+              description: "Longhorn storage operations on {{ $labels.node }} may fail."
+          - alert: LonghornDiskSpaceLow
+            expr: longhorn_node_storage_usage_bytes / longhorn_node_storage_capacity_bytes > 0.85
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Longhorn disk usage is high on {{ $labels.node }}"
+              description: "Longhorn storage usage is {{ $value | humanizePercentage }}."
+          - alert: LonghornVolumeSingleReplica
+            expr: |
+              count by (volume) (longhorn_replica_state{state="running"} == 1) < 2
+              and on (volume)
+              label_replace(kube_persistentvolumeclaim_info{storageclass="longhorn"}, "volume", "$1", "volumename", "(.*)")
+            for: 10m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Longhorn volume {{ $labels.volume }} has fewer than two replicas"
+              description: "An active Longhorn PVC has lost node-level redundancy."
+          - alert: LonghornBackupMissing
+            expr: |
+              longhorn_volume_last_backup_at{pvc!~"prometheus-.*"} == 0
+              and on (volume)
+              label_replace(kube_persistentvolumeclaim_info{storageclass="longhorn"}, "volume", "$1", "volumename", "(.*)")
+            for: 30m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Longhorn PVC {{ $labels.pvc_namespace }}/{{ $labels.pvc }} has no backup"
+              description: "This active Longhorn volume has never completed an external backup."
+          - alert: LonghornBackupStale
+            expr: |
+              (time() - longhorn_volume_last_backup_at{pvc!~"prometheus-.*"} > 129600)
+              and (longhorn_volume_last_backup_at{pvc!~"prometheus-.*"} > 0)
+              and on (volume)
+              label_replace(kube_persistentvolumeclaim_info{storageclass="longhorn"}, "volume", "$1", "volumename", "(.*)")
+            for: 30m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Longhorn backup is stale for {{ $labels.pvc_namespace }}/{{ $labels.pvc }}"
+              description: "The last completed external backup is older than 36 hours."
 
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
