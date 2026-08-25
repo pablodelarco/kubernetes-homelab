@@ -1,9 +1,5 @@
 defaultRules:
   disabled:
-    # k3s embeds these components and does not expose standalone targets.
-    KubeControllerManagerDown: true
-    KubeProxyDown: true
-    KubeSchedulerDown: true
     # N-1 memory capacity is not an actionable SLO for this heterogeneous
     # two-node homelab. A total-capacity rule below remains active.
     KubeMemoryOvercommit: true
@@ -16,11 +12,21 @@ kubeApiServer:
         regex: "(apiserver|etcd)_.+_bucket"
 
 kubeControllerManager:
+  # k3s embeds this component and exposes no standalone metrics target.
+  enabled: false
   serviceMonitor:
     metricRelabelings:
       - action: drop
         sourceLabels: ["__name__"]
         regex: ".+_bucket"
+
+kubeProxy:
+  # k3s uses Cilium instead of kube-proxy.
+  enabled: false
+
+kubeScheduler:
+  # k3s embeds this component and exposes no standalone metrics target.
+  enabled: false
 
 crds:
   create: true
