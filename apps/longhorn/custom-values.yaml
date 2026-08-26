@@ -82,5 +82,9 @@ extraObjects:
         - protected
       retain: 7
       concurrency: 1
+      # Re-upload every block weekly. This repairs backend block loss that an
+      # incremental backup can otherwise keep referencing indefinitely.
+      parameters:
+        full-backup-interval: "7"
       labels:
         type: scheduled-backup
