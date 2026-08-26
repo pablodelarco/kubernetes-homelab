@@ -18,9 +18,26 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: garage
+  # Chart 0.2.1 generates a random checksum/secret on every render even when
+  # garage.secret.create=false. Ignore only that nondeterministic annotation;
+  # otherwise every Git revision rolls Garage and interrupts Longhorn backups.
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      name: garage
+      namespace: garage
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1secret
+    - group: apps
+      kind: Deployment
+      name: garage-webui
+      namespace: garage
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1secret
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
