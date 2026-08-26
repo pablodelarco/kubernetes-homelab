@@ -20,6 +20,9 @@ defaultSettings:
   backupTarget: "s3://k8s-backups@us-east-1/"
   backupTargetCredentialSecret: "garage-credentials"
   defaultReplicaCount: 2
+  # Garage on NAS/NFS can exceed Longhorn's 1-minute default while listing the
+  # backup store under load. Avoid transient target unavailability and skipped PVCs.
+  backupExecutionTimeout: 10
   # Back up PVCs even when their workload is stopped at 03:00.
   allowRecurringJobWhileVolumeDetached: true
   recurringSuccessfulJobsHistoryLimit: 1
