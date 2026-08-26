@@ -28,6 +28,13 @@ defaultSettings:
   recurringSuccessfulJobsHistoryLimit: 1
   recurringFailedJobsHistoryLimit: 1
 
+# Garage metadata lives on NAS/NFS. Longhorn v1.11.3 has a hardcoded 90-second
+# timeout per backupstore list operation, so polling every 5 minutes creates
+# near-continuous failed scans while uploads are active. Internal backups update
+# Volume status directly; 30-minute discovery is sufficient for this single-writer target.
+defaultBackupStore:
+  pollInterval: 1800
+
 metrics:
   serviceMonitor:
     enabled: true
