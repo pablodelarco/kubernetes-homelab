@@ -87,7 +87,7 @@ extraObjects:
       task: backup
       groups:
         - protected
-      retain: 7
+      retain: 4
       concurrency: 1
       # Re-upload every block weekly. This repairs backend block loss that an
       # incremental backup can otherwise keep referencing indefinitely.
