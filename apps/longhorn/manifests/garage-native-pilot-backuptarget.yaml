@@ -1,0 +1,9 @@
+apiVersion: longhorn.io/v1beta2
+kind: BackupTarget
+metadata:
+  name: garage-native-pilot
+  namespace: longhorn-system
+spec:
+  backupTargetURL: "s3://k8s-backups@us-east-1/migration-pilot/"
+  credentialSecret: garage-native-credentials
+  pollInterval: 30m
