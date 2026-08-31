@@ -1,0 +1,11 @@
+apiVersion: longhorn.io/v1beta2
+kind: BackupTarget
+metadata:
+  name: garage-native
+  namespace: longhorn-system
+spec:
+  # Clean production repository on the native Garage instance.
+  # The legacy BackupTarget `default` remains unchanged for rollback/history.
+  backupTargetURL: "s3://k8s-backups@us-east-1/production-v1/"
+  credentialSecret: garage-native-credentials
+  pollInterval: 30m
