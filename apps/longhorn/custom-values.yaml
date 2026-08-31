@@ -1,5 +1,8 @@
 persistence:
   defaultClass: true
+  # New volumes must use the validated native Garage target. Existing volumes
+  # are migrated explicitly; the legacy `default` target stays available for rollback.
+  backupTargetName: garage-native
   # 2-node cluster (beelink + worker). Helm chart default is 3 replicas
   # with anti-affinity, so the 3rd is always unschedulable → "degraded".
   # Forcing 2 here aligns the StorageClass with cluster topology.
