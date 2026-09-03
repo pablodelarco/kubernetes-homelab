@@ -130,6 +130,7 @@ alertmanager:
         telegram_configs:
           - bot_token_file: "/etc/alertmanager/secrets/alertmanager-telegram-secret/bot_token"
             chat_id: 308055748
+            send_resolved: true
             parse_mode: "HTML"
             message: |
               {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }} <b>{{ .Status | toUpper }}</b>
@@ -164,6 +165,13 @@ alertmanager:
         - matchers:
             - alertname = "KubeVersionMismatch"
           receiver: "null"
+        # Keep the initial notification and resolved message, but reduce reminders
+        # only for the affected continuous Longhorn backup incidents.
+        - matchers:
+            - alertname =~ "LonghornBackupStale|LonghornProtectedBackupTargetUnavailable|LonghornProtectedBackupJobFailed"
+            - severity = "critical"
+          receiver: "telegram"
+          repeat_interval: 8h
         - matchers:
             - severity = "critical"
           receiver: "telegram"
@@ -172,6 +180,11 @@ alertmanager:
             - severity = "warning"
           receiver: "telegram"
           repeat_interval: 4h
+        # Keep this capacity signal in Prometheus without paging Telegram.
+        - matchers:
+            - alertname = "NodeMemoryAllocatableHighInfo"
+            - severity = "info"
+          receiver: "null"
     inhibit_rules:
       - source_matchers:
           - severity = critical
@@ -207,7 +220,50 @@ alertmanager:
                   values:
                     - worker
 
-# kubeStateMetrics - using default configuration (no affinity)
+# Export the canonical Longhorn `protected` recurring-job group as a metric.
+# Longhorn's native metrics do not include Volume CR labels, so alert rules
+# cannot otherwise distinguish protected production data from retained tests.
+kube-state-metrics:
+  rbac:
+    extraRules:
+      - apiGroups: ["longhorn.io"]
+        resources: ["volumes", "backuptargets"]
+        verbs: ["list", "watch"]
+  customResourceState:
+    enabled: true
+    config:
+      kind: CustomResourceStateMetrics
+      spec:
+        resources:
+          - groupVersionKind:
+              group: longhorn.io
+              version: v1beta2
+              kind: Volume
+            metricNamePrefix: longhorn
+            errorLogV: 10
+            metrics:
+              - name: volume_backup_protection
+                help: "Longhorn volume backup protection classification from the canonical recurring-job group label."
+                each:
+                  type: Info
+                  info:
+                    labelsFromPath:
+                      volume: [metadata, name]
+                      protected: [metadata, labels, "recurring-job-group.longhorn.io/protected"]
+          - groupVersionKind:
+              group: longhorn.io
+              version: v1beta2
+              kind: BackupTarget
+            metricNamePrefix: longhorn
+            metrics:
+              - name: backup_target_available
+                help: "Longhorn backup target availability."
+                labelsFromPath:
+                  backuptarget: [metadata, name]
+                each:
+                  type: Gauge
+                  gauge:
+                    path: [status, available]
 
 additionalPrometheusRulesMap:
   cluster-alerts:
@@ -388,27 +444,43 @@ additionalPrometheusRulesMap:
               description: "An active Longhorn PVC has lost node-level redundancy."
           - alert: LonghornBackupMissing
             expr: |
-              longhorn_volume_last_backup_at{pvc!~"prometheus-.*"} == 0
+              longhorn_volume_last_backup_at == 0
               and on (volume)
-              label_replace(kube_persistentvolumeclaim_info{storageclass="longhorn"}, "volume", "$1", "volumename", "(.*)")
+              (longhorn_volume_backup_protection{protected="enabled"} == 1)
             for: 30m
             labels:
               severity: warning
             annotations:
               summary: "Longhorn PVC {{ $labels.pvc_namespace }}/{{ $labels.pvc }} has no backup"
-              description: "This active Longhorn volume has never completed an external backup."
+              description: "This explicitly protected production volume has never completed an external backup."
           - alert: LonghornBackupStale
             expr: |
-              (time() - longhorn_volume_last_backup_at{pvc!~"prometheus-.*"} > 129600)
-              and (longhorn_volume_last_backup_at{pvc!~"prometheus-.*"} > 0)
+              (time() - longhorn_volume_last_backup_at > 129600)
+              and (longhorn_volume_last_backup_at > 0)
               and on (volume)
-              label_replace(kube_persistentvolumeclaim_info{storageclass="longhorn"}, "volume", "$1", "volumename", "(.*)")
+              (longhorn_volume_backup_protection{protected="enabled"} == 1)
             for: 30m
             labels:
               severity: critical
             annotations:
               summary: "Longhorn backup is stale for {{ $labels.pvc_namespace }}/{{ $labels.pvc }}"
-              description: "The last completed external backup is older than 36 hours."
+              description: "The last completed external backup for this explicitly protected production volume is older than 36 hours."
+          - alert: LonghornProtectedBackupTargetUnavailable
+            expr: longhorn_backup_target_available{backuptarget="garage-native"} == 0
+            for: 10m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Longhorn production backup target is unavailable"
+              description: "The garage-native target used by protected production backups has been unavailable for 10 minutes."
+          - alert: LonghornProtectedBackupJobFailed
+            expr: kube_job_status_failed{namespace="longhorn-system",job_name=~"default-backup-.*"} > 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Longhorn protected backup job failed"
+              description: "The scheduled default-backup job for the protected group has failed."
 
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
