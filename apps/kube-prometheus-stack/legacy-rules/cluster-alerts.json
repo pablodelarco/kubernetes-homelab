@@ -1,0 +1,409 @@
+{
+  "apiVersion": "monitoring.coreos.com/v1",
+  "kind": "PrometheusRule",
+  "metadata": {
+    "name": "cluster-alerts",
+    "namespace": "monitoring",
+    "labels": {
+      "release": "monitoring"
+    },
+    "annotations": {
+      "argocd.argoproj.io/sync-options": "Prune=false"
+    }
+  },
+  "spec": {
+    "groups": [
+      {
+        "name": "node-alerts",
+        "rules": [
+          {
+            "alert": "HighCPUUsage",
+            "annotations": {
+              "description": "Physical CPU usage is {{ $value | humanizePercentage }} for 10 minutes.",
+              "summary": "Sustained CPU usage on {{ $labels.instance }}"
+            },
+            "expr": "(1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) by (instance)) > 0.85",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "NodeMemoryAllocatableHighInfo",
+            "annotations": {
+              "description": "usage/allocatable={{ $value | humanizePercentage }} while physical MemAvailable remains at least 20%; this is capacity information, not physical exhaustion.",
+              "summary": "Kubernetes memory usage exceeds 90% of allocatable on {{ $labels.node }}"
+            },
+            "expr": "(\n  label_replace(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes, \"internal_ip\", \"$1\", \"instance\", \"([^:]+):.*\")\n  / on (internal_ip) group_left(node)\n  (\n    kube_node_status_allocatable{resource=\"memory\",unit=\"byte\"}\n    * on (node) group_left(internal_ip) kube_node_info\n  )\n) > 0.90\nand on (internal_ip)\nlabel_replace(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes, \"internal_ip\", \"$1\", \"instance\", \"([^:]+):.*\") >= 0.20\n",
+            "for": "10m",
+            "labels": {
+              "severity": "info"
+            }
+          },
+          {
+            "alert": "NodePhysicalMemoryLowWarning",
+            "annotations": {
+              "description": "MemAvailable is {{ $value | humanizePercentage }} of physical capacity for 10 minutes.",
+              "summary": "Physical memory margin below 20% on {{ $labels.instance }}"
+            },
+            "expr": "node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.20",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "NodePhysicalMemoryCritical",
+            "annotations": {
+              "description": "MemAvailable is {{ $value | humanizePercentage }} of physical capacity.",
+              "summary": "Physical memory margin below 10% on {{ $labels.instance }}"
+            },
+            "expr": "node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.10",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "NodeMemoryPSICritical",
+            "annotations": {
+              "description": "Tasks have spent over 10% of wall time waiting on memory for 10 minutes.",
+              "summary": "Sustained memory PSI on {{ $labels.instance }}"
+            },
+            "expr": "rate(node_pressure_memory_waiting_seconds_total[5m]) > 0.10",
+            "for": "10m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "NodeSwapChurnCritical",
+            "annotations": {
+              "description": "Swap-in plus swap-out exceeds 100 pages/s for 10 minutes.",
+              "summary": "Sustained swap churn on {{ $labels.instance }}"
+            },
+            "expr": "rate(node_vmstat_pswpin[5m]) + rate(node_vmstat_pswpout[5m]) > 100",
+            "for": "10m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "NodeOOMCritical",
+            "annotations": {
+              "description": "The node kernel recorded an OOM kill in the last 15 minutes.",
+              "summary": "Kernel OOM kill on {{ $labels.instance }}"
+            },
+            "expr": "increase(node_vmstat_oom_kill[15m]) > 0",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "NodeDown",
+            "annotations": {
+              "description": "Node has been unreachable for 2 minutes.",
+              "summary": "Node {{ $labels.instance }} is down"
+            },
+            "expr": "up{job=\"node-exporter\"} == 0",
+            "for": "2m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "NodeDiskUsageWarning",
+            "annotations": {
+              "description": "Filesystem {{ $labels.mountpoint }} is {{ $value | humanizePercentage }} full.",
+              "summary": "Disk usage at least 75% on {{ $labels.instance }}"
+            },
+            "expr": "(1 - node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs\",mountpoint=~\"/|/var\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs\",mountpoint=~\"/|/var\"}) >= 0.75",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "NodeDiskUsageCritical",
+            "annotations": {
+              "description": "Filesystem {{ $labels.mountpoint }} is {{ $value | humanizePercentage }} full.",
+              "summary": "Disk usage at least 80% on {{ $labels.instance }}"
+            },
+            "expr": "(1 - node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs\",mountpoint=~\"/|/var\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs\",mountpoint=~\"/|/var\"}) >= 0.80",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          }
+        ]
+      },
+      {
+        "name": "pod-alerts",
+        "rules": [
+          {
+            "alert": "CrashLoopBackOff",
+            "annotations": {
+              "description": "Pod {{ $labels.pod }} in {{ $labels.namespace }} is in CrashLoopBackOff.",
+              "summary": "Pod {{ $labels.pod }} is crashing"
+            },
+            "expr": "kube_pod_container_status_waiting_reason{reason=\"CrashLoopBackOff\"} == 1",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "PodOOMKilled",
+            "annotations": {
+              "description": "Container {{ $labels.container }} in {{ $labels.namespace }}/{{ $labels.pod }} was killed due to OOM.",
+              "summary": "Pod {{ $labels.pod }} was OOM killed"
+            },
+            "expr": "(kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"} == 1)\nand on (namespace, pod, container)\n(time() - kube_pod_container_status_last_terminated_timestamp < 900)\n",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "PodEvictedCritical",
+            "annotations": {
+              "description": "An Evicted pod is still present and requires pressure/capacity correlation.",
+              "summary": "Pod {{ $labels.namespace }}/{{ $labels.pod }} was evicted"
+            },
+            "expr": "kube_pod_status_reason{reason=\"Evicted\"} == 1",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "PodNotReady",
+            "annotations": {
+              "description": "Pod {{ $labels.pod }} in {{ $labels.namespace }} has been {{ $labels.phase }} for 15 minutes.",
+              "summary": "Pod {{ $labels.pod }} not ready"
+            },
+            "expr": "kube_pod_status_phase{phase=~\"Pending|Unknown\"} == 1",
+            "for": "15m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "TooManyRestarts",
+            "annotations": {
+              "description": "Pod {{ $labels.pod }} in {{ $labels.namespace }} has restarted {{ $value | humanize }} times in the last hour.",
+              "summary": "Pod {{ $labels.pod }} restarting frequently"
+            },
+            "expr": "increase(kube_pod_container_status_restarts_total[1h]) > 5",
+            "labels": {
+              "severity": "warning"
+            }
+          }
+        ]
+      },
+      {
+        "name": "csi-alerts",
+        "rules": [
+          {
+            "alert": "CSIIsolatedRestartRecovered",
+            "annotations": {
+              "description": "One CSI restart occurred in 1h and the pod is Ready; track only unless it recurs.",
+              "summary": "Recovered isolated CSI restart in {{ $labels.pod }}"
+            },
+            "expr": "increase(kube_pod_container_status_restarts_total{namespace=\"longhorn-system\",pod=~\"csi-(attacher|provisioner|resizer|snapshotter)-.*\"}[1h]) > 0\nand on (namespace, pod, container)\nincrease(kube_pod_container_status_restarts_total{namespace=\"longhorn-system\",pod=~\"csi-(attacher|provisioner|resizer|snapshotter)-.*\"}[1h]) <= 1\nand on (namespace, pod)\nkube_pod_status_ready{namespace=\"longhorn-system\",condition=\"true\"} == 1\n",
+            "labels": {
+              "severity": "info"
+            }
+          },
+          {
+            "alert": "CSIRecurringRestarts",
+            "annotations": {
+              "description": "CSI container restarted more than once in one hour.",
+              "summary": "Recurring CSI restarts in {{ $labels.pod }}"
+            },
+            "expr": "increase(kube_pod_container_status_restarts_total{namespace=\"longhorn-system\",pod=~\"csi-(attacher|provisioner|resizer|snapshotter)-.*\"}[1h]) > 1",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "CSIPodNotReady",
+            "annotations": {
+              "description": "A Longhorn CSI control-plane pod has remained NotReady for 10 minutes.",
+              "summary": "CSI pod {{ $labels.pod }} is NotReady"
+            },
+            "expr": "kube_pod_status_ready{namespace=\"longhorn-system\",pod=~\"csi-(attacher|provisioner|resizer|snapshotter)-.*\",condition=\"true\"} == 0",
+            "for": "10m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "CSIDeploymentUnavailable",
+            "annotations": {
+              "description": "The Longhorn CSI deployment has fewer than two available replicas.",
+              "summary": "CSI deployment {{ $labels.deployment }} below 2/2"
+            },
+            "expr": "kube_deployment_status_replicas_available{namespace=\"longhorn-system\",deployment=~\"csi-(attacher|provisioner|resizer|snapshotter)\"} < 2",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "PersistentVolumeClaimPending",
+            "annotations": {
+              "description": "PVC provisioning has not completed for 10 minutes.",
+              "summary": "PVC {{ $labels.namespace }}/{{ $labels.persistentvolumeclaim }} pending"
+            },
+            "expr": "kube_persistentvolumeclaim_status_phase{phase=\"Pending\"} == 1",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          }
+        ]
+      },
+      {
+        "name": "kubernetes-alerts",
+        "rules": [
+          {
+            "alert": "KubeNodeNotReady",
+            "annotations": {
+              "description": "Kubernetes node {{ $labels.node }} has been NotReady for 5 minutes.",
+              "summary": "Node {{ $labels.node }} is not ready"
+            },
+            "expr": "kube_node_status_condition{condition=\"Ready\",status=\"true\"} == 0",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "KubeNodeMemoryPressure",
+            "annotations": {
+              "description": "Kubernetes node {{ $labels.node }} is under memory pressure — pods may be evicted.",
+              "summary": "Node {{ $labels.node }} has memory pressure"
+            },
+            "expr": "kube_node_status_condition{condition=\"MemoryPressure\",status=\"true\"} == 1",
+            "for": "2m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "KubeMemoryRequestsExceedCapacity",
+            "annotations": {
+              "description": "Requested memory exceeds total allocatable memory; new pods may remain Pending.",
+              "summary": "Pod memory requests exceed total cluster capacity"
+            },
+            "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum{}) > sum(kube_node_status_allocatable{resource=\"memory\"})",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "PersistentVolumeFillingUp",
+            "annotations": {
+              "description": "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full.",
+              "summary": "PVC {{ $labels.persistentvolumeclaim }} filling up"
+            },
+            "expr": "kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.80",
+            "for": "15m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "PersistentVolumeAlmostFull",
+            "annotations": {
+              "description": "PVC {{ $labels.persistentvolumeclaim }} in {{ $labels.namespace }} is {{ $value | humanizePercentage }} full.",
+              "summary": "PVC {{ $labels.persistentvolumeclaim }} almost full"
+            },
+            "expr": "kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes > 0.95",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          }
+        ]
+      },
+      {
+        "name": "longhorn-alerts",
+        "rules": [
+          {
+            "alert": "LonghornVolumeDegraded",
+            "annotations": {
+              "description": "Volume {{ $labels.volume }} has lost replica redundancy.",
+              "summary": "Longhorn volume {{ $labels.volume }} is degraded"
+            },
+            "expr": "longhorn_volume_robustness{state=\"degraded\"} == 1",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "LonghornVolumeFaulted",
+            "annotations": {
+              "description": "Volume {{ $labels.volume }} may have data at risk.",
+              "summary": "Longhorn volume {{ $labels.volume }} is faulted"
+            },
+            "expr": "longhorn_volume_robustness{state=\"faulted\"} == 1",
+            "for": "1m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "LonghornNodeDown",
+            "annotations": {
+              "description": "Longhorn storage operations on {{ $labels.node }} may fail.",
+              "summary": "Longhorn node {{ $labels.node }} is unavailable"
+            },
+            "expr": "longhorn_node_status{condition=\"ready\"} == 0",
+            "for": "5m",
+            "labels": {
+              "severity": "critical"
+            }
+          },
+          {
+            "alert": "LonghornDiskSpaceLow",
+            "annotations": {
+              "description": "Longhorn storage usage is {{ $value | humanizePercentage }}.",
+              "summary": "Longhorn disk usage is high on {{ $labels.node }}"
+            },
+            "expr": "longhorn_node_storage_usage_bytes / longhorn_node_storage_capacity_bytes > 0.75",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "LonghornVolumeSingleReplica",
+            "annotations": {
+              "description": "An active Longhorn PVC has lost node-level redundancy.",
+              "summary": "Longhorn volume {{ $labels.volume }} has fewer than two replicas"
+            },
+            "expr": "count by (volume) (longhorn_replica_state{state=\"running\"} == 1) < 2\nand on (volume)\nlabel_replace(kube_persistentvolumeclaim_info{storageclass=\"longhorn\"}, \"volume\", \"$1\", \"volumename\", \"(.*)\")\n",
+            "for": "10m",
+            "labels": {
+              "severity": "warning"
+            }
+          },
+          {
+            "alert": "LonghornBackupMissing",
+            "annotations": {
+              "description": "This active Longhorn volume has never completed an external backup.",
+              "summary": "Longhorn PVC {{ $labels.pvc_namespace }}/{{ $labels.pvc }} has no backup"
+            },
+            "expr": "longhorn_volume_last_backup_at{pvc!~\"prometheus-.*\"} == 0\nand on (volume)\nlabel_replace(kube_persistentvolumeclaim_info{storageclass=\"longhorn\"}, \"volume\", \"$1\", \"volumename\", \"(.*)\")\n",
+            "for": "30m",
+            "labels": {
+              "severity": "warning"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

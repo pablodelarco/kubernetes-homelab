@@ -16,6 +16,8 @@ spec:
     - repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
       targetRevision: main
       ref: values
+      # Adopt the existing manual rule set; only duplicate backup stale is removed.
+      path: apps/kube-prometheus-stack/legacy-rules
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
