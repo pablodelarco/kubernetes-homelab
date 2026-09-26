@@ -3,16 +3,15 @@ kind: Application
 metadata:
   name: jellyfin
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: jellyfin=jellyfin/jellyfin
-    argocd-image-updater.argoproj.io/jellyfin.update-strategy: semver
-    argocd-image-updater.argoproj.io/jellyfin.allow-tags: regexp:^10\.\d+\.\d+$
 spec:
   project: default
   source:
     repoURL: "https://github.com/pablodelarco/kubernetes-homelab"
     targetRevision: main
     path: apps/media-server/jellyfin
+    kustomize:
+      images:
+        - jellyfin/jellyfin:12.1
   destination:
     server: "https://kubernetes.default.svc"
     namespace: media

@@ -46,7 +46,7 @@ spec:
                     operator: DoesNotExist
       containers:
         - name: jellyfin
-          image: jellyfin/jellyfin:10.11.5
+          image: jellyfin/jellyfin:12.1
           env:
             - name: JELLYFIN_PublishedServerUrl
               value: "https://jellyfin.tabby-carp.ts.net"
