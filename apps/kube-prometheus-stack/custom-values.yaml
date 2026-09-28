@@ -139,6 +139,15 @@ alertmanager:
               {{ .Annotations.summary }}
               {{ .Annotations.description }}
               {{ end }}
+        webhook_configs:
+          - url: "http://10.10.1.37:8644/webhooks/homelab-alerts"
+            send_resolved: true
+            max_alerts: 20
+            http_config:
+              http_headers:
+                X-Gitlab-Token:
+                  files:
+                    - "/etc/alertmanager/secrets/alertmanager-telegram-secret/hermes_webhook_secret"
       - name: "claw-webhook"
         webhook_configs:
           - url: "http://raspberrypi5:9998/webhook"
