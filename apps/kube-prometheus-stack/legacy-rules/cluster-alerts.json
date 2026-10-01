@@ -31,10 +31,22 @@
           {
             "alert": "NodeMemoryAllocatableHighInfo",
             "annotations": {
-              "description": "usage/allocatable={{ $value | humanizePercentage }} while physical MemAvailable remains at least 20%; this is capacity information, not physical exhaustion.",
-              "summary": "Kubernetes memory usage exceeds 90% of allocatable on {{ $labels.node }}"
+              "summary": "Pod memory usage exceeds 90% of allocatable on {{ $labels.node }}",
+              "description": "Pod working-set/allocatable={{ $value | humanizePercentage }} for 10 minutes; excludes host services and reserved system memory."
             },
-            "expr": "(\n  label_replace(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes, \"internal_ip\", \"$1\", \"instance\", \"([^:]+):.*\")\n  / on (internal_ip) group_left(node)\n  (\n    kube_node_status_allocatable{resource=\"memory\",unit=\"byte\"}\n    * on (node) group_left(internal_ip) kube_node_info\n  )\n) > 0.90\nand on (internal_ip)\nlabel_replace(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes, \"internal_ip\", \"$1\", \"instance\", \"([^:]+):.*\") >= 0.20\n",
+            "expr": "(sum by (node) (container_memory_working_set_bytes{container!=\"\",container!=\"POD\",pod!=\"\"}) / on (node) max by (node) (kube_node_status_allocatable{resource=\"memory\",unit=\"byte\"})) > 0.90",
+            "for": "10m",
+            "labels": {
+              "severity": "info"
+            }
+          },
+          {
+            "alert": "NodeMemoryRequestsHighInfo",
+            "annotations": {
+              "summary": "Pod memory requests exceed 90% of allocatable on {{ $labels.node }}",
+              "description": "Scheduled pod requests/allocatable={{ $value | humanizePercentage }} for 10 minutes; this is scheduling capacity, not actual RAM use."
+            },
+            "expr": "(sum by (node) (kube_pod_container_resource_requests{resource=\"memory\",unit=\"byte\"}) / on (node) max by (node) (kube_node_status_allocatable{resource=\"memory\",unit=\"byte\"})) > 0.90",
             "for": "10m",
             "labels": {
               "severity": "info"
