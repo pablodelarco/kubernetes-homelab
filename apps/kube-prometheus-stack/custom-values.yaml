@@ -126,19 +126,8 @@ alertmanager:
       telegram_api_url: "https://api.telegram.org"
     receivers:
       - name: "null"
-      - name: "telegram"
-        telegram_configs:
-          - bot_token_file: "/etc/alertmanager/secrets/alertmanager-telegram-secret/bot_token"
-            chat_id: 308055748
-            send_resolved: true
-            parse_mode: "HTML"
-            message: |
-              {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }} <b>{{ .Status | toUpper }}</b>
-              {{ range .Alerts }}
-              <b>{{ .Labels.alertname }}</b> ({{ .Labels.severity }})
-              {{ .Annotations.summary }}
-              {{ .Annotations.description }}
-              {{ end }}
+      # Hermes is the only user-facing incident reporter; repeated webhook deliveries are gated.
+      - name: "hermes-operator"
         webhook_configs:
           - url: "http://10.10.1.37:8644/webhooks/homelab-alerts"
             send_resolved: true
@@ -154,7 +143,7 @@ alertmanager:
             send_resolved: true
             max_alerts: 10
     route:
-      receiver: "telegram"
+      receiver: "hermes-operator"
       group_by: [alertname, namespace]
       group_wait: 30s
       group_interval: 5m
@@ -179,19 +168,18 @@ alertmanager:
         - matchers:
             - alertname =~ "LonghornBackupStale|LonghornProtectedBackupTargetUnavailable|LonghornProtectedBackupJobFailed"
             - severity = "critical"
-          receiver: "telegram"
+          receiver: "hermes-operator"
           repeat_interval: 8h
         - matchers:
             - severity = "critical"
-          receiver: "telegram"
+          receiver: "hermes-operator"
           repeat_interval: 1h
         - matchers:
             - severity = "warning"
-          receiver: "telegram"
+          receiver: "hermes-operator"
           repeat_interval: 4h
-        # Keep this capacity signal in Prometheus without paging Telegram.
+        # Informational signals remain visible in Prometheus, without paging.
         - matchers:
-            - alertname = "NodeMemoryAllocatableHighInfo"
             - severity = "info"
           receiver: "null"
     inhibit_rules:
