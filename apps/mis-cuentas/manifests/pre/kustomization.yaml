@@ -16,8 +16,8 @@ configMapGenerator:
       - AEAT_ENV=pre
       # CAMBIA APP_URL y APP_HOST por el alias estable de la rama pre en Vercel
       # (mis-cuentas-git-pre-<equipo>.vercel.app o un dominio propio de Preview).
-      - APP_URL=https://mis-cuentas-git-pre.vercel.app
-      - APP_HOST=mis-cuentas-git-pre.vercel.app
+      - APP_URL=https://cambia-por-el-alias-de-la-rama-pre.invalid
+      - APP_HOST=cambia-por-el-alias-de-la-rama-pre.invalid
       - AEAT_HOST=prewww1.aeat.es
       # CAMBIA NEON_HOST por el host de PRE_WORKER_DATABASE_URL de .env.homelab, el host directo de la
       # rama pre (cada rama de Neon tiene el suyo). seal-secrets.sh comprueba que coinciden.

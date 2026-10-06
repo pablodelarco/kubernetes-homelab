@@ -19,9 +19,10 @@ configMapGenerator:
   - name: verifactu-worker
     literals:
       - AEAT_ENV=prod
-      # CAMBIA APP_URL y APP_HOST por el dominio de producción de la app en Vercel.
-      - APP_URL=https://mis-cuentas.vercel.app
-      - APP_HOST=mis-cuentas.vercel.app
+      # CAMBIA APP_URL y APP_HOST por el dominio de producción de la app en Vercel. El ejemplo usa el
+      # dominio reservado .invalid, que nunca resuelve, y el worker y seal-secrets.sh lo rechazan.
+      - APP_URL=https://cambia-por-el-dominio-de-produccion.invalid
+      - APP_HOST=cambia-por-el-dominio-de-produccion.invalid
       - AEAT_HOST=www1.agenciatributaria.gob.es
       # CAMBIA NEON_HOST por el host de WORKER_DATABASE_URL de .env.homelab, el host directo de la rama
       # main (ep-<id>.c-<celda>.eu-central-1.aws.neon.tech, sin -pooler). seal-secrets.sh comprueba que
