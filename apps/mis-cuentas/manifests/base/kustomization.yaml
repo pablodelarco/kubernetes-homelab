@@ -1,0 +1,10 @@
+# Lo común a los dos entornos: el worker de VeriFactu, su cuenta de servicio sin token, la
+# NetworkPolicy que cierra la entrada y la CiliumNetworkPolicy que solo deja salir hacia el DNS,
+# Neon, la app y la AEAT. Cada entorno (prod, pre) pone su namespace, su configuración y sus hosts.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - serviceaccount.yaml
+  - worker-deployment.yaml
+  - network-policy.yaml
+  - worker-egress.yaml

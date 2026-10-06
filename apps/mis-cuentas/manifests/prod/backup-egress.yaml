@@ -1,0 +1,48 @@
+# Salida de la copia nocturna: DNS, Neon, la app (manifest y redirecciones) y el almacén privado de
+# Vercel Blob al que apuntan las URL firmadas de 60 segundos.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: db-backup-egress
+  labels:
+    app.kubernetes.io/part-of: mis-cuentas
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: db-backup
+  egress:
+    # 0. DNS del clúster.
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    # 1. Neon, conexión directa con backup_role (el host lo pone el ConfigMap del entorno).
+    - toFQDNs:
+        - matchName: NEON_HOST
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    # 2. La app (el valor lo pone el ConfigMap del entorno).
+    - toFQDNs:
+        - matchName: APP_HOST
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+    # 3. Vercel Blob privado.
+    - toFQDNs:
+        - matchPattern: "*.private.blob.vercel-storage.com"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

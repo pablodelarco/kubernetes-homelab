@@ -1,0 +1,105 @@
+# La copia nocturna (architecture.md, "Conservación y copias"): a las 03:30 de Madrid, pg_dump con
+# backup_role cifrado con age, los ficheros nuevos de Blob por las rutas de copia de la app, y la
+# retención de 30 diarias y una mensual durante 10 años. Cualquier fallo (un permiso denegado en
+# pg_dump, el volumen sin escritura, un fichero que no coincide con su sha256) termina el Job con
+# error, y Kubernetes lo marca como fallido.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: db-backup
+  labels:
+    app.kubernetes.io/name: db-backup
+    app.kubernetes.io/part-of: mis-cuentas
+spec:
+  schedule: "30 3 * * *"
+  timeZone: Europe/Madrid
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 3600
+      ttlSecondsAfterFinished: 604800
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: db-backup
+            app.kubernetes.io/part-of: mis-cuentas
+        spec:
+          restartPolicy: Never
+          serviceAccountName: db-backup
+          automountServiceAccountToken: false
+          enableServiceLinks: false
+          imagePullSecrets:
+            - name: ghcr-pull
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  preference:
+                    matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values:
+                          - worker
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 999
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: backup
+              image: mis-cuentas-backup
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - configMapRef:
+                    name: verifactu-worker
+              env:
+                - name: BACKUP_DIR
+                  value: /backups
+                - name: BACKUP_DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-backup
+                      key: BACKUP_DATABASE_URL
+                - name: BACKUP_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-backup
+                      key: BACKUP_TOKEN
+                - name: AGE_RECIPIENT
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-backup
+                      key: AGE_RECIPIENT
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  memory: 384Mi
+              securityContext:
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+                seccompProfile:
+                  type: RuntimeDefault
+              volumeMounts:
+                - name: backups
+                  mountPath: /backups
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: backups
+              persistentVolumeClaim:
+                claimName: mis-cuentas-backups
+            - name: tmp
+              emptyDir:
+                sizeLimit: 64Mi

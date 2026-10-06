@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mis-cuentas
+  labels:
+    app.kubernetes.io/part-of: mis-cuentas
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mis-cuentas-pre
+  labels:
+    app.kubernetes.io/part-of: mis-cuentas
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest

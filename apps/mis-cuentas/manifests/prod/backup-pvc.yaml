@@ -1,0 +1,17 @@
+# Las copias cifradas con age en el NAS (clase nfs, reclaimPolicy Retain): si alguien borra el PVC,
+# los datos se quedan en el NAS. 30 copias diarias, una mensual durante 10 años y cada fichero de
+# Blob una vez; con el volumen de un autónomo caben de sobra en 20 GiB.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mis-cuentas-backups
+  labels:
+    app.kubernetes.io/name: db-backup
+    app.kubernetes.io/part-of: mis-cuentas
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 20Gi

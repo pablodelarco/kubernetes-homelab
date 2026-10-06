@@ -1,0 +1,16 @@
+# PLANTILLA SIN VALORES. bash deploy/homelab/seal-secrets.sh sustituye este fichero por el
+# SealedSecret de verdad, cifrado con la clave pública de sealed-secrets-controller.
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: aeat-certificate
+  namespace: mis-cuentas
+spec:
+  encryptedData:
+    cert.p12: SELLAR_CON_seal-secrets.sh
+    passphrase: SELLAR_CON_seal-secrets.sh
+  template:
+    metadata:
+      name: aeat-certificate
+      namespace: mis-cuentas
+    type: Opaque

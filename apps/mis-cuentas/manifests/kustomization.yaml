@@ -1,0 +1,21 @@
+# mis-cuentas en el K3s del homelab (architecture.md, M3). Dos namespaces:
+#   mis-cuentas      el worker de VeriFactu de producción (AEAT_ENV=prod, www1) y la copia nocturna
+#   mis-cuentas-pre  el worker de pruebas (AEAT_ENV=pre, prewww1) contra la rama pre de Neon
+#
+# Antes de sincronizar: deploy/homelab/seal-secrets.sh genera los SealedSecret de verdad en
+# prod/sealed-secrets y pre/sealed-secrets (los que hay aquí son plantillas sin valores), y los
+# digests de las dos imágenes de abajo se sustituyen por los que imprime el workflow Worker image.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespaces.yaml
+  - prod
+  - pre
+images:
+  # Imágenes fijadas por digest. CAMBIA los dos digests por los del resumen del workflow.
+  - name: mis-cuentas-worker
+    newName: ghcr.io/pablodelarco/mis-cuentas-worker
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
+  - name: mis-cuentas-backup
+    newName: ghcr.io/pablodelarco/mis-cuentas-worker
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000

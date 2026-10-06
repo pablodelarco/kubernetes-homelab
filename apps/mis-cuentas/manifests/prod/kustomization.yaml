@@ -1,0 +1,70 @@
+# Producción: el worker de VeriFactu contra www1 y la base main de Neon, y la copia nocturna con sus
+# avisos en Prometheus.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mis-cuentas
+resources:
+  - ../base
+  - backup-serviceaccount.yaml
+  - backup-pvc.yaml
+  - backup-cronjob.yaml
+  - backup-egress.yaml
+  - backup-alert.yaml
+  # Plantillas sin valores hasta que seal-secrets.sh las sustituye por los SealedSecret de verdad.
+  - sealed-secrets/verifactu-worker.yaml
+  - sealed-secrets/aeat-certificate.yaml
+  - sealed-secrets/db-backup.yaml
+  - sealed-secrets/ghcr-pull.yaml
+configMapGenerator:
+  - name: verifactu-worker
+    literals:
+      - AEAT_ENV=prod
+      # CAMBIA APP_URL y APP_HOST por el dominio de producción de la app en Vercel.
+      - APP_URL=https://mis-cuentas.vercel.app
+      - APP_HOST=mis-cuentas.vercel.app
+      - AEAT_HOST=www1.agenciatributaria.gob.es
+      # CAMBIA NEON_HOST por el host de WORKER_DATABASE_URL de .env.homelab, el host directo de la rama
+      # main (ep-<id>.c-<celda>.eu-central-1.aws.neon.tech, sin -pooler). seal-secrets.sh comprueba que
+      # coincide con WORKER_DATABASE_URL y con BACKUP_DATABASE_URL.
+      - NEON_HOST=cambia-por-el-host-directo-de-neon
+replacements:
+  - source:
+      kind: ConfigMap
+      name: verifactu-worker
+      fieldPath: data.NEON_HOST
+    targets:
+      - select:
+          kind: CiliumNetworkPolicy
+          name: verifactu-worker-egress
+        fieldPaths:
+          - spec.egress.1.toFQDNs.0.matchName
+      - select:
+          kind: CiliumNetworkPolicy
+          name: db-backup-egress
+        fieldPaths:
+          - spec.egress.1.toFQDNs.0.matchName
+  - source:
+      kind: ConfigMap
+      name: verifactu-worker
+      fieldPath: data.APP_HOST
+    targets:
+      - select:
+          kind: CiliumNetworkPolicy
+          name: verifactu-worker-egress
+        fieldPaths:
+          - spec.egress.2.toFQDNs.0.matchName
+      - select:
+          kind: CiliumNetworkPolicy
+          name: db-backup-egress
+        fieldPaths:
+          - spec.egress.2.toFQDNs.0.matchName
+  - source:
+      kind: ConfigMap
+      name: verifactu-worker
+      fieldPath: data.AEAT_HOST
+    targets:
+      - select:
+          kind: CiliumNetworkPolicy
+          name: verifactu-worker-egress
+        fieldPaths:
+          - spec.egress.3.toFQDNs.0.matchName

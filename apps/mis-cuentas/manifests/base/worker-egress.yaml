@@ -1,0 +1,53 @@
+# Salida del worker, con Cilium (el CNI del clúster, con enable-k8s-networkpolicy, el proxy L7 y
+# toFQDNs activos). Una NetworkPolicy de Kubernetes no sabe de nombres de host, y las IP de Neon, de
+# Vercel y de la AEAT cambian. La regla de DNS con matchPattern "*" deja que Cilium vea las respuestas
+# y abra solo las IP de estos nombres. Los hosts de Neon, de la app y de la AEAT los pone cada entorno
+# desde su ConfigMap (replacements en prod/ y pre/).
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: verifactu-worker-egress
+  labels:
+    app.kubernetes.io/part-of: mis-cuentas
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: verifactu-worker
+  egress:
+    # 0. DNS del clúster (CoreDNS en kube-system).
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    # 1. El host directo de la rama de Neon del entorno (ep-<id>.c-<celda>.eu-central-1.aws.neon.tech).
+    #    Va por nombre exacto, porque el "*" de matchPattern no pasa de una etiqueta a otra y el host
+    #    tiene seis.
+    - toFQDNs:
+        - matchName: NEON_HOST
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    # 2. La app en Vercel, para el timbre.
+    - toFQDNs:
+        - matchName: APP_HOST
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+    # 3. El servicio VerifactuSOAP de la AEAT del entorno.
+    - toFQDNs:
+        - matchName: AEAT_HOST
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

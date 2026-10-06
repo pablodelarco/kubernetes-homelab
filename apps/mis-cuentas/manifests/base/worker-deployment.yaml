@@ -1,0 +1,133 @@
+# El worker de VeriFactu (architecture.md, "Contrato con el worker"). Una sola réplica con Recreate,
+# para que nunca envíen dos a la vez. Pregunta al timbre de la app cada minuto, se conecta a Neon con
+# worker_role solo cuando hay algo que enviar y envía a la AEAT con mTLS y el .p12 montado desde un
+# Secret. Sin Service: solo hace conexiones de salida.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verifactu-worker
+  labels:
+    app.kubernetes.io/name: verifactu-worker
+    app.kubernetes.io/part-of: mis-cuentas
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: verifactu-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: verifactu-worker
+        app.kubernetes.io/part-of: mis-cuentas
+    spec:
+      serviceAccountName: verifactu-worker
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      # Deja acabar el lote en curso: el SOAP tiene 120 segundos como mucho.
+      terminationGracePeriodSeconds: 180
+      imagePullSecrets:
+        - name: ghcr-pull
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: worker
+          image: mis-cuentas-worker
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: verifactu-worker
+          env:
+            - name: WORKER_STATE_DIR
+              value: /var/lib/verifactu-worker
+            - name: AEAT_CERT_PATH
+              value: /var/run/secrets/aeat/cert.p12
+            - name: AEAT_CERT_PASSPHRASE_PATH
+              value: /var/run/secrets/aeat/passphrase
+            - name: NODE_OPTIONS
+              value: --max-old-space-size=160
+            - name: WORKER_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: verifactu-worker
+                  key: WORKER_DATABASE_URL
+            - name: WORKER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: verifactu-worker
+                  key: WORKER_TOKEN
+            - name: VERCEL_AUTOMATION_BYPASS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: verifactu-worker
+                  key: VERCEL_AUTOMATION_BYPASS_SECRET
+                  optional: true
+          resources:
+            requests:
+              cpu: 20m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          # Falla solo si el bucle deja de escribir el fichero de salud: una AEAT, una app o un Neon
+          # caídos no se arreglan reiniciando, y el worker reintenta solo.
+          livenessProbe:
+            exec:
+              command:
+                - /nodejs/bin/node
+                - /app/healthcheck.mjs
+            initialDelaySeconds: 30
+            periodSeconds: 60
+            timeoutSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - name: aeat-certificate
+              mountPath: /var/run/secrets/aeat
+              readOnly: true
+            - name: state
+              mountPath: /var/lib/verifactu-worker
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: aeat-certificate
+          secret:
+            secretName: aeat-certificate
+            defaultMode: 0440
+            items:
+              - key: cert.p12
+                path: cert.p12
+              - key: passphrase
+                path: passphrase
+        # El último timbre procesado y el fichero de salud. Se pierde al reiniciar, y eso solo cuesta
+        # una pasada al arrancar.
+        - name: state
+          emptyDir:
+            sizeLimit: 8Mi
+        - name: tmp
+          emptyDir:
+            sizeLimit: 16Mi

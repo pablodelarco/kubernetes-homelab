@@ -1,0 +1,24 @@
+# mis-cuentas en el homelab: el worker de VeriFactu de producción y el de pruebas, y la copia
+# nocturna. Copia este fichero a argocd-apps/ del repositorio kubernetes-homelab y la carpeta
+# apps/mis-cuentas/manifests a apps/. app-of-apps lo recoge en la siguiente sincronización.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mis-cuentas
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/mis-cuentas/manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: mis-cuentas
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # Los namespaces mis-cuentas y mis-cuentas-pre vienen en los manifiestos.
+      - CreateNamespace=false

@@ -1,0 +1,59 @@
+# Pruebas: el worker contra prewww1 y la rama pre de Neon, que llama al entorno Preview de Vercel
+# con la cabecera de Protection Bypass for Automation. Sin copia nocturna: la rama pre no guarda nada
+# que conservar.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mis-cuentas-pre
+resources:
+  - ../base
+  # Plantillas sin valores hasta que seal-secrets.sh las sustituye por los SealedSecret de verdad.
+  - sealed-secrets/verifactu-worker.yaml
+  - sealed-secrets/aeat-certificate.yaml
+  - sealed-secrets/ghcr-pull.yaml
+configMapGenerator:
+  - name: verifactu-worker
+    literals:
+      - AEAT_ENV=pre
+      # CAMBIA APP_URL y APP_HOST por el alias estable de la rama pre en Vercel
+      # (mis-cuentas-git-pre-<equipo>.vercel.app o un dominio propio de Preview).
+      - APP_URL=https://mis-cuentas-git-pre.vercel.app
+      - APP_HOST=mis-cuentas-git-pre.vercel.app
+      - AEAT_HOST=prewww1.aeat.es
+      # CAMBIA NEON_HOST por el host de PRE_WORKER_DATABASE_URL de .env.homelab, el host directo de la
+      # rama pre (cada rama de Neon tiene el suyo). seal-secrets.sh comprueba que coinciden.
+      - NEON_HOST=cambia-por-el-host-directo-de-neon
+      # Solo durante la prueba 5 de la lista de preproducción: descomenta la línea de abajo, sube el
+      # cambio y ArgoCD reinicia el worker, que descarta la primera respuesta de la AEAT. Después
+      # vuelve a comentarla. El worker de producción no arranca con ella.
+      # - AEAT_DISCARD_FIRST_RESPONSE=1
+replacements:
+  - source:
+      kind: ConfigMap
+      name: verifactu-worker
+      fieldPath: data.NEON_HOST
+    targets:
+      - select:
+          kind: CiliumNetworkPolicy
+          name: verifactu-worker-egress
+        fieldPaths:
+          - spec.egress.1.toFQDNs.0.matchName
+  - source:
+      kind: ConfigMap
+      name: verifactu-worker
+      fieldPath: data.APP_HOST
+    targets:
+      - select:
+          kind: CiliumNetworkPolicy
+          name: verifactu-worker-egress
+        fieldPaths:
+          - spec.egress.2.toFQDNs.0.matchName
+  - source:
+      kind: ConfigMap
+      name: verifactu-worker
+      fieldPath: data.AEAT_HOST
+    targets:
+      - select:
+          kind: CiliumNetworkPolicy
+          name: verifactu-worker-egress
+        fieldPaths:
+          - spec.egress.3.toFQDNs.0.matchName

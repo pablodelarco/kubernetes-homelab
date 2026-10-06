@@ -1,0 +1,17 @@
+# PLANTILLA SIN VALORES. bash deploy/homelab/seal-secrets.sh sustituye este fichero por el
+# SealedSecret de verdad, cifrado con la clave pública de sealed-secrets-controller.
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: db-backup
+  namespace: mis-cuentas
+spec:
+  encryptedData:
+    AGE_RECIPIENT: SELLAR_CON_seal-secrets.sh
+    BACKUP_DATABASE_URL: SELLAR_CON_seal-secrets.sh
+    BACKUP_TOKEN: SELLAR_CON_seal-secrets.sh
+  template:
+    metadata:
+      name: db-backup
+      namespace: mis-cuentas
+    type: Opaque

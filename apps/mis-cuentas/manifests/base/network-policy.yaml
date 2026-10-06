@@ -1,0 +1,12 @@
+# Nada entra en los pods de mis-cuentas: no hay Service y la sonda de vida es un exec. La salida la
+# limitan las CiliumNetworkPolicy de cada pod.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+  labels:
+    app.kubernetes.io/part-of: mis-cuentas
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress

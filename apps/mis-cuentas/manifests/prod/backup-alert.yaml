@@ -1,0 +1,49 @@
+# Avisos de la copia nocturna en el Prometheus del homelab (kube-prometheus-stack, que manda a Telegram
+# los de severidad warning y critical). Un Job fallido ya avisa con KubeJobFailed, pero una copia que
+# no llega a ejecutarse no falla nada. Estas reglas avisan cuando la última copia correcta tiene más de
+# 26 horas, cuando el CronJob no existe y cuando está suspendido. Las métricas son de
+# kube-state-metrics.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mis-cuentas-backup
+  labels:
+    app.kubernetes.io/name: db-backup
+    app.kubernetes.io/part-of: mis-cuentas
+    release: monitoring
+spec:
+  groups:
+    - name: mis-cuentas-backup
+      rules:
+        - alert: MisCuentasBackupMissing
+          # Sin copia correcta en 26 horas, o sin ninguna 26 horas después de crear el CronJob.
+          expr: |
+            (time() - max by (namespace, cronjob) (kube_cronjob_status_last_successful_time{namespace="mis-cuentas", cronjob="db-backup"})) > 26 * 3600
+            or
+            (
+              (time() - max by (namespace, cronjob) (kube_cronjob_created{namespace="mis-cuentas", cronjob="db-backup"})) > 26 * 3600
+              unless
+              max by (namespace, cronjob) (kube_cronjob_status_last_successful_time{namespace="mis-cuentas", cronjob="db-backup"})
+            )
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "La copia nocturna de mis-cuentas no se ha hecho"
+            description: "La última copia correcta de db-backup tiene más de 26 horas. Revisa el CronJob y sus Jobs en el namespace mis-cuentas."
+        - alert: MisCuentasBackupCronJobAbsent
+          expr: absent(kube_cronjob_info{namespace="mis-cuentas", cronjob="db-backup"})
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "El CronJob db-backup de mis-cuentas no existe"
+            description: "kube-state-metrics no ve el CronJob db-backup en el namespace mis-cuentas, así que no hay copias nocturnas. Revisa la aplicación mis-cuentas en ArgoCD."
+        - alert: MisCuentasBackupSuspended
+          expr: max by (namespace, cronjob) (kube_cronjob_spec_suspend{namespace="mis-cuentas", cronjob="db-backup"}) == 1
+          for: 30m
+          labels:
+            severity: warning
+          annotations:
+            summary: "El CronJob db-backup de mis-cuentas está suspendido"
+            description: "El CronJob db-backup tiene suspend a true y no hace copias nocturnas."
