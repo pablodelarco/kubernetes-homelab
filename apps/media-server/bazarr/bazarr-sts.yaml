@@ -11,6 +11,8 @@ spec:
       app: bazarr
   template:
     metadata:
+      annotations:
+        checksum/container-image: "sha256:fb0437897eaa7f96cf6ac42f795f8dcc208d34ec969eac5d366454e767304eb9"
       labels:
         app: bazarr
     spec:
@@ -26,7 +28,8 @@ spec:
                       - worker
       containers:
         - name: bazarr
-          image: linuxserver/bazarr:1.5.4
+          image: linuxserver/bazarr:1.6.2
+          imagePullPolicy: Always
           env:
             - name: PUID
               value: "65534"
