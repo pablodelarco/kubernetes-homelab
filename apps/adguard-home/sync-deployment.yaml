@@ -8,8 +8,7 @@ metadata:
   labels:
     app: adguardhome-sync
 spec:
-  # Temporarily paused while Home schemas are upgraded node by node.
-  replicas: 0
+  replicas: 1
   strategy:
     type: Recreate
   selector:
