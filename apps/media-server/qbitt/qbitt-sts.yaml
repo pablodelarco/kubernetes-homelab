@@ -128,8 +128,10 @@ spec:
               value: "Netherlands"
             - name: FIREWALL_INPUT_PORTS
               value: "8080,8888,9999"
+            # Keep WebUI 8080 on eth0 only. Gluetun VPN cleanup removes a
+            # VPN input port from ALL interfaces, including local input rules.
             - name: FIREWALL_VPN_INPUT_PORTS
-              value: "8080,6881,6969,1337"
+              value: "6881,6969,1337"
             - name: FIREWALL_OUTBOUND_SUBNETS
               value: "10.42.0.0/16,10.43.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,100.64.0.0/10"
             - name: FIREWALL_INPUT_SUBNETS
