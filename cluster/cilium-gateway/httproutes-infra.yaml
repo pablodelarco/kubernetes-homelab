@@ -126,26 +126,6 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: opencost
-  namespace: opencost
-spec:
-  parentRefs:
-    - name: homelab-gateway
-      namespace: kube-system
-  hostnames:
-    - "opencost.homelab"
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: opencost
-          port: 9090
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
   name: n8n
   namespace: n8n
 spec:
