@@ -11,6 +11,8 @@ spec:
       app: radarr
   template:
     metadata:
+      annotations:
+        checksum/container-image: "sha256:ea6822c956d26db648b237919f41340318f32e5b7dcc4ba702cf256a0f5f3c12"
       labels:
         app: radarr
     spec:
@@ -31,7 +33,7 @@ spec:
         # iptables rules and VPN routes are in place.
         - name: gluetun
           restartPolicy: Always
-          image: qmcgaw/gluetun:v3.41.0
+          image: qmcgaw/gluetun:v3.41.3
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"
@@ -91,7 +93,8 @@ spec:
             failureThreshold: 3
       containers:
         - name: radarr
-          image: linuxserver/radarr:6.0.4
+          image: linuxserver/radarr:6.4.4
+          imagePullPolicy: Always
           env:
             - name: PUID
               value: "65534"
