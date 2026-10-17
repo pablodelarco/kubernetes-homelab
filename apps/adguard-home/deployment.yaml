@@ -4,6 +4,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adguard-home-primary
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
   namespace: adguard-home
   labels:
     app: adguard-home
@@ -57,7 +59,7 @@ spec:
               mountPath: /opt/adguardhome/conf
       containers:
         - name: adguard-home
-          image: adguard/adguardhome:v0.107.54
+          image: adguard/adguardhome:v0.107.79@sha256:aba9e3bf0613be3ba3755e1fc311b126e2c24bec25e18b6483894a88283074f0
           ports:
             - name: dns-tcp
               containerPort: 53
