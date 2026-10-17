@@ -26,7 +26,11 @@ spec:
                       - worker
       containers:
         - name: jellyseerr
-          image: fallenbagel/jellyseerr:2.7.3
+          image: ghcr.io/seerr-team/seerr:v3.5.0@sha256:27602401178d54f1964442287b9f23f67a3fa2252645ee8065839ea1c3f69e45
+          # Preserve the existing effective UID/GID and root-owned PVC; no data chown.
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
           env:
             - name: LOG_LEVEL
               value: "info"

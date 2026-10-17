@@ -3,17 +3,15 @@ kind: Application
 metadata:
   name: jellyseerr
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: jellyseerr=fallenbagel/jellyseerr
-    argocd-image-updater.argoproj.io/jellyseerr.update-strategy: semver
-    # Pinned to 2.x — upstream 3.x is a major rewrite with breaking changes.
-    argocd-image-updater.argoproj.io/jellyseerr.allow-tags: regexp:^2\.\d+\.\d+$
 spec:
   project: default
   source:
     repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
     targetRevision: main
     path: apps/media-server/jellyseerr
+    kustomize:
+      images:
+        - ghcr.io/seerr-team/seerr:v3.5.0@sha256:27602401178d54f1964442287b9f23f67a3fa2252645ee8065839ea1c3f69e45
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: media
