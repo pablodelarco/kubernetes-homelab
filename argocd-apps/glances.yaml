@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: glances
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/glances
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: glances
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

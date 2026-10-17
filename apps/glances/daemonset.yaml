@@ -18,7 +18,7 @@ spec:
       hostPID: true
       containers:
         - name: glances
-          image: nicolargo/glances:latest-full
+          image: nicolargo/glances:4.5.8-full@sha256:63823bf68687b42afab3bced830d1f157447c0204476cb7a62cb1e5e65dc292c
           ports:
             - containerPort: 61208
               hostPort: 61208
