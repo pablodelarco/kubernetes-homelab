@@ -5,11 +5,15 @@ metadata:
   namespace: media
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: prowlarr
   template:
     metadata:
+      annotations:
+        checksum/container-image: "sha256:f9151e5bc1025c6d0a630d503210cdcb6bb55a7cc098562609d96a408d838902"
       labels:
         app: prowlarr
     spec:
@@ -25,7 +29,8 @@ spec:
                       - worker
       containers:
         - name: prowlarr
-          image: linuxserver/prowlarr:2.3.5
+          image: linuxserver/prowlarr:2.6.5
+          imagePullPolicy: Always
           env:
             - name: PUID
               value: "65534"
