@@ -11,6 +11,8 @@ spec:
       app: sonarr
   template:
     metadata:
+      annotations:
+        checksum/container-image: "sha256:44b06045a98bc1f237b9ffefc4b28dab64cb29305e4a2a94875ae93b5224e4cc"
       labels:
         app: sonarr
     spec:
@@ -30,7 +32,7 @@ spec:
         # Same pattern as radarr.
         - name: gluetun
           restartPolicy: Always
-          image: qmcgaw/gluetun:v3.41.0
+          image: qmcgaw/gluetun:v3.41.3
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"
@@ -90,7 +92,8 @@ spec:
             failureThreshold: 3
       containers:
         - name: sonarr
-          image: linuxserver/sonarr:4.0.17
+          image: linuxserver/sonarr:4.0.20
+          imagePullPolicy: Always
           env:
             - name: PUID
               value: "65534"
