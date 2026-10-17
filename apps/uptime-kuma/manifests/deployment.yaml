@@ -8,11 +8,9 @@ spec:
   selector:
     matchLabels:
       app: uptime-kuma
-  strategy: # Add the update strategy here
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1 # Allow 1 extra pod during updates
-      maxUnavailable: 0 # Ensure no pods are unavailable
+  # A single SQLite-backed data directory must never have overlapping writers.
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -48,7 +46,7 @@ spec:
             value: "1"
       containers:
         - name: uptime-kuma
-          image: louislam/uptime-kuma:2.3.0
+          image: louislam/uptime-kuma:2.5.6@sha256:9912da7d7d9b6ddc0c2d904beb84d24689c1ed9c33b81419eb9008663a92a329
           env:
             # Disable IPv6 to force IPv4 resolution for local monitoring
             - name: NODE_OPTIONS
