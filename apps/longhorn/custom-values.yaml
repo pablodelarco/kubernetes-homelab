@@ -98,3 +98,29 @@ extraObjects:
         full-backup-interval: "7"
       labels:
         type: scheduled-backup
+  # Metrics are short-lived; these jobs create no new recovery snapshots.
+  # Direct PVC selectors restrict both jobs to Prometheus, not protected apps.
+  - apiVersion: longhorn.io/v1beta2
+    kind: RecurringJob
+    metadata:
+      name: prometheus-filesystem-trim
+      namespace: longhorn-system
+    spec:
+      name: prometheus-filesystem-trim
+      cron: "20 0 * * *"
+      task: filesystem-trim
+      groups: []
+      retain: 0
+      concurrency: 1
+  - apiVersion: longhorn.io/v1beta2
+    kind: RecurringJob
+    metadata:
+      name: prometheus-snapshot-cleanup
+      namespace: longhorn-system
+    spec:
+      name: prometheus-snapshot-cleanup
+      cron: "40 0 * * *"
+      task: snapshot-cleanup
+      groups: []
+      retain: 0
+      concurrency: 1
