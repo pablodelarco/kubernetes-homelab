@@ -1,11 +1,12 @@
 # ── 0. Image version (managed by ArgoCD Image Updater) ────────────────────────
 image:
-  tag: "2.9.1"
+  tag: "2.43.7@sha256:3db21366be1d3c77c1708963129c051948573019659e8873e0294be035ffc1b2"
 
 # ── 1. n8n container & app-level config ──────────────────────────────────────
 main:
   # App configuration (becomes ConfigMap env vars)
   config:
+    N8N_DEPRECATED_NODES_BLOCK: "true"
     port: 443
     n8n:
       webhookUrl:       "http://n8n.homelab"
