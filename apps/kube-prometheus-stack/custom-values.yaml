@@ -6,6 +6,7 @@ defaultRules:
 
 kubeApiServer:
   serviceMonitor:
+    interval: 30s
     metricRelabelings:
       - action: drop
         sourceLabels: ["__name__"]
@@ -64,6 +65,10 @@ grafana:
 
 prometheus:
   prometheusSpec:
+    scrapeInterval: 60s
+    evaluationInterval: 60s
+    # Preserve the existing live size cap (not previously in Git values).
+    retentionSize: 27GB
     remoteWriteDashboards: false
     serverSideApply: true
     # Discover GitOps-managed monitors and rules across all namespaces. Several
@@ -485,3 +490,22 @@ prometheusOperator:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
+
+# Reduce ingestion/cardinality while preserving short-window alerts.
+kubeEtcd:
+  serviceMonitor:
+    interval: 30s
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      interval: 30s
+kubelet:
+  serviceMonitor:
+    interval: 30s
+    metricRelabelings:
+      - action: drop
+        sourceLabels: [__name__, le]
+        regex: '(csi_operations|storage_operation_duration)_seconds_bucket;(0.25|2.5|15|25|120|600)(\.0)?'
+      - action: drop
+        sourceLabels: [__name__]
+        regex: '(apiserver_request_duration_seconds|etcd_request_duration_seconds|apiserver_request_body_size_bytes|apiserver_response_sizes|apiserver_watch_cache_read_wait_seconds|apiserver_watch_events_sizes|apiserver_watch_list_duration_seconds)_bucket'
