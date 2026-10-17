@@ -11,6 +11,8 @@ spec:
       app: qbitt
   template:
     metadata:
+      annotations:
+        checksum/container-image: "sha256:97333cc1ccf903e0bbcd8eb67e3332e4970e9c1ecabe145e499e9c0847ebcaed"
       labels:
         app: qbitt
     spec:
@@ -108,7 +110,7 @@ spec:
         # Order: fix-qbitt-config (traditional) → gluetun (sidecar) → qbitt (main).
         - name: gluetun
           restartPolicy: Always
-          image: qmcgaw/gluetun:v3.41.0
+          image: qmcgaw/gluetun:v3.41.3
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "nordvpn"
@@ -186,7 +188,8 @@ spec:
             failureThreshold: 5
       containers:
         - name: qbitt
-          image: linuxserver/qbittorrent:5.1.4
+          image: linuxserver/qbittorrent:5.2.4
+          imagePullPolicy: Always
           resources:
             limits:
               memory: "2Gi"
