@@ -1,0 +1,43 @@
+rule_files:
+  - longhorn-efficiency.rules.yaml
+evaluation_interval: 5m
+tests:
+  - name: physical Prometheus inflation despite filesystem retention
+    interval: 1m
+    input_series:
+      - series: 'longhorn_volume_actual_size_bytes{volume="pvc-19489df3-c141-4fb3-906a-388ec4169e93"}'
+        values: '10737418240+0x130'
+      - series: 'kubelet_volume_stats_used_bytes{namespace="monitoring",persistentvolumeclaim="prometheus-monitoring-kube-prometheus-prometheus-db-prometheus-monitoring-kube-prometheus-prometheus-0"}'
+        values: '1073741824+0x130'
+    alert_rule_test:
+      - eval_time: 90m
+        alertname: LonghornPrometheusStorageAmplification
+        exp_alerts:
+          - exp_labels:
+              severity: warning
+              volume: pvc-19489df3-c141-4fb3-906a-388ec4169e93
+            exp_annotations:
+              summary: "Prometheus replicas retain substantially more than live filesystem data"
+              description: "Per-replica allocation exceeds 8 GiB and four times live filesystem usage for 1 hour. Inspect snapshot chains, trim logs and rebuild state; successful maintenance alone does not prove reclaimed blocks. Preserve both replicas; no automatic deletion or remount."
+  - name: legitimate larger live dataset stays quiet
+    interval: 1m
+    input_series:
+      - series: 'longhorn_volume_actual_size_bytes{volume="pvc-19489df3-c141-4fb3-906a-388ec4169e93"}'
+        values: '10737418240+0x130'
+      - series: 'kubelet_volume_stats_used_bytes{namespace="monitoring",persistentvolumeclaim="prometheus-monitoring-kube-prometheus-prometheus-db-prometheus-monitoring-kube-prometheus-prometheus-0"}'
+        values: '8589934592+0x130'
+    alert_rule_test:
+      - eval_time: 90m
+        alertname: LonghornPrometheusStorageAmplification
+        exp_alerts: []
+  - name: small retained internal chain stays quiet even at high ratio
+    interval: 1m
+    input_series:
+      - series: 'longhorn_volume_actual_size_bytes{volume="pvc-19489df3-c141-4fb3-906a-388ec4169e93"}'
+        values: '2147483648+0x130'
+      - series: 'kubelet_volume_stats_used_bytes{namespace="monitoring",persistentvolumeclaim="prometheus-monitoring-kube-prometheus-prometheus-db-prometheus-monitoring-kube-prometheus-prometheus-0"}'
+        values: '268435456+0x130'
+    alert_rule_test:
+      - eval_time: 90m
+        alertname: LonghornPrometheusStorageAmplification
+        exp_alerts: []

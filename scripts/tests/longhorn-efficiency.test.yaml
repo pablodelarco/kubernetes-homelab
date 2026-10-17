@@ -1,0 +1,74 @@
+rule_files:
+  - longhorn-efficiency.rules.yaml
+evaluation_interval: 5m
+tests:
+  - name: unrelated backup job does not enter Prometheus maintenance policy
+    interval: 1m
+    input_series:
+      - series: 'kube_cronjob_status_last_successful_time{namespace="longhorn-system",cronjob="default-backup"}'
+        values: '0+0x2040'
+    alert_rule_test:
+      - eval_time: 32h
+        alertname: LonghornPrometheusMaintenanceStale
+        exp_alerts: []
+  - name: newly created job has a full day to run
+    interval: 1m
+    input_series:
+      - series: 'kube_cronjob_created{namespace="longhorn-system",cronjob="prometheus-snapshot-cleanup"}'
+        values: '0+0x120'
+    alert_rule_test:
+      - eval_time: 1h
+        alertname: LonghornPrometheusMaintenanceStale
+        exp_alerts: []
+  - name: old creation does not override a recent successful run
+    interval: 1m
+    input_series:
+      - series: 'kube_cronjob_created{namespace="longhorn-system",cronjob="prometheus-snapshot-cleanup"}'
+        values: '0+0x2040'
+      - series: 'kube_cronjob_status_last_successful_time{namespace="longhorn-system",cronjob="prometheus-snapshot-cleanup"}'
+        values: '0+60x2040'
+    alert_rule_test:
+      - eval_time: 32h
+        alertname: LonghornPrometheusMaintenanceStale
+        exp_alerts: []
+  - name: maintenance success becomes stale after 30h with 30m grace
+    interval: 1m
+    input_series:
+      - series: 'kube_cronjob_status_last_successful_time{namespace="longhorn-system",cronjob="prometheus-filesystem-trim"}'
+        values: '0+0x2040'
+    alert_rule_test:
+      - eval_time: 32h
+        alertname: LonghornPrometheusMaintenanceStale
+        exp_alerts:
+          - exp_labels:
+              namespace: longhorn-system
+              cronjob: prometheus-filesystem-trim
+              severity: warning
+            exp_annotations:
+              summary: "Prometheus storage maintenance has not succeeded in 30 hours"
+              description: "Check longhorn-system/prometheus-filesystem-trim logs, exact Prometheus volume membership and physical replica allocation. Do not remount or delete snapshots automatically."
+  - name: freshly successful maintenance stays quiet
+    interval: 1m
+    input_series:
+      - series: 'kube_cronjob_status_last_successful_time{namespace="longhorn-system",cronjob="prometheus-filesystem-trim"}'
+        values: '0+60x2040'
+    alert_rule_test:
+      - eval_time: 32h
+        alertname: LonghornPrometheusMaintenanceStale
+        exp_alerts: []
+  - name: never successful maintenance becomes stale
+    interval: 1m
+    input_series:
+      - series: 'kube_cronjob_created{namespace="longhorn-system",cronjob="prometheus-snapshot-cleanup"}'
+        values: '0+0x2040'
+    alert_rule_test:
+      - eval_time: 32h
+        alertname: LonghornPrometheusMaintenanceStale
+        exp_alerts:
+          - exp_labels:
+              namespace: longhorn-system
+              cronjob: prometheus-snapshot-cleanup
+              severity: warning
+            exp_annotations:
+              summary: "Prometheus storage maintenance has not succeeded in 30 hours"
+              description: "Check longhorn-system/prometheus-snapshot-cleanup logs, exact Prometheus volume membership and physical replica allocation. Do not remount or delete snapshots automatically."

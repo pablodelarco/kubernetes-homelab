@@ -484,6 +484,34 @@ additionalPrometheusRulesMap:
               summary: "Longhorn protected backup job failed"
               description: "The scheduled default-backup job for the protected group has failed."
 
+          # Reuse kube-state-metrics and the existing alert route; no health cron.
+          - alert: LonghornPrometheusMaintenanceStale
+            expr: |
+              (time() - max by (namespace, cronjob) (kube_cronjob_status_last_successful_time{namespace="longhorn-system",cronjob=~"prometheus-(filesystem-trim|snapshot-cleanup)"}) > 108000)
+              or
+              ((time() - max by (namespace, cronjob) (kube_cronjob_created{namespace="longhorn-system",cronjob=~"prometheus-(filesystem-trim|snapshot-cleanup)"}) > 108000)
+              unless on (namespace, cronjob) kube_cronjob_status_last_successful_time{namespace="longhorn-system",cronjob=~"prometheus-(filesystem-trim|snapshot-cleanup)"})
+            for: 30m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Prometheus storage maintenance has not succeeded in 30 hours"
+              description: "Check {{ $labels.namespace }}/{{ $labels.cronjob }} logs, exact Prometheus volume membership and physical replica allocation. Do not remount or delete snapshots automatically."
+
+          - alert: LonghornPrometheusStorageAmplification
+            expr: |
+              (max by (volume) (longhorn_volume_actual_size_bytes{volume="pvc-19489df3-c141-4fb3-906a-388ec4169e93"}) > 8589934592)
+              and on (volume)
+              (max by (volume) (longhorn_volume_actual_size_bytes{volume="pvc-19489df3-c141-4fb3-906a-388ec4169e93"})
+              > on () group_left ()
+              (4 * max(kubelet_volume_stats_used_bytes{namespace="monitoring",persistentvolumeclaim="prometheus-monitoring-kube-prometheus-prometheus-db-prometheus-monitoring-kube-prometheus-prometheus-0"})))
+            for: 1h
+            labels:
+              severity: warning
+            annotations:
+              summary: "Prometheus replicas retain substantially more than live filesystem data"
+              description: "Per-replica allocation exceeds 8 GiB and four times live filesystem usage for 1 hour. Inspect snapshot chains, trim logs and rebuild state; successful maintenance alone does not prove reclaimed blocks. Preserve both replicas; no automatic deletion or remount."
+
 prometheusOperator:
   # Removed affinity to beelink - let it run on any available node
   tolerations:
