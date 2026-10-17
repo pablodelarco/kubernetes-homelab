@@ -1,3 +1,6 @@
+image:
+  tag: v2.6.0
+
 config:
   bookmarks:
     - Links:
