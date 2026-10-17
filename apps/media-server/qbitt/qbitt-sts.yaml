@@ -125,7 +125,7 @@ spec:
                   name: nordvpn-secrets
                   key: NORDVPN_PASSWORD
             - name: SERVER_COUNTRIES
-              value: "Netherlands"
+              value: "Switzerland"
             - name: FIREWALL_INPUT_PORTS
               value: "8080,8888,9999"
             # Keep WebUI 8080 on eth0 only. Gluetun VPN cleanup removes a
