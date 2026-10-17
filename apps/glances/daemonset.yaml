@@ -26,6 +26,15 @@ spec:
           env:
             - name: GLANCES_OPT
               value: "-w"
+          readinessProbe:
+            httpGet:
+              host: 127.0.0.1
+              path: /api/4/version
+              port: 61208
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           securityContext:
             privileged: true
           resources:
