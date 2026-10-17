@@ -8,7 +8,10 @@ metadata:
   labels:
     app: adguardhome-sync
 spec:
-  replicas: 1
+  # Temporarily paused while Home schemas are upgraded node by node.
+  replicas: 0
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: adguardhome-sync
@@ -19,7 +22,7 @@ spec:
     spec:
       containers:
         - name: adguardhome-sync
-          image: ghcr.io/bakito/adguardhome-sync:latest
+          image: ghcr.io/bakito/adguardhome-sync:v0.9.4@sha256:4fec72b9c580c6711036ea42db645232d86384fde687365b0d0452d38d507280
           args:
             - run
           env:
