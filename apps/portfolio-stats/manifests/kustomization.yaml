@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: portfolio-stats
+resources:
+  - namespace.yaml
+  - github-token-sealed.yaml
+  - cronjob.yaml
