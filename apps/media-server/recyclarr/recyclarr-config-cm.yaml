@@ -35,6 +35,12 @@ data:
 
         quality_definition:
           type: movie
+          # Accept efficient ~2 GB 1080p / ~1 GB 720p encodes (sizes in MB per minute).
+          qualities:
+            - name: Bluray-1080p
+              min: 15
+            - name: Bluray-720p
+              min: 8
 
         quality_profiles:
           - trash_id: d1d67249d3890e49bc12e275d989a7e9 # HD Bluray + WEB
@@ -45,3 +51,11 @@ data:
           add:
             - trash_id: f8bf8eab4617f12dfdbd16303d8da245 # Golden Rule HD
             - trash_id: a3ac6af01d78e4f21fcb75f601ac96df # Unwanted Formats
+
+        custom_formats:
+          # Allow x265/HEVC 1080p encodes (guide default is -10000).
+          - trash_ids:
+              - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
+            assign_scores_to:
+              - trash_id: d1d67249d3890e49bc12e275d989a7e9 # HD Bluray + WEB
+                score: 0
