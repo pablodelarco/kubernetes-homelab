@@ -2,8 +2,7 @@
 # Also owns the selector-less Services/Endpoints for Docker-hosted apps
 # (home-assistant, esphome, zigbee2mqtt) in the docker-services namespace.
 #
-# Automated sync is intentionally off for the first adoption of the live
-# objects: review the diff in ArgoCD, sync manually, then enable automation.
+# Prune is off so a bad commit cannot delete the ingress DaemonSet.
 # Caddy runs with "admin off", so after a Caddyfile change restart it:
 #   kubectl -n caddy rollout restart ds/caddy
 apiVersion: argoproj.io/v1alpha1
@@ -21,5 +20,8 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: caddy
   syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
     syncOptions:
       - CreateNamespace=false
