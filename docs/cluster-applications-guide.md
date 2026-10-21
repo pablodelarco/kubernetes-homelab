@@ -249,17 +249,16 @@ Complete media automation and streaming solution with VPN protection.
 
 ---
 
-### **Traefik** - Ingress Controller
-**Purpose:** HTTP/HTTPS routing and load balancing
+### **Caddy** - Reverse Proxy
+**Purpose:** HTTP routing for `*.homelab` domains
 **Access:**
-- 🔌 NodePort HTTP: `http://100.113.23.108:30209` or `http://100.96.103.31:30209`
-- 🔌 NodePort HTTPS: `http://100.113.23.108:31044` or `http://100.96.103.31:31044`
+- 🔌 Host port 80 on both nodes (DaemonSet, `hostNetwork: true`)
+- DNS: AdGuard rewrites `*.homelab` to beelink's Tailscale IP
 
-**Features:**
-- Automatic HTTPS with Let's Encrypt
-- Tailscale ingress integration
-- Dynamic configuration
-- WebSocket support
+**Notes:**
+- Config: `cluster/caddy/configmap.yaml` (Caddyfile)
+- Caddy runs with `admin off`; restart the DaemonSet after config changes
+- The k3s bundled Traefik is disabled
 
 ---
 
@@ -469,7 +468,7 @@ Your cluster supports **three access methods** for services:
 | **Longhorn** | Storage | `https://longhorn.tabby-carp.ts.net` | `:30300` |
 | **MinIO API** | S3 Storage | `https://minio.tabby-carp.ts.net` | - |
 | **MinIO Console** | S3 UI | `https://minio-console.tabby-carp.ts.net` | - |
-| **Traefik** | Ingress | - | `:30209` (HTTP), `:31044` (HTTPS) |
+| **Caddy** | Reverse proxy | - | host port `:80` |
 
 ### **Monitoring Services**
 
@@ -536,7 +535,7 @@ Tailscale Funnel (Jellyfin only)
    ↓
 Tailscale Mesh Network (tabby-carp.ts.net)
    ↓
-Traefik Ingress Controller (192.168.1.233)
+Caddy reverse proxy (host port 80)
    ↓
 Kubernetes Services
    ↓
@@ -678,9 +677,9 @@ Cilium CNI
    kubectl get pods -n kube-system | grep tailscale
    ```
 
-2. **Check Traefik:**
+2. **Check Caddy:**
    ```bash
-   kubectl get pods -n kube-system | grep traefik
+   kubectl get pods -n caddy -o wide
    ```
 
 ---

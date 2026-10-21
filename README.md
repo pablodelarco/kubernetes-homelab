@@ -40,8 +40,8 @@ Running real applications on your own hardware surfaces the operational challeng
             +-------+-------+          +--------+--------+
                     |                           |
             ArgoCD, Cert-Manager       Media, Monitoring
-            MetalLB, Sealed Secrets    Home Automation
-            Cilium Gateway             Longhorn data plane
+            Caddy, Sealed Secrets      Home Automation
+            Cilium CNI                 Longhorn data plane
                     |                           |
                     +--------+  +---------------+
                              |  |
@@ -67,14 +67,14 @@ To keep things simple yet powerful, the homelab runs on two **Beelink Mini S12 P
 |----------|-------|
 | Platform | K3s |
 | GitOps | ArgoCD, ArgoCD Image Updater, Renovate |
-| Networking | Cilium (CNI + Gateway API), MetalLB (L2), Tailscale (mesh VPN) |
+| Networking | Cilium (CNI), Caddy (reverse proxy), Tailscale (mesh VPN) |
 | Storage | Longhorn (distributed block), Garage (S3-compatible), NFS (NAS) |
 | Monitoring | Prometheus, Grafana, Alertmanager, Uptime Kuma, Glances, OpenCost |
 | Security | Sealed Secrets, cert-manager (Let's Encrypt), AdGuard Home (DNS) |
 
 ## Applications
 
-The homelab runs a variety of applications, deployed using Kubernetes and managed declaratively through GitOps. Some services run on Docker and are exposed through the Kubernetes Gateway API.
+The homelab runs a variety of applications, deployed using Kubernetes and managed declaratively through GitOps. Some services run on Docker and are exposed through Caddy via selector-less Kubernetes Services.
 
 ### Kubernetes-managed
 
@@ -101,7 +101,7 @@ The homelab runs a variety of applications, deployed using Kubernetes and manage
 | Renovate | Platform | Dependency update automation |
 | Sealed Secrets | Platform | Encrypted secrets in Git |
 
-### Docker-managed (external services via Gateway API)
+### Docker-managed (external services via Caddy)
 
 | App | Category | Description |
 |-----|----------|-------------|
@@ -128,10 +128,11 @@ GitHub repo ──> ArgoCD (auto-sync) ──> Kubernetes cluster
 ## Networking
 
 - **Tailscale** mesh connects both nodes and provides remote access via WireGuard VPN.
-- **Cilium** serves as CNI and provides Gateway API for HTTP routing (`.homelab` domains).
-- **MetalLB** assigns IPs from a local L2 pool (`10.10.1.230-250`).
+- **Cilium** serves as CNI (kube-proxy replacement).
+- **Caddy** runs as a DaemonSet on host port 80 on both nodes and reverse-proxies the `.homelab` domains (`cluster/caddy/`).
+- No LoadBalancer provider is in use: the k3s service LB and Traefik are disabled.
 - **AdGuard Home** provides DNS resolution for `*.homelab` domains and ad blocking.
-- Docker services (Home Assistant, ESPHome, Zigbee2MQTT) are exposed through Kubernetes Gateway API via external Service/Endpoints.
+- Docker services (Home Assistant, ESPHome, Zigbee2MQTT) are exposed through Caddy via external Service/Endpoints.
 
 ## Backup Strategy
 
@@ -163,9 +164,8 @@ GitHub repo ──> ArgoCD (auto-sync) ──> Kubernetes cluster
 ├── cluster/                    # Cluster-wide configuration
 │   ├── cert-manager/           #   Let's Encrypt issuers
 │   ├── cilium/                 #   CNI configuration
-│   ├── cilium-gateway/         #   Gateway API routes
+│   ├── caddy/                  #   Caddy reverse proxy (*.homelab) + Docker service endpoints
 │   ├── sealed-secrets/         #   Sealed Secrets controller
-│   ├── metallb-config.yaml     #   Load balancer IP pool
 │   ├── namespaces.yaml         #   Namespace definitions
 │   └── rbac.yaml               #   RBAC policies
 ├── docs/                       # Documentation

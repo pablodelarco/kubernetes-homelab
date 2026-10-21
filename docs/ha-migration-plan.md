@@ -1,5 +1,7 @@
 # Home Assistant Stack: K8s to Docker Compose Migration
 
+> **Status (2026-10):** historical plan. The Cilium Gateway and all HTTPRoutes have since been removed; every `*.homelab` host is now served by the Caddy DaemonSet in `cluster/caddy/`.
+
 ## Overview
 
 Migrate the home automation stack (Home Assistant, ESPHome, Mosquitto) from the Kubernetes cluster to Docker Compose running natively on the **worker** node. A Caddy reverse proxy on port 80 provides clean `ha.homelab` / `esphome.homelab` URLs without port numbers.
