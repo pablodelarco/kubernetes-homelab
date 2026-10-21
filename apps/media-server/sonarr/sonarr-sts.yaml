@@ -107,6 +107,8 @@ spec:
               value: "http://localhost:8888"
             - name: NO_PROXY
               value: "localhost,127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.svc.cluster,.svc.cluster.local"
+            - name: SONARR__SERVER__ALLOWEDHOSTS
+              value: "sonarr.homelab,sonarr,sonarr.media,sonarr.media.svc,sonarr.media.svc.cluster.local,localhost,127.0.0.1,100.113.23.108,10.10.1.37,10.10.1.39,beelink,beelink.tabby-carp.ts.net"
           volumeMounts:
             - name: config
               mountPath: /config
@@ -118,6 +120,9 @@ spec:
             httpGet:
               path: /ping
               port: 8989
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 5
@@ -126,6 +131,9 @@ spec:
             httpGet:
               path: /ping
               port: 8989
+              httpHeaders:
+                - name: Host
+                  value: localhost
             periodSeconds: 60
             timeoutSeconds: 10
             failureThreshold: 5
@@ -133,6 +141,9 @@ spec:
             httpGet:
               path: /ping
               port: 8989
+              httpHeaders:
+                - name: Host
+                  value: localhost
             periodSeconds: 30
             timeoutSeconds: 10
             failureThreshold: 3
