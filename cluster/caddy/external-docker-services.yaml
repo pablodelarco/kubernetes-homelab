@@ -1,0 +1,76 @@
+# External services running on Docker
+# Selector-less Service+Endpoints pairs so Caddy can reach Docker containers by cluster DNS name
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: docker-services
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-assistant
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8123
+      targetPort: 8123
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: home-assistant
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.37
+    ports:
+      - port: 8123
+        protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: esphome
+  namespace: docker-services
+spec:
+  ports:
+    - port: 6052
+      targetPort: 6052
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: esphome
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.39
+    ports:
+      - port: 6052
+        protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zigbee2mqtt
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: zigbee2mqtt
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.39
+    ports:
+      - port: 8081
+        protocol: TCP
