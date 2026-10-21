@@ -1,0 +1,25 @@
+# Caddy - reverse proxy for *.homelab on host port 80 (DaemonSet, both nodes)
+# Also owns the selector-less Services/Endpoints for Docker-hosted apps
+# (home-assistant, esphome, zigbee2mqtt) in the docker-services namespace.
+#
+# Automated sync is intentionally off for the first adoption of the live
+# objects: review the diff in ArgoCD, sync manually, then enable automation.
+# Caddy runs with "admin off", so after a Caddyfile change restart it:
+#   kubectl -n caddy rollout restart ds/caddy
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: caddy
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: cluster/caddy
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: caddy
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=false
