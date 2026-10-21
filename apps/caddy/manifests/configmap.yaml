@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caddyfile
+  namespace: caddy
+data:
+  Caddyfile: |
+    {
+      auto_https off
+      admin off
+    }
+
+    http://adguard.homelab, http://dns.homelab {
+      reverse_proxy adguard-home.adguard-home.svc.cluster.local:3000
+    }
+    http://argocd.homelab {
+      reverse_proxy argocd-server.argocd.svc.cluster.local:80
+    }
+    http://esphome.homelab {
+      reverse_proxy esphome.docker-services.svc.cluster.local:6052
+    }
+    http://ha.homelab {
+      reverse_proxy home-assistant.docker-services.svc.cluster.local:8123 {
+        header_up -X-Forwarded-For
+        header_up -X-Forwarded-Proto
+        header_up -X-Forwarded-Host
+      }
+    }
+    http://z2m.homelab {
+      reverse_proxy zigbee2mqtt.docker-services.svc.cluster.local:8081
+    }
+    http://garage.homelab {
+      reverse_proxy garage-webui.garage.svc.cluster.local:3909
+    }
+    http://s3.homelab {
+      reverse_proxy garage.garage.svc.cluster.local:3900
+    }
+    http://homepage.homelab, http://home.homelab {
+      reverse_proxy homepage.homepage.svc.cluster.local:3000
+    }
+    http://longhorn.homelab {
+      reverse_proxy longhorn-frontend.longhorn-system.svc.cluster.local:80
+    }
+    http://bazarr.homelab {
+      reverse_proxy bazarr.media.svc.cluster.local:6767
+    }
+    http://jellyfin.homelab {
+      reverse_proxy jellyfin.media.svc.cluster.local:8096
+    }
+    http://jellyseerr.homelab {
+      reverse_proxy jellyseerr.media.svc.cluster.local:5055
+    }
+    http://prowlarr.homelab {
+      reverse_proxy prowlarr.media.svc.cluster.local:80
+    }
+    http://qbitt.homelab {
+      reverse_proxy qbitt.media.svc.cluster.local:80
+    }
+    http://radarr.homelab {
+      reverse_proxy radarr.media.svc.cluster.local:80
+    }
+    http://sonarr.homelab {
+      reverse_proxy sonarr.media.svc.cluster.local:80
+    }
+    http://grafana.homelab {
+      reverse_proxy monitoring-grafana.monitoring.svc.cluster.local:80
+    }
+    http://prometheus.homelab {
+      reverse_proxy monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+    }
+    http://n8n.homelab, http://beelink.tabby-carp.ts.net {
+      reverse_proxy n8n.n8n.svc.cluster.local:80
+    }
+    http://uptime.homelab, http://uptime-kuma.homelab {
+      reverse_proxy uptime-kuma.uptime-kuma.svc.cluster.local:3001
+    }
+    http://vlogs.homelab {
+      reverse_proxy victoria-logs-victoria-logs-single-server.victoria-logs.svc.cluster.local:9428
+    }
+
+    http:// {
+      respond "Not found: {host}" 404
+    }
