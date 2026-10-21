@@ -120,6 +120,9 @@ spec:
             httpGet:
               path: /ping
               port: 7878
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 5
@@ -128,6 +131,9 @@ spec:
             httpGet:
               path: /ping
               port: 7878
+              httpHeaders:
+                - name: Host
+                  value: localhost
             periodSeconds: 60
             timeoutSeconds: 10
             failureThreshold: 5
@@ -135,6 +141,9 @@ spec:
             httpGet:
               path: /ping
               port: 7878
+              httpHeaders:
+                - name: Host
+                  value: localhost
             periodSeconds: 30
             timeoutSeconds: 10
             failureThreshold: 3
