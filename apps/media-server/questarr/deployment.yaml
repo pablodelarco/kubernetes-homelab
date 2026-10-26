@@ -109,13 +109,13 @@ spec:
           mountPath: /dev/net/tun
         - name: vpn-data
           mountPath: /gluetun
-      containers:
-      - name: questarr
+      - name: prepare-data
         image: ghcr.io/doezer/questarr:v1.5.0@sha256:8b6a6df437aa3983a4ccffe164f3f33f664646c48cde05d263434e9768598621
         command:
-        - node
-        - dist/server/index.js
-        securityContext:
+        - sh
+        - -c
+        - id; ls -ld /app/data; touch /app/data/server.log; test -w /app/data/server.log
+        securityContext: &id002
           runAsNonRoot: true
           runAsUser: 1000
           runAsGroup: 1000
@@ -126,6 +126,23 @@ spec:
             - ALL
           seccompProfile:
             type: RuntimeDefault
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+      containers:
+      - name: questarr
+        image: ghcr.io/doezer/questarr:v1.5.0@sha256:8b6a6df437aa3983a4ccffe164f3f33f664646c48cde05d263434e9768598621
+        command:
+        - node
+        - dist/server/index.js
+        securityContext: *id002
         env:
         - name: SQLITE_DB_PATH
           value: /app/data/sqlite.db
@@ -147,6 +164,9 @@ spec:
           mountPath: /app/data
         - name: tmp
           mountPath: /tmp
+        - name: data
+          mountPath: /app/server.log
+          subPath: server.log
         resources:
           requests:
             cpu: 50m
