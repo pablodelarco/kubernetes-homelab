@@ -62,9 +62,10 @@ spec:
           value: Switzerland
         - name: FIREWALL_INPUT_PORTS
           value: 5000,9999
-        # Only the existing qBittorrent ClusterIP; no cluster/LAN-wide bypass.
+        # Existing qBittorrent only: Service and exact current endpoint for Cilium
+        # socket-LB. Reconcile endpoint /32 if qbitt-0 is ever recreated.
         - name: FIREWALL_OUTBOUND_SUBNETS
-          value: 10.43.204.85/32
+          value: 10.43.204.85/32,10.42.1.52/32
         - name: HEALTH_SERVER_ADDRESS
           value: 0.0.0.0:9999
         - name: DNS_ADDRESS
