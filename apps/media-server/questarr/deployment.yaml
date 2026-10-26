@@ -153,9 +153,9 @@ spec:
         - name: PORT
           value: '5000'
         - name: APP_URL
-          value: http://questarr.homelab
+          value: http://questarr.homelab:15000
         - name: ALLOWED_ORIGINS
-          value: http://questarr.homelab
+          value: http://questarr.homelab:15000
         - name: TRUST_PROXY
           value: '1'
         ports:

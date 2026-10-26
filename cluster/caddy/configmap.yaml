@@ -48,7 +48,7 @@ data:
     http://jellyseerr.homelab {
       reverse_proxy jellyseerr.media.svc.cluster.local:5055
     }
-    http://questarr.homelab {
+    http://questarr.homelab:15000 {
       @private remote_ip private_ranges 100.64.0.0/10
       handle @private {
         reverse_proxy questarr.media.svc.cluster.local:5000
