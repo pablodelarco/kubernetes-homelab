@@ -123,10 +123,10 @@ spec:
           runAsGroup: 1000
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
-          capabilities:
+          capabilities: &id003
             drop:
             - ALL
-          seccompProfile:
+          seccompProfile: &id004
             type: RuntimeDefault
         volumeMounts:
         - name: data
@@ -188,6 +188,60 @@ spec:
             port: 5000
           periodSeconds: 30
           initialDelaySeconds: 60
+      - name: prowlarr-questarr
+        image: lscr.io/linuxserver/prowlarr:2.6.5@sha256:b3b00047ed20f6ce2b16780145cb6a0acb51c9e28ea6aa6f5dcd33c7034f1797
+        command:
+        - /app/prowlarr/bin/Prowlarr
+        - -nobrowser
+        - -data=/config
+        workingDir: /app/prowlarr/bin
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: *id003
+          seccompProfile: *id004
+        env:
+        - name: HOME
+          value: /config
+        - name: TMPDIR
+          value: /tmp
+        - name: PROWLARR__SERVER__BINDADDRESS
+          value: 127.0.0.1
+        - name: PROWLARR__AUTH__METHOD
+          value: External
+        - name: PROWLARR__AUTH__REQUIRED
+          value: Enabled
+        volumeMounts:
+        - name: prowlarr-data
+          mountPath: /config
+        - name: prowlarr-tmp
+          mountPath: /tmp
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - wget -q -O /dev/null http://127.0.0.1:9696/ping
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - wget -q -O /dev/null http://127.0.0.1:9696/ping
+          initialDelaySeconds: 90
+          periodSeconds: 30
       volumes:
       - name: data
         persistentVolumeClaim:
@@ -200,3 +254,8 @@ spec:
         hostPath:
           path: /dev/net/tun
           type: CharDevice
+      - name: prowlarr-data
+        persistentVolumeClaim:
+          claimName: prowlarr-questarr
+      - name: prowlarr-tmp
+        emptyDir: {}
