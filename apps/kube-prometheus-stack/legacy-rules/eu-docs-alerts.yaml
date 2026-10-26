@@ -1,0 +1,52 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: eu-docs-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+  - name: eu-docs
+    rules:
+    - alert: EuDocsDown
+      expr: eu_docs_up == 0
+      for: 5m
+      labels:
+        severity: critical
+        service: eu-docs
+        namespace: eu-docs
+      annotations:
+        summary: eu-docs MCP on worker (100.96.103.31:8770) is down
+        description: 'GET /mcp has not answered 401/2xx for 5 minutes (last HTTP status {{ with query "eu_docs_probe_http_status" }}{{ . | first | value }}{{ end }}, 0 = no response). Check: systemctl status
+          eu-docs on worker.'
+    - alert: EuDocsIndexStale
+      expr: (time() - eu_docs_release_timestamp_seconds) > 36 * 3600
+      for: 10m
+      labels:
+        severity: warning
+        service: eu-docs
+        namespace: eu-docs
+      annotations:
+        summary: eu-docs collection {{ $labels.collection }} release older than 36 h
+        description: Current release of {{ $labels.collection }} is {{ $value | humanizeDuration }} old. Check the box push log (eu-docs-mcp/logs/push.log, run/push-state.json).
+    - alert: EuDocsAllIndexesStale
+      expr: min(time() - eu_docs_release_timestamp_seconds) > 36 * 3600
+      for: 10m
+      labels:
+        severity: critical
+        service: eu-docs
+        namespace: eu-docs
+      annotations:
+        summary: All eu-docs collections have releases older than 36 h
+        description: 'The newest eu-docs release is {{ $value | humanizeDuration }} old: the box -> worker push pipeline looks dead. Check eu-docs-mcp/logs/push.log and run/push-state.json on the box.'
+    - alert: EuDocsMonitoringStale
+      expr: (time() - eu_docs_metrics_last_run_timestamp_seconds) > 900 or absent(eu_docs_metrics_last_run_timestamp_seconds)
+      for: 15m
+      labels:
+        severity: warning
+        service: eu-docs
+        namespace: eu-docs
+      annotations:
+        summary: eu-docs textfile metrics are missing or stale
+        description: eu-docs-metrics.timer on worker has not refreshed /var/lib/node_exporter/textfile_collector/eu_docs.prom for >15 min, or node-exporter is not exporting it.
