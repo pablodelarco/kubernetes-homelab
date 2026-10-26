@@ -1,4 +1,3 @@
-# Caddy reverse proxy on hostNetwork :80 on every node (exported from the live cluster).
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -15,6 +14,8 @@ spec:
     metadata:
       labels:
         app: caddy
+      annotations:
+        checksum/caddyfile: c2c44e16a2f2a8f3fbadc25b545c0208356e1840f8689d76e8ce93f0a5a56073
     spec:
       containers:
       - args:
