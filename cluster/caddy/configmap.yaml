@@ -48,6 +48,10 @@ data:
     http://jellyseerr.homelab {
       reverse_proxy jellyseerr.media.svc.cluster.local:5055
     }
+    # Explicit default: unknown/retired hosts must not get Caddy's empty 200.
+    :15000 {
+      respond "Not found" 404
+    }
     http://prowlarr-games.homelab:15000 {
       @private remote_ip private_ranges 100.64.0.0/10
       handle @private {
