@@ -20,16 +20,6 @@ spec:
         summary: eu-docs MCP on worker (100.96.103.31:8770) is down
         description: 'GET /mcp has not answered 401/2xx for 5 minutes (last HTTP status {{ with query "eu_docs_probe_http_status" }}{{ . | first | value }}{{ end }}, 0 = no response). Check: systemctl status
           eu-docs on worker.'
-    - alert: EuDocsIndexStale
-      expr: (time() - eu_docs_release_timestamp_seconds) > 36 * 3600
-      for: 10m
-      labels:
-        severity: warning
-        service: eu-docs
-        namespace: eu-docs
-      annotations:
-        summary: eu-docs collection {{ $labels.collection }} release older than 36 h
-        description: Current release of {{ $labels.collection }} is {{ $value | humanizeDuration }} old. Check the box push log (eu-docs-mcp/logs/push.log, run/push-state.json).
     - alert: EuDocsAllIndexesStale
       expr: min(time() - eu_docs_release_timestamp_seconds) > 36 * 3600
       for: 10m
