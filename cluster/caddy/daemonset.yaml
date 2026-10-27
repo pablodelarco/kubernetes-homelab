@@ -25,7 +25,7 @@ spec:
         - /etc/caddy/Caddyfile
         - --adapter
         - caddyfile
-        image: caddy:2.10-alpine
+        image: caddy:2.11-alpine
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
