@@ -74,3 +74,171 @@ subsets:
     ports:
       - port: 8081
         protocol: TCP
+---
+# beelink Docker arco-stream-portal (published on 10.10.1.37:8093)
+apiVersion: v1
+kind: Service
+metadata:
+  name: arco-stream-portal
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8093
+      targetPort: 8093
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: arco-stream-portal
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.37
+    ports:
+      - port: 8093
+        protocol: TCP
+---
+# beelink Docker arco-stream-portal-tv (published on 10.10.1.37:8095)
+apiVersion: v1
+kind: Service
+metadata:
+  name: arco-stream-portal-tv
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8095
+      targetPort: 8095
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: arco-stream-portal-tv
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.37
+    ports:
+      - port: 8095
+        protocol: TCP
+---
+# beelink Docker nextcloud-mcp (tailnet-only listener 100.113.23.108:8000)
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-mcp
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: nextcloud-mcp
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 100.113.23.108
+    ports:
+      - port: 8000
+        protocol: TCP
+---
+# worker Docker code-server
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-server
+  namespace: docker-services
+spec:
+  ports:
+    - port: 8443
+      targetPort: 8443
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: code-server
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.39
+    ports:
+      - port: 8443
+        protocol: TCP
+---
+# worker Docker stremio-server (HTTP API)
+apiVersion: v1
+kind: Service
+metadata:
+  name: stremio
+  namespace: docker-services
+spec:
+  ports:
+    - port: 11470
+      targetPort: 11470
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: stremio
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.39
+    ports:
+      - port: 11470
+        protocol: TCP
+---
+# Glances hostNetwork pod on beelink
+apiVersion: v1
+kind: Service
+metadata:
+  name: glances-beelink
+  namespace: docker-services
+spec:
+  ports:
+    - port: 61208
+      targetPort: 61208
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: glances-beelink
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.37
+    ports:
+      - port: 61208
+        protocol: TCP
+---
+# Glances hostNetwork pod on worker
+apiVersion: v1
+kind: Service
+metadata:
+  name: glances-worker
+  namespace: docker-services
+spec:
+  ports:
+    - port: 61208
+      targetPort: 61208
+      protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: glances-worker
+  namespace: docker-services
+subsets:
+  - addresses:
+      - ip: 10.10.1.39
+    ports:
+      - port: 61208
+        protocol: TCP

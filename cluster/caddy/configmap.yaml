@@ -48,11 +48,10 @@ data:
     http://jellyseerr.homelab {
       reverse_proxy jellyseerr.media.svc.cluster.local:5055
     }
-    # Explicit default: unknown/retired hosts must not get Caddy's empty 200.
-    :15000 {
-      respond "Not found" 404
-    }
-    http://prowlarr-games.homelab:15000 {
+    # Moved from the private :15000 listener to :80 now that beelink has no
+    # Funnel. Never point a Funnel at Caddy :80 again: Funnel traffic arrives
+    # from 127.0.0.1 (a private range) and the Host header picks the vhost.
+    http://prowlarr-games.homelab {
       @private remote_ip private_ranges 100.64.0.0/10
       handle @private {
         reverse_proxy prowlarr-games.media.svc.cluster.local:9696
@@ -82,6 +81,57 @@ data:
     }
     http://uptime.homelab, http://uptime-kuma.homelab {
       reverse_proxy uptime-kuma.uptime-kuma.svc.cluster.local:3001
+    }
+
+    # --- Docker / host services (selector-less Services in docker-services) ---
+    # arco-stream portals (static nginx on beelink; JS builds URLs from location.origin)
+    http://stream.homelab {
+      reverse_proxy arco-stream-portal.docker-services.svc.cluster.local:8093
+    }
+    http://stream-tv.homelab {
+      reverse_proxy arco-stream-portal-tv.docker-services.svc.cluster.local:8095
+    }
+    # nextcloud-mcp (beelink, tailnet-only listener). Streamable HTTP MCP:
+    # no buffering, long-lived responses. Bearer auth is passed through untouched.
+    http://nextcloud-mcp.homelab {
+      reverse_proxy nextcloud-mcp.docker-services.svc.cluster.local:8000 {
+        flush_interval -1
+      }
+    }
+    # eu-docs stays DIRECT at http://100.96.103.31:8770/mcp (see consolidation-plan.md).
+    # Its MCP transport_security only allows Host 100.96.103.31[:8770] / worker[.tabby-carp.ts.net],
+    # so an alias would need the Host rewrite below. Left disabled on purpose.
+    # http://eu-docs.homelab {
+    #   reverse_proxy 100.96.103.31:8770 {
+    #     header_up Host 100.96.103.31:8770
+    #     flush_interval -1
+    #   }
+    # }
+    # code-server (worker Docker, has its own password login; needs websockets, which Caddy proxies natively)
+    http://code.homelab {
+      reverse_proxy code-server.docker-services.svc.cluster.local:8443
+    }
+    # Stremio streaming server (worker Docker). Native apps only: https web.stremio.com
+    # cannot use a plain-http server (mixed content).
+    http://stremio.homelab {
+      reverse_proxy stremio.docker-services.svc.cluster.local:11470 {
+        flush_interval -1
+      }
+    }
+    # Glances web UI/API (hostNetwork DaemonSet, no auth): private/tailnet sources only
+    http://glances.homelab, http://glances-beelink.homelab {
+      @private remote_ip private_ranges 100.64.0.0/10
+      handle @private {
+        reverse_proxy glances-beelink.docker-services.svc.cluster.local:61208
+      }
+      respond "Private homelab access only" 403
+    }
+    http://glances-worker.homelab {
+      @private remote_ip private_ranges 100.64.0.0/10
+      handle @private {
+        reverse_proxy glances-worker.docker-services.svc.cluster.local:61208
+      }
+      respond "Private homelab access only" 403
     }
 
     http:// {
