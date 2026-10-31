@@ -3,7 +3,8 @@
 
 cronjob:
   # Run every 2 hours
-  schedule: '0 */2 * * *'
+  # Every 6 h (UTC): 01/07/13/19 CET, clear of the 03:00-05:30 backup window.
+  schedule: '0 */6 * * *'
   
   # Job history
   successfulJobsHistoryLimit: 3
@@ -89,7 +90,7 @@ resources:
     cpu: 2000m
     memory: 4Gi
 
-# Node affinity - run on beelink
+# Node affinity - run on worker (moved off beelink 2026-10-31)
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -98,11 +99,10 @@ affinity:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - beelink
+                - worker
 
 # Tolerate control-plane taint
 tolerations:
   - key: node-role.kubernetes.io/control-plane
     operator: Exists
     effect: NoSchedule
-
