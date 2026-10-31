@@ -320,6 +320,33 @@ additionalPrometheusRulesMap:
             annotations:
               summary: "Disk almost full on {{ $labels.instance }}"
               description: "Filesystem {{ $labels.mountpoint }} is {{ $value | humanizePercentage }} full."
+      - name: node-thermal
+        rules:
+          # N100 nodes (beelink, worker): coretemp via node-exporter hwmon.
+          - alert: NodeCPUHot
+            expr: max by (instance) (node_hwmon_temp_celsius{chip="platform_coretemp_0"}) > 90
+            for: 15m
+            labels:
+              severity: warning
+            annotations:
+              summary: "CPU temperature high on {{ $labels.instance }}"
+              description: "CPU package/core temperature has been above 90 C for 15 minutes (now {{ $value }} C)."
+          - alert: NodeCPUTemperatureCritical
+            expr: max by (instance) (node_hwmon_temp_celsius{chip="platform_coretemp_0"}) >= 100
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "CPU temperature critical on {{ $labels.instance }}"
+              description: "CPU temperature has been at or above 100 C for 5 minutes (now {{ $value }} C, TjMax 105 C)."
+          - alert: NodeCPUThermalThrottling
+            expr: rate(node_cpu_package_throttles_total[15m]) > 1
+            for: 30m
+            labels:
+              severity: warning
+            annotations:
+              summary: "CPU is thermal throttling on {{ $labels.instance }}"
+              description: "Package thermal throttle events are increasing at {{ $value | humanize }}/s for 30 minutes. Check fan, dust and airflow."
       - name: pod-alerts
         rules:
           - alert: CrashLoopBackOff
