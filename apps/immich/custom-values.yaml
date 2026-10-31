@@ -58,16 +58,15 @@ server:
             requests: {cpu: 500m, memory: 1Gi}
             limits: {cpu: "2", memory: 3Gi}
   persistence:
-    # External library: "Mis Fotos" on the Murcia Synology, read-only.
-    # Disabled until the DSM NFS rule for "Mis Fotos" exists; with the export
-    # missing the mount would fail and block the server pod.
+    # External library: "Mis Fotos" on the Murcia Synology, read-write
+    # (Immich may delete and modify originals, approved 2026-10-31).
     misfotos:
-      enabled: false
+      enabled: true
       type: persistentVolumeClaim
       existingClaim: immich-misfotos
       globalMounts:
         - path: /mnt/misfotos
-          readOnly: true
+          readOnly: false
 
 machine-learning:
   controllers:
