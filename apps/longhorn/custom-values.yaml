@@ -1,7 +1,7 @@
 persistence:
   defaultClass: true
-  # New volumes must use the validated native Garage target. Existing volumes
-  # are migrated explicitly; the legacy `default` target stays available for rollback.
+  # New volumes use the native Garage target on the NAS. The legacy `default`
+  # target (in-cluster Garage) was retired on 2026-10-31 and is left empty.
   backupTargetName: garage-native
   # 2-node cluster (beelink + worker). Helm chart default is 3 replicas
   # with anti-affinity, so the 3rd is always unschedulable → "degraded".
@@ -20,8 +20,6 @@ persistence:
     jobList: '[{"name":"protected","isGroup":true}]'
 
 defaultSettings:
-  backupTarget: "s3://k8s-backups@us-east-1/"
-  backupTargetCredentialSecret: "garage-credentials"
   defaultReplicaCount: 2
   # Garage on NAS/NFS can exceed Longhorn's 1-minute default while listing the
   # backup store under load. Avoid transient target unavailability and skipped PVCs.

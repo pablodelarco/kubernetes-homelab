@@ -5,7 +5,7 @@ metadata:
   namespace: longhorn-system
 spec:
   # Clean production repository on the native Garage instance.
-  # The legacy BackupTarget `default` remains unchanged for rollback/history.
+  # The legacy BackupTarget `default` (in-cluster Garage) was retired 2026-10-31.
   backupTargetURL: "s3://k8s-backups@us-east-1/production-v1/"
   credentialSecret: garage-native-credentials
   pollInterval: 30m

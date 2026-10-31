@@ -27,12 +27,6 @@ data:
     http://z2m.homelab {
       reverse_proxy zigbee2mqtt.docker-services.svc.cluster.local:8081
     }
-    http://garage.homelab {
-      reverse_proxy garage-webui.garage.svc.cluster.local:3909
-    }
-    http://s3.homelab {
-      reverse_proxy garage.garage.svc.cluster.local:3900
-    }
     http://homepage.homelab, http://home.homelab {
       reverse_proxy homepage.homepage.svc.cluster.local:3000
     }

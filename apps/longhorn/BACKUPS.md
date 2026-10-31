@@ -13,7 +13,7 @@ Longhorn sync-agent
 - Production BackupTarget: `garage-native`.
 - Production prefix: `s3://k8s-backups@us-east-1/production-v1/`.
 - Credentials: `garage-native-credentials` SealedSecret.
-- Legacy BackupTarget: `default`; keep it available for historical restores and rollback.
+- Legacy BackupTarget `default` (in-cluster Garage on NAS NFS): retired 2026-10-31. Its URL is empty, its backups and the in-cluster Garage were deleted. The pilot targets were removed too.
 - Compression: LZ4.
 - RecurringJob: `default-backup`, daily at 03:00.
 - Retention: 4 backups per volume.
@@ -34,7 +34,7 @@ Validated on 2026-08-31 with Longhorn 1.11.3:
 
 These values are dated evidence, not permanent performance guarantees. Re-check live state before making operational claims.
 
-## Safe rollback
+## Safe rollback (historical, no longer possible since the legacy target was retired 2026-10-31)
 
 Do not delete either repository during rollback.
 
@@ -62,4 +62,3 @@ Before declaring the backup system healthy, verify:
 - The latest backup for every protected volume is `Completed` within the expected RPO.
 - No Backup CR is stuck in `New`, `Pending`, `InProgress` or `Error`.
 - At least one periodic restore drill succeeds and its content checksum matches.
-- The legacy target remains readable until the rollback window is intentionally closed.
