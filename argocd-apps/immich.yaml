@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich
+  namespace: argocd
+  # Helm chart from ghcr OCI + values from this repo. Requires the
+  # immich-base app (namespace, PVCs, Postgres, DB secret).
+spec:
+  project: default
+  sources:
+    - repoURL: ghcr.io/immich-app/immich-charts
+      chart: immich
+      targetRevision: "0.13.4"
+      helm:
+        releaseName: immich
+        valueFiles:
+          - $values/apps/immich/custom-values.yaml
+    - repoURL: https://github.com/pablodelarco/kubernetes-homelab
+      targetRevision: main
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: immich
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

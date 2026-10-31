@@ -1,0 +1,90 @@
+# Immich (official chart oci://ghcr.io/immich-app/immich-charts/immich).
+# The chart does not follow Immich releases: bump image.tag together with
+# release notes. Everything is pinned to the worker node (beelink is RAM/heat
+# constrained). DB is the immich-postgres StatefulSet from apps/immich/manifests.
+
+defaultPodOptions:
+  nodeSelector:
+    kubernetes.io/hostname: worker
+
+controllers:
+  main:
+    containers:
+      main:
+        env:
+          TZ: Europe/Madrid
+          REDIS_HOSTNAME: '{{ printf "%s-valkey" .Release.Name }}'
+          IMMICH_MACHINE_LEARNING_URL: '{{ printf "http://%s-machine-learning:3003" .Release.Name }}'
+          DB_HOSTNAME: immich-postgres
+          DB_USERNAME:
+            valueFrom:
+              secretKeyRef: {name: immich-db, key: username}
+          DB_DATABASE_NAME:
+            valueFrom:
+              secretKeyRef: {name: immich-db, key: database}
+          DB_PASSWORD:
+            valueFrom:
+              secretKeyRef: {name: immich-db, key: password}
+
+immich:
+  persistence:
+    library:
+      existingClaim: immich-library
+
+valkey:
+  enabled: true
+  controllers:
+    main:
+      containers:
+        main:
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 200m, memory: 256Mi}
+
+server:
+  controllers:
+    main:
+      containers:
+        main:
+          image:
+            repository: ghcr.io/immich-app/immich-server
+            tag: v3.3.5
+          resources:
+            requests: {cpu: 500m, memory: 1Gi}
+            limits: {cpu: "2", memory: 3Gi}
+  persistence:
+    # External library: "Mis Fotos" on the Murcia Synology, read-only.
+    # Disabled until the DSM NFS rule for "Mis Fotos" exists; with the export
+    # missing the mount would fail and block the server pod.
+    misfotos:
+      enabled: false
+      type: persistentVolumeClaim
+      existingClaim: immich-misfotos
+      globalMounts:
+        - path: /mnt/misfotos
+          readOnly: true
+
+machine-learning:
+  controllers:
+    main:
+      containers:
+        main:
+          # Keep the same tag as immich-server.
+          image:
+            repository: ghcr.io/immich-app/immich-machine-learning
+            tag: v3.3.5
+          env:
+            TZ: Europe/Madrid
+            MACHINE_LEARNING_MODEL_TTL: "300"
+            MACHINE_LEARNING_WORKERS: "1"
+            MACHINE_LEARNING_REQUEST_THREADS: "2"
+            MACHINE_LEARNING_MODEL_INTRA_OP_THREADS: "2"
+            MACHINE_LEARNING_MODEL_INTER_OP_THREADS: "1"
+          resources:
+            requests: {cpu: 250m, memory: 1Gi}
+            limits: {cpu: "2", memory: 3Gi}
+  persistence:
+    cache:
+      enabled: true
+      type: persistentVolumeClaim
+      existingClaim: immich-ml-cache

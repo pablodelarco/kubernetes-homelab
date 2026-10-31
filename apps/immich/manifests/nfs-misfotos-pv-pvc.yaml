@@ -1,0 +1,43 @@
+# "Mis Fotos" on the Murcia Synology DS213+ (192.168.1.42), reached through the
+# DH2300-Murcia subnet route. Read-only at every layer: DSM export rule (ro,
+# client 192.168.1.75), PV readOnly + "ro" mount option, ROX claim, and a
+# readOnly volumeMount in the Immich server.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: immich-misfotos
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes: [ReadOnlyMany]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - ro
+    - nfsvers=4.0
+    - hard
+    - timeo=600
+    - retrans=2
+    - noatime
+    - rsize=131072
+    - tcp
+  nfs:
+    server: 192.168.1.42
+    path: "/volume1/Mis Fotos"
+    readOnly: true
+  claimRef:
+    namespace: immich
+    name: immich-misfotos
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-misfotos
+  namespace: immich
+spec:
+  accessModes: [ReadOnlyMany]
+  storageClassName: ""
+  volumeName: immich-misfotos
+  resources:
+    requests:
+      storage: 200Gi

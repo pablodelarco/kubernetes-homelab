@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich-base
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/pablodelarco/kubernetes-homelab
+    targetRevision: main
+    path: apps/immich/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: immich
+  syncPolicy:
+    automated:
+      # No prune: this app owns the PVCs and the Postgres data.
+      prune: false
+      selfHeal: true
