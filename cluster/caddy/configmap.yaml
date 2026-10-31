@@ -48,6 +48,14 @@ data:
     http://jellyseerr.homelab {
       reverse_proxy jellyseerr.media.svc.cluster.local:5055
     }
+    # Immich photo library (Mis Fotos). Tailnet/private sources only.
+    http://fotos.homelab, http://immich.homelab {
+      @private remote_ip private_ranges 100.64.0.0/10
+      handle @private {
+        reverse_proxy immich-server.immich.svc.cluster.local:2283
+      }
+      respond "Private homelab access only" 403
+    }
     # Moved from the private :15000 listener to :80 now that beelink has no
     # Funnel. Never point a Funnel at Caddy :80 again: Funnel traffic arrives
     # from 127.0.0.1 (a private range) and the Host header picks the vhost.

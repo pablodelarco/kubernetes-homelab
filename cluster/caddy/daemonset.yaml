@@ -15,7 +15,7 @@ spec:
       labels:
         app: caddy
       annotations:
-        checksum/caddyfile: ec6c60a3f22a7d852cea4b680ff5282a4a2109b174804f33b17e221f42f3b329
+        checksum/caddyfile: 08d2ed6dea8ed3402f51531b3a1718bfba309b767f990ecb5401f8a12a81bd8b
     spec:
       containers:
       - args:
