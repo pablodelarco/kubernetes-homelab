@@ -8,3 +8,5 @@ resources:
   - pvcs.yaml
   - nfs-misfotos-pv-pvc.yaml
   - postgres.yaml
+  - immich-queue-apikey-sealed.yaml
+  - queue-scheduler.yaml

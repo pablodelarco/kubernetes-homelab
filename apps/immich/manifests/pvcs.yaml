@@ -34,3 +34,16 @@ spec:
   resources:
     requests:
       storage: 10Gi
+---
+# Valkey holds the job queues and their paused state; keep it across restarts.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-valkey
+  namespace: immich
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: longhorn-single
+  resources:
+    requests:
+      storage: 1Gi

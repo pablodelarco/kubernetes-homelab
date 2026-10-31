@@ -33,6 +33,11 @@ immich:
 
 valkey:
   enabled: true
+  persistence:
+    data:
+      enabled: true
+      type: persistentVolumeClaim
+      existingClaim: immich-valkey
   controllers:
     main:
       containers:

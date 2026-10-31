@@ -1,0 +1,147 @@
+# Staged Immich processing on the N100 worker:
+# - thumbnails + metadata run any time (never paused here)
+# - smart search, faces and OCR run only at night (00:30-08:00)
+# - video transcoding runs last: only at night and only once the ML backlog is empty
+# Daytime CronJob re-asserts the pause hourly, so a server/valkey restart
+# cannot leave heavy queues running during the day.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich-queue-scheduler
+  namespace: immich
+data:
+  queues.sh: |
+    #!/bin/sh
+    set -eu
+    API="http://immich-server:2283/api"
+    ML_QUEUES="smartSearch faceDetection facialRecognition ocr"
+    put() {
+      curl -fsS -m 20 -X PUT -H "x-api-key: ${IMMICH_API_KEY}" -H "Content-Type: application/json" \
+        --data "{\"isPaused\":$2}" "${API}/queues/$1" >/dev/null
+      echo "$1 isPaused=$2"
+    }
+    backlog() {
+      s=$(curl -fsS -m 20 -H "x-api-key: ${IMMICH_API_KEY}" "${API}/queues/$1")
+      w=$(echo "$s" | grep -o '"waiting":[0-9]*' | head -1 | cut -d: -f2)
+      a=$(echo "$s" | grep -o '"active":[0-9]*' | head -1 | cut -d: -f2)
+      echo $(( ${w:-0} + ${a:-0} ))
+    }
+    case "${1:-}" in
+      day)
+        for q in $ML_QUEUES videoConversion; do put "$q" true; done ;;
+      night)
+        for q in $ML_QUEUES; do put "$q" false; done
+        ml=0
+        for q in smartSearch faceDetection facialRecognition; do ml=$(( ml + $(backlog "$q") )); done
+        if [ "$ml" -eq 0 ]; then put videoConversion false; else echo "ML backlog $ml, video stays paused"; fi ;;
+      *) echo "usage: queues.sh day|night"; exit 2 ;;
+    esac
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: immich-queues-day
+  namespace: immich
+spec:
+  schedule: "0 8-23 * * *"
+  timeZone: Europe/Madrid
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: OnFailure
+          nodeSelector:
+            kubernetes.io/hostname: worker
+          containers:
+            - name: queues
+              image: docker.io/curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93
+              command: ["sh", "/scripts/queues.sh", "day"]
+              env:
+                - name: IMMICH_API_KEY
+                  valueFrom: {secretKeyRef: {name: immich-queue-apikey, key: api-key}}
+              resources:
+                requests: {cpu: 10m, memory: 16Mi}
+                limits: {cpu: 100m, memory: 64Mi}
+              volumeMounts:
+                - {name: scripts, mountPath: /scripts}
+          volumes:
+            - name: scripts
+              configMap: {name: immich-queue-scheduler}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: immich-queues-night
+  namespace: immich
+spec:
+  # 00:30 starts ML (and video if the ML backlog is already empty).
+  schedule: "30 0 * * *"
+  timeZone: Europe/Madrid
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: OnFailure
+          nodeSelector:
+            kubernetes.io/hostname: worker
+          containers:
+            - name: queues
+              image: docker.io/curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93
+              command: ["sh", "/scripts/queues.sh", "night"]
+              env:
+                - name: IMMICH_API_KEY
+                  valueFrom: {secretKeyRef: {name: immich-queue-apikey, key: api-key}}
+              resources:
+                requests: {cpu: 10m, memory: 16Mi}
+                limits: {cpu: 100m, memory: 64Mi}
+              volumeMounts:
+                - {name: scripts, mountPath: /scripts}
+          volumes:
+            - name: scripts
+              configMap: {name: immich-queue-scheduler}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: immich-queues-night-video-check
+  namespace: immich
+spec:
+  schedule: "0 2,4,6 * * *"
+  timeZone: Europe/Madrid
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: OnFailure
+          nodeSelector:
+            kubernetes.io/hostname: worker
+          containers:
+            - name: queues
+              image: docker.io/curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93
+              command: ["sh", "/scripts/queues.sh", "night"]
+              env:
+                - name: IMMICH_API_KEY
+                  valueFrom: {secretKeyRef: {name: immich-queue-apikey, key: api-key}}
+              resources:
+                requests: {cpu: 10m, memory: 16Mi}
+                limits: {cpu: 100m, memory: 64Mi}
+              volumeMounts:
+                - {name: scripts, mountPath: /scripts}
+          volumes:
+            - name: scripts
+              configMap: {name: immich-queue-scheduler}

@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: immich-queue-apikey
+  namespace: immich
+spec:
+  encryptedData:
+    api-key: AgBKcxbbInTk15VVA43ZT7HYsZxoizvzyrG7Puo7mhqI5mwZkm8DsF926RrWfJr8cso7xvSnHEYiKAAWAYeGXEsT7QI28KERJzMkQtxPe3YC8f11+9CWuJ9apaDYEUKPjP9yzKPHetzBxMY29DzTQ6XEeBR/9MFXtzBg+oMmj09T5vYrtyOOuXufMy3ogo2Ke4460zeli4bLM32VWgXm/cEB7tXlS0E7dMNaSiDIW7CjqAInyL6O/hmNU6L9HUMiBKmoUv9iGOVjmyeM7spYK5jN23zcO9eKdLainjqsvpt4C/Ho0v0OrNNL6zHxEkNGETNeEN8i3z0g9Ku0abSKOE3uGLJfOg0cANhEKkfuqW0aCbnsJFX7Hmsm9GojNlsBRM5Bx3N19BMtztel9n30TOgEtAzpL8BwWcGCH/4coDmI9riEzP7ggaUneXzqy+/UVfGCiDGU2kM+3nUR97jIAY6/d3VB8/mEdMljOpl1AHV/qmbZPFaK4MmbO/4IatYeG5BKpU3lNbA8ALT5LBnK2j/tGF1212MjpwxlQMg3kStQDeumN4/Fp405X2EDYPayi9bZv1Ia1GI4tmkJn9Is3y+E9Bqbhf9ruRnuIOWd+t0xiAVbChftvfeKT2io7RrvmzibvL9FbD1vulVJmg4brlwBZqL/ziMa/dgqHr1nXg2vCDVPGbV+CqC/4HlVhqV57D7QE3mU3Yf3ZMq9KQRBZV+11HEJ5pAdcfzvaVfTZ0lfS29pTGxQXXVsa24=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: immich-queue-apikey
+      namespace: immich
+    type: Opaque
