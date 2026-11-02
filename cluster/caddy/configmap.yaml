@@ -8,16 +8,27 @@ data:
       admin off
     }
 
+    # 2026-11-02 family devices (Juan: MacBook Air x2, iPhone 15 Pro Max) may use Immich only.
+    # Every other site redirects them to fotos.homelab. Update the IPs if he re-registers a device.
+    (family_immich_only) {
+      @family remote_ip 100.116.0.11/32 100.93.195.109/32 100.120.51.10/32
+      redir @family http://fotos.homelab/ 302
+    }
+
     http://adguard.homelab, http://dns.homelab {
+      import family_immich_only
       reverse_proxy adguard-home.adguard-home.svc.cluster.local:3000
     }
     http://argocd.homelab {
+      import family_immich_only
       reverse_proxy argocd-server.argocd.svc.cluster.local:80
     }
     http://esphome.homelab {
+      import family_immich_only
       reverse_proxy esphome.docker-services.svc.cluster.local:6052
     }
     http://ha.homelab {
+      import family_immich_only
       reverse_proxy home-assistant.docker-services.svc.cluster.local:8123 {
         header_up -X-Forwarded-For
         header_up -X-Forwarded-Proto
@@ -25,21 +36,27 @@ data:
       }
     }
     http://z2m.homelab {
+      import family_immich_only
       reverse_proxy zigbee2mqtt.docker-services.svc.cluster.local:8081
     }
     http://homepage.homelab, http://home.homelab {
+      import family_immich_only
       reverse_proxy homepage.homepage.svc.cluster.local:3000
     }
     http://longhorn.homelab {
+      import family_immich_only
       reverse_proxy longhorn-frontend.longhorn-system.svc.cluster.local:80
     }
     http://bazarr.homelab {
+      import family_immich_only
       reverse_proxy bazarr.media.svc.cluster.local:6767
     }
     http://jellyfin.homelab {
+      import family_immich_only
       reverse_proxy jellyfin.media.svc.cluster.local:8096
     }
     http://jellyseerr.homelab {
+      import family_immich_only
       reverse_proxy jellyseerr.media.svc.cluster.local:5055
     }
     # Immich photo library (Mis Fotos). Tailnet/private sources only.
@@ -54,6 +71,7 @@ data:
     # Funnel. Never point a Funnel at Caddy :80 again: Funnel traffic arrives
     # from 127.0.0.1 (a private range) and the Host header picks the vhost.
     http://prowlarr-games.homelab {
+      import family_immich_only
       @private remote_ip private_ranges 100.64.0.0/10
       handle @private {
         reverse_proxy prowlarr-games.media.svc.cluster.local:9696
@@ -61,41 +79,52 @@ data:
       respond "Private homelab access only" 403
     }
     http://prowlarr.homelab {
+      import family_immich_only
       reverse_proxy prowlarr.media.svc.cluster.local:80
     }
     http://qbitt.homelab {
+      import family_immich_only
       reverse_proxy qbitt.media.svc.cluster.local:80
     }
     http://radarr.homelab {
+      import family_immich_only
       reverse_proxy radarr.media.svc.cluster.local:80
     }
     http://sonarr.homelab {
+      import family_immich_only
       reverse_proxy sonarr.media.svc.cluster.local:80
     }
     http://grafana.homelab {
+      import family_immich_only
       reverse_proxy monitoring-grafana.monitoring.svc.cluster.local:80
     }
     http://prometheus.homelab {
+      import family_immich_only
       reverse_proxy monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
     }
     http://n8n.homelab, http://beelink.tabby-carp.ts.net {
+      import family_immich_only
       reverse_proxy n8n.n8n.svc.cluster.local:80
     }
     http://uptime.homelab, http://uptime-kuma.homelab {
+      import family_immich_only
       reverse_proxy uptime-kuma.uptime-kuma.svc.cluster.local:3001
     }
 
     # --- Docker / host services (selector-less Services in docker-services) ---
     # arco-stream portals (static nginx on beelink; JS builds URLs from location.origin)
     http://stream.homelab {
+      import family_immich_only
       reverse_proxy arco-stream-portal.docker-services.svc.cluster.local:8093
     }
     http://stream-tv.homelab {
+      import family_immich_only
       reverse_proxy arco-stream-portal-tv.docker-services.svc.cluster.local:8095
     }
     # nextcloud-mcp (beelink, tailnet-only listener). Streamable HTTP MCP:
     # no buffering, long-lived responses. Bearer auth is passed through untouched.
     http://nextcloud-mcp.homelab {
+      import family_immich_only
       reverse_proxy nextcloud-mcp.docker-services.svc.cluster.local:8000 {
         flush_interval -1
       }
@@ -111,17 +140,20 @@ data:
     # }
     # code-server (worker Docker, has its own password login; needs websockets, which Caddy proxies natively)
     http://code.homelab {
+      import family_immich_only
       reverse_proxy code-server.docker-services.svc.cluster.local:8443
     }
     # Stremio streaming server (worker Docker). Native apps only: https web.stremio.com
     # cannot use a plain-http server (mixed content).
     http://stremio.homelab {
+      import family_immich_only
       reverse_proxy stremio.docker-services.svc.cluster.local:11470 {
         flush_interval -1
       }
     }
     # Glances web UI/API (hostNetwork DaemonSet, no auth): private/tailnet sources only
     http://glances.homelab, http://glances-beelink.homelab {
+      import family_immich_only
       @private remote_ip private_ranges 100.64.0.0/10
       handle @private {
         reverse_proxy glances-beelink.docker-services.svc.cluster.local:61208
@@ -129,6 +161,7 @@ data:
       respond "Private homelab access only" 403
     }
     http://glances-worker.homelab {
+      import family_immich_only
       @private remote_ip private_ranges 100.64.0.0/10
       handle @private {
         reverse_proxy glances-worker.docker-services.svc.cluster.local:61208
