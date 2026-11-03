@@ -43,9 +43,6 @@ metadata:
   name: immich-queues-day
   namespace: immich
 spec:
-  # Temporary: daytime pausing suspended until the initial ML backlog finishes.
-  # Revert (remove this line and the next) to resume pausing ML queues during the day.
-  suspend: true
   schedule: "0 8-23 * * *"
   timeZone: Europe/Madrid
   concurrencyPolicy: Forbid
