@@ -16,6 +16,8 @@ resources:
 # Falcosidekick for webhook forwarding
 falcosidekick:
   enabled: true
+  image:
+    tag: "2.35.1"
   config:
     webhook:
       address: "http://raspberrypi5:9998/webhook/falco"
