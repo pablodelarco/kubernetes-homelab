@@ -54,7 +54,7 @@ spec:
         - operator: Exists
       containers:
         - name: haproxy
-          image: haproxy:3.2-alpine@sha256:6343ce34a132a5dceaa24767d739df2bd519f8f7c1079ae39e4821334e8eb42e
+          image: haproxy:3.2.26-alpine@sha256:5893840576071e6217cd52ebdcc14f454c6f7a631056fa6f4e0f40d3cac4215b
           args:
             - -f
             - /usr/local/etc/haproxy/haproxy.cfg
