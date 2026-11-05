@@ -18,7 +18,7 @@ spec:
       hostPID: true
       containers:
         - name: node-problem-detector
-          image: registry.k8s.io/node-problem-detector/node-problem-detector:v0.8.19
+          image: registry.k8s.io/node-problem-detector/node-problem-detector:v0.8.25@sha256:c107c022e2dbef36927e0b414049a84fc4dd2d190f13d7015954e05bb87971d9
           command:
             - /node-problem-detector
             - --logtostderr
