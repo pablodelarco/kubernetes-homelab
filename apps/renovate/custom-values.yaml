@@ -1,3 +1,8 @@
+image:
+  repository: renovatebot/renovate
+  tag: "44.216.5"
+  pullPolicy: IfNotPresent
+
 # Renovate Helm Chart Values
 # Automatically updates Helm charts and container images
 
