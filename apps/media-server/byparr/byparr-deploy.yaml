@@ -25,7 +25,7 @@ spec:
                       - worker
       containers:
         - name: byparr
-          image: ghcr.io/thephaseless/byparr:latest
+          image: ghcr.io/thephaseless/byparr:3.1.1@sha256:c66fa161187b8fa527bfad7eefa2647ea1c553f77df68cbffd6fe83366d1787b
           imagePullPolicy: Always
           env:
             - name: TZ
