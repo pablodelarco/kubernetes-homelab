@@ -95,12 +95,13 @@ resources:
     cpu: 2000m
     memory: 4Gi
 
-# Node affinity - run on worker (moved off beelink 2026-10-31)
+# Prefer worker, but allow beelink when the worker cannot fit the request.
 affinity:
   nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
             - key: kubernetes.io/hostname
               operator: In
               values:
