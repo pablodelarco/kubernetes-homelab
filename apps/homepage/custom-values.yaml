@@ -1,5 +1,5 @@
 image:
-  tag: v2.7.0
+  tag: v2.8.0@sha256:019d8f063a7299e7c1c51ee4a70b692291809af3244894fbec2c2ac7d1f71b18
 
 config:
   bookmarks:
