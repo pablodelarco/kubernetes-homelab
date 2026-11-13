@@ -1,0 +1,78 @@
+# Refreshes the numbers on pablodelarco.com (GitHub stars and commits, Medium
+# followers) by running scripts/update-stats.mjs from the portfolio repo and
+# pushing lib/stats.ts when a number changed. It runs here, from the home IP,
+# because Medium's Cloudflare challenge blocks GitHub-hosted runners.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: portfolio-stats
+  namespace: portfolio-stats
+spec:
+  # 09:00 Madrid, after the GitHub Actions job (06:17 UTC), so the two
+  # writers never race on lib/stats.ts.
+  schedule: "0 9 * * *"
+  timeZone: "Europe/Madrid"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 900
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            # pwuser in the Playwright image
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+          containers:
+            - name: update-stats
+              # Ships Node.js and Chromium. PLAYWRIGHT_VERSION must equal the
+              # image tag, so bump both together.
+              image: mcr.microsoft.com/playwright:v1.63.0-noble
+              env:
+                - name: PLAYWRIGHT_VERSION
+                  value: "1.63.0"
+                - name: TZ
+                  value: "Europe/Madrid"
+                - name: HOME
+                  value: /work
+                - name: GITHUB_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: portfolio-stats-github
+                      key: GITHUB_TOKEN
+              command: ["/bin/bash", "-c"]
+              args:
+                - |
+                  set -euo pipefail
+                  auth="Authorization: Basic $(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
+                  git config --global user.name "homelab-stats"
+                  git config --global user.email "homelab-stats@pablodelarco.com"
+                  git -c http.extraheader="$auth" clone --quiet --depth 1 https://github.com/pablodelarco/portfolio.git /work/portfolio
+                  cd /work/portfolio
+                  npm install --no-save --no-audit --no-fund --loglevel=error "playwright@${PLAYWRIGHT_VERSION}"
+                  node scripts/update-stats.mjs
+                  if git diff --quiet -- lib/stats.ts; then
+                    echo "Numbers unchanged"
+                    exit 0
+                  fi
+                  git commit --quiet -m "chore(stats): refresh the home page numbers" -- lib/stats.ts
+                  git -c http.extraheader="$auth" push --quiet origin HEAD:main
+              resources:
+                requests:
+                  memory: "512Mi"
+                  cpu: "250m"
+                limits:
+                  memory: "1536Mi"
+                  cpu: "1000m"
+              volumeMounts:
+                - name: work
+                  mountPath: /work
+          volumes:
+            - name: work
+              emptyDir: {}
