@@ -1,6 +1,6 @@
 image:
   repository: renovatebot/renovate
-  tag: "44.221.6"
+  tag: "44.238.3@sha256:fb2cb3fa86241eba7098491aa1b070313fc51f5c0688122b19787bceaee4beba"
   pullPolicy: IfNotPresent
 
 # Renovate Helm Chart Values
