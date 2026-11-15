@@ -1,8 +1,9 @@
 defaultRules:
   disabled:
-    # N-1 memory capacity is not an actionable SLO for this heterogeneous
+    # N-1 memory and CPU capacity is not an actionable SLO for this heterogeneous
     # two-node homelab. A total-capacity rule below remains active.
     KubeMemoryOvercommit: true
+    KubeCPUOvercommit: true
 
 kubeApiServer:
   serviceMonitor:
