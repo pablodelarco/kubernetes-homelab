@@ -60,6 +60,9 @@ spec:
           value: nordvpn
         - name: SERVER_COUNTRIES
           value: Switzerland
+        # Online endpoints verified against NordVPN's catalogue; avoid retired servers.
+        - name: SERVER_HOSTNAMES
+          value: ch335.nordvpn.com,ch337.nordvpn.com,ch339.nordvpn.com,ch341.nordvpn.com
         - name: FIREWALL_INPUT_PORTS
           value: 9696,9999
         - name: HEALTH_SERVER_ADDRESS
