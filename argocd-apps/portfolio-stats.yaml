@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portfolio-stats
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/pablodelarco/kubernetes-homelab'
+    targetRevision: main
+    path: apps/portfolio-stats/manifests
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: portfolio-stats
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
