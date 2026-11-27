@@ -1,6 +1,6 @@
 # ── 0. Image version (managed by ArgoCD Image Updater) ────────────────────────
 image:
-  tag: "2.47.7@sha256:b4b90747b81fcda7e76550c0d3aa7f0f64917a1e9573cff40d6834eaf2e0f8ea"
+  tag: "2.49.7@sha256:17a3e5a8c5e2a7440cc757f5392d57b50eefdfd46eac4532a7dea9bf2735d9ae"
 
 # ── 1. n8n container & app-level config ──────────────────────────────────────
 main:
