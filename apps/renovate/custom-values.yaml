@@ -1,6 +1,6 @@
 image:
   repository: renovatebot/renovate
-  tag: "44.238.3@sha256:fb2cb3fa86241eba7098491aa1b070313fc51f5c0688122b19787bceaee4beba"
+  tag: "44.264.1@sha256:35777dd4aa87beee05ba64c7728a2c5e3c70687fdb654909710bac93c697efd1"
   pullPolicy: IfNotPresent
 
 # Renovate Helm Chart Values
@@ -78,6 +78,17 @@ renovate:
           "matchUpdateTypes": ["major"],
           "matchPackageNames": ["longhorn", "kube-prometheus-stack"],
           "automerge": false
+        },
+        {
+          "description": "Stay on Renovate 44.x; block v45 until reviewed",
+          "matchPackageNames": ["renovatebot/renovate", "renovate", "ghcr.io/renovatebot/renovate"],
+          "allowedVersions": "<45.0.0"
+        },
+        {
+          "description": "Stay on Renovate Helm chart 46.x (image 44.x)",
+          "matchDatasources": ["helm"],
+          "matchPackageNames": ["renovate"],
+          "allowedVersions": "<47.0.0"
         }
       ]
     }
